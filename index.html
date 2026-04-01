@@ -314,7 +314,7 @@
     .timeline-section { padding: var(--section-pad) 0; background: var(--bg-section); }
     .timeline-header { text-align: center; margin-bottom: 64px; }
     .timeline-header .section-subtitle { margin: 0 auto; }
-    .timeline-days { display: grid; grid-template-columns: 1fr; gap: 48px; }
+    .timeline-days { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
     .timeline-day h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--blue); margin-bottom: 32px; padding-bottom: 16px; border-bottom: 2px solid var(--gold-lighter); }
     .timeline-day h3 span { color: var(--gold); }
     .timeline-item { display: flex; gap: 20px; margin-bottom: 24px; position: relative; }
@@ -513,14 +513,120 @@
     .footer-copy { width: 100%; text-align: center; padding-top: 32px; margin-top: 32px; border-top: 1px solid var(--border-light); font-size: 0.8rem; color: var(--text-muted); }
 
     /* ===== RESPONSIVE ===== */
+    /* ===== [1] URGENCY BANNER ===== */
+    .urgency-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 2000;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+      color: var(--white); padding: 12px 0; text-align: center;
+      font-size: 0.9rem; font-weight: 600;
+      box-shadow: 0 4px 20px rgba(184,148,46,0.25);
+      animation: slideDown 0.6s ease;
+    }
+    .urgency-bar strong { font-weight: 700; }
+    .urgency-bar a { color: var(--white); text-decoration: underline; margin-left: 8px; font-weight: 700; transition: opacity 0.3s; }
+    .urgency-bar a:hover { opacity: 0.8; }
+    @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+    .navbar { top: 44px; }
+    .navbar.scrolled { top: 44px; }
+    .hero { margin-top: 44px; }
+
+    /* ===== ORGANIZER BLOCK ===== */
+    .organizer { padding: var(--section-pad) 0; background: linear-gradient(135deg, var(--blue-pale), rgba(232,240,248,0.5)); position: relative; overflow: hidden; }
+    .organizer::before { content: ''; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(184,148,46,0.08), transparent 70%); border-radius: 50%; }
+    .organizer-content { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: center; }
+    .organizer-avatar { text-align: center; }
+    .organizer-avatar-circle { width: 280px; height: 280px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, var(--gold-lighter), var(--gold), var(--gold-dark)); display: flex; align-items: center; justify-content: center; font-size: 7rem; color: var(--white); box-shadow: 0 20px 60px rgba(184,148,46,0.25), 0 8px 20px rgba(0,0,0,0.1); position: relative; }
+    .organizer-avatar-circle::before { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 3px solid var(--gold-light); opacity: 0.3; animation: pulse-ring 3s infinite; }
+    .organizer-info h2 { font-size: 2.2rem; margin-bottom: 8px; color: var(--blue); }
+    .organizer-subtitle { font-size: 1.2rem; color: var(--gold-dark); font-weight: 600; margin-bottom: 24px; }
+    .organizer-bio { font-size: 1.05rem; line-height: 1.8; color: var(--text-light); margin-bottom: 32px; }
+    .organizer-achievements { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+    .achievement-card { padding: 24px; background: var(--white); border-radius: 16px; border-left: 4px solid var(--gold); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+    .achievement-card strong { display: block; font-size: 1.4rem; color: var(--gold-dark); margin-bottom: 6px; }
+    .achievement-card span { font-size: 0.9rem; color: var(--text-light); }
+    .organizer-media { background: var(--white); padding: 24px; border-radius: 16px; border: 2px solid var(--gold-lighter); margin-bottom: 24px; }
+    .organizer-media-title { font-weight: 700; color: var(--gold-dark); font-size: 0.9rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .media-logos { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .media-logo { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--text); background: var(--cream); padding: 8px 14px; border-radius: 50px; }
+    .organizer-quote { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; color: var(--blue); line-height: 1.7; margin-top: 24px; }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials { padding: var(--section-pad) 0; background: var(--white); }
+    .testimonials-header { text-align: center; margin-bottom: 64px; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .testimonial-card { background: linear-gradient(135deg, var(--cream), var(--white)); border-radius: 24px; padding: 40px; border: 1px solid var(--border-light); box-shadow: 0 8px 32px rgba(0,0,0,0.03); transition: all 0.4s; position: relative; }
+    .testimonial-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(184,148,46,0.12); }
+    .testimonial-card::before { content: '"'; position: absolute; top: 20px; left: 24px; font-size: 4rem; color: var(--gold-light); opacity: 0.3; font-family: 'Cinzel', serif; }
+    .testimonial-text { font-size: 1rem; line-height: 1.7; color: var(--text-light); margin-bottom: 24px; position: relative; z-index: 1; }
+    .testimonial-author { font-family: 'Cinzel', serif; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .testimonial-role { font-size: 0.85rem; color: var(--gold-dark); font-weight: 600; }
+
+    /* ===== TRANSFORMATION PATH ===== */
+    .transformation { padding: var(--section-pad) 0; background: var(--bg-section); }
+    .transformation-header { text-align: center; margin-bottom: 64px; }
+    .transformation-path { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; }
+    .transformation-path::before { content: ''; position: absolute; top: 60px; left: 12.5%; right: 12.5%; height: 3px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); z-index: 0; }
+    .transform-step { position: relative; z-index: 1; text-align: center; }
+    .transform-step-number { width: 60px; height: 60px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; color: var(--white); box-shadow: 0 8px 24px rgba(184,148,46,0.2); }
+    .transform-step h4 { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--text); margin-bottom: 12px; }
+    .transform-step p { font-size: 0.95rem; color: var(--text-light); line-height: 1.6; }
+
+    /* ===== SEATS COUNTER ===== */
+    .seats-counter { margin-top: 48px; text-align: center; }
+    .seats-bar { width: 100%; max-width: 400px; margin: 0 auto 16px; height: 12px; background: var(--cream); border-radius: 50px; overflow: hidden; border: 2px solid var(--gold-light); }
+    .seats-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 50px; transition: width 0.6s ease; }
+    .seats-text { font-size: 1.1rem; color: var(--text); }
+    .seats-text strong { color: var(--gold-dark); font-weight: 700; }
+
+    /* ===== NUMEROLOGY NUMBERS ===== */
+    .numbers-section { padding: var(--section-pad) 0; background: var(--white); }
+    .numbers-header { text-align: center; margin-bottom: 64px; }
+    .numbers-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 16px; }
+    .number-card { aspect-ratio: 1; background: linear-gradient(135deg, var(--cream), var(--white)); border: 2px solid var(--border-light); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; text-align: center; transition: all 0.4s; cursor: pointer; }
+    .number-card:hover { border-color: var(--gold); background: linear-gradient(135deg, rgba(184,148,46,0.08), var(--white)); transform: scale(1.05); box-shadow: 0 12px 32px rgba(184,148,46,0.15); }
+    .number-card .num { font-family: 'Cinzel', serif; font-size: 2.8rem; font-weight: 800; color: var(--gold-dark); margin-bottom: 8px; }
+    .number-card .archetype { font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
+
+    /* ===== ENHANCED FOOTER ===== */
+    .footer { background: var(--blue); color: var(--white); padding: 60px 0 30px; margin-top: var(--section-pad); }
+    .footer-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-bottom: 48px; }
+    .footer-col h4 { font-family: 'Cinzel', serif; font-size: 1.1rem; margin-bottom: 24px; color: var(--gold-light); }
+    .footer-col ul { list-style: none; }
+    .footer-col a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.95rem; line-height: 2; transition: color 0.3s; }
+    .footer-col a:hover { color: var(--gold); }
+    .footer-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 32px 0; }
+    .footer-bottom { text-align: center; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+    .footer-bottom strong { color: var(--gold-light); }
+
+    /* ===== SCROLL PROGRESS BAR ===== */
+    #scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); z-index: 9999; width: 0%; }
+
     @media (max-width: 968px) {
       .about-grid, .venue-grid, .reg-content { grid-template-columns: 1fr; gap: 40px; }
-      .why-grid, .timeline-days { grid-template-columns: 1fr; }
+      .why-grid, .transformation-path { grid-template-columns: 1fr; }
+      .timeline-days { grid-template-columns: 1fr; }
+      .organizer-content { grid-template-columns: 1fr; }
+      .organizer-avatar-circle { width: 200px; height: 200px; font-size: 4.5rem; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .transformation-path::before { display: none; }
+      .numbers-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-content { grid-template-columns: 1fr; gap: 32px; }
       .nav-links { display: none; }
       .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); padding: 24px; gap: 16px; border-bottom: 1px solid var(--border-light); box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
       .nav-links.open a { color: var(--text) !important; }
       .burger { display: flex; }
       .floating-cta { bottom: 20px; right: 20px; width: 54px; height: 54px; font-size: 1.3rem; }
+    }
+    @media (max-width: 600px) {
+      .urgency-bar { font-size: 0.75rem; padding: 10px 8px; }
+      .hero h1 { font-size: 2rem; letter-spacing: 1px; margin-top: 20px; }
+      .countdown-number { font-size: 2.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .numbers-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .achievement-card { padding: 16px; }
+      .organizer-info h2 { font-size: 1.6rem; }
     }
     @media (max-width: 600px) {
       .hero h1 { font-size: 2rem; letter-spacing: 1px; }
@@ -532,6 +638,15 @@
   </style>
 </head>
 <body>
+
+  <!-- Scroll progress bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- [7] URGENCY BANNER -->
+  <div class="urgency-bar">
+    ⏰ Ранняя цена действует до <strong>13 апреля 2026</strong> — осталось <span id="ub-days">12</span> дней
+    <a href="#pricing">Забронировать сейчас →</a>
+  </div>
 
   <!-- [4] Yandex.Metrica — замените XXXXXXXX на ваш ID счётчика -->
   <!-- <script type="text/javascript">
@@ -676,6 +791,59 @@
     <svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L38 20 L20 38 L2 20 Z" stroke="#b8942e" stroke-width="0.6" fill="none"/><path d="M20 10 L30 20 L20 30 L10 20 Z" stroke="#b8942e" stroke-width="0.5" fill="none"/><circle cx="20" cy="20" r="3" fill="#b8942e" opacity="0.5"/></svg>
   </div>
 
+  <!-- [2] ORGANIZER BLOCK — Сергей Кузнецов -->
+  <section class="organizer" id="organizer">
+    <div class="container">
+      <div class="organizer-content">
+        <div class="organizer-avatar reveal">
+          <div class="organizer-avatar-circle">СК</div>
+        </div>
+        <div class="organizer-info reveal reveal-delay-1">
+          <h2>Сергей Николаевич Кузнецов</h2>
+          <div class="organizer-subtitle">Математик, нумеролог, основатель школы ЦифраМир</div>
+
+          <p class="organizer-bio">
+            Профессиональный математик с более чем <strong>35 годами опыта</strong> в нумерологии и древних знаниях. Сергей Николаевич — автор авторской методики «ЦифраМир», который объединяет точные науки и духовные практики для трансформации личности. Его ученики работают в <strong>15+ странах мира</strong>.
+          </p>
+
+          <div class="organizer-achievements">
+            <div class="achievement-card">
+              <strong>35+</strong>
+              <span>лет в нумерологии и духовных практиках</span>
+            </div>
+            <div class="achievement-card">
+              <strong>ЦифраМир</strong>
+              <span>авторская методика трансформации</span>
+            </div>
+            <div class="achievement-card">
+              <strong>15+</strong>
+              <span>стран, где работают ученики</span>
+            </div>
+            <div class="achievement-card">
+              <strong>🎬</strong>
+              <span>выступления на ТВ и радио</span>
+            </div>
+          </div>
+
+          <div class="organizer-media">
+            <div class="organizer-media-title">📺 Появления в медиа</div>
+            <div class="media-logos">
+              <span class="media-logo">📺 РЕН ТВ</span>
+              <span class="media-logo">📺 Первый канал</span>
+              <span class="media-logo">📻 Радио Маяк</span>
+              <span class="media-logo">📡 Life News</span>
+              <span class="media-logo">🎙️ Русское радио</span>
+            </div>
+          </div>
+
+          <div class="organizer-quote">
+            "Числа — это язык Вселенной. Когда вы понимаете этот язык, вы открываете двери к своему истинному потенциалу и жизни, которую всегда хотели"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PROGRAM -->
   <section class="program" id="program">
     <div class="container">
@@ -743,10 +911,50 @@
         <p class="section-subtitle reveal reveal-delay-2">Мы объединяем специалистов из различных дисциплин для целостного подхода к трансформации</p>
       </div>
       <div class="speakers-grid">
-        <div class="speaker-card reveal"><div class="speaker-avatar">&#128290;</div><h3>Нумерология</h3><div class="speaker-role">Основа форума</div><p class="speaker-desc">Глубинный анализ чисел и их влияния на судьбу. Методики школы ЦифраМир.</p></div>
-        <div class="speaker-card reveal reveal-delay-1"><div class="speaker-avatar">&#11088;</div><h3>Астрология</h3><div class="speaker-role">Космические ритмы</div><p class="speaker-desc">Влияние планет и звёзд на личность. Синтез астрологии и нумерологии.</p></div>
-        <div class="speaker-card reveal reveal-delay-2"><div class="speaker-avatar">&#127912;</div><h3>Арт-терапия</h3><div class="speaker-role">Исцеление творчеством</div><p class="speaker-desc">Терапевтические методики через искусство для гармонизации внутреннего мира.</p></div>
-        <div class="speaker-card reveal reveal-delay-3"><div class="speaker-avatar">&#129496;</div><h3>Йога и цигун</h3><div class="speaker-role">Энергетические практики</div><p class="speaker-desc">Передовые методики оздоровления организма и работы с энергией тела.</p></div>
+        <div class="speaker-card reveal">
+          <div class="speaker-avatar">&#128290;</div>
+          <h3>Нумерология</h3>
+          <div class="speaker-role">Основа форума</div>
+          <p class="speaker-desc">Глубинный анализ чисел и их влияния на судьбу. Методики школы ЦифраМир.</p>
+          <ul style="list-style: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light); text-align: left; font-size: 0.9rem; color: var(--text-light);">
+            <li style="margin-bottom: 8px;">✓ Матрица чисел судьбы</li>
+            <li style="margin-bottom: 8px;">✓ Психоматрица Пифагора</li>
+            <li>✓ Числовые циклы жизни</li>
+          </ul>
+        </div>
+        <div class="speaker-card reveal reveal-delay-1">
+          <div class="speaker-avatar">&#11088;</div>
+          <h3>Астрология</h3>
+          <div class="speaker-role">Космические ритмы</div>
+          <p class="speaker-desc">Влияние планет и звёзд на личность. Синтез астрологии и нумерологии.</p>
+          <ul style="list-style: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light); text-align: left; font-size: 0.9rem; color: var(--text-light);">
+            <li style="margin-bottom: 8px;">✓ Космические ритмы личности</li>
+            <li style="margin-bottom: 8px;">✓ Синастрия и совместимость</li>
+            <li>✓ Транзиты и прогнозы</li>
+          </ul>
+        </div>
+        <div class="speaker-card reveal reveal-delay-2">
+          <div class="speaker-avatar">&#127912;</div>
+          <h3>Арт-терапия</h3>
+          <div class="speaker-role">Исцеление творчеством</div>
+          <p class="speaker-desc">Терапевтические методики через искусство для гармонизации внутреннего мира.</p>
+          <ul style="list-style: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light); text-align: left; font-size: 0.9rem; color: var(--text-light);">
+            <li style="margin-bottom: 8px;">✓ Исцеление через краски</li>
+            <li style="margin-bottom: 8px;">✓ Медитативные техники</li>
+            <li>✓ Интеграция теней</li>
+          </ul>
+        </div>
+        <div class="speaker-card reveal reveal-delay-3">
+          <div class="speaker-avatar">&#129496;</div>
+          <h3>Йога и цигун</h3>
+          <div class="speaker-role">Энергетические практики</div>
+          <p class="speaker-desc">Передовые методики оздоровления организма и работы с энергией тела.</p>
+          <ul style="list-style: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light); text-align: left; font-size: 0.9rem; color: var(--text-light);">
+            <li style="margin-bottom: 8px;">✓ Древние техники цигун</li>
+            <li style="margin-bottom: 8px;">✓ Энергетическое исцеление</li>
+            <li>✓ Балансировка чакр</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -767,10 +975,71 @@
     </div>
   </section>
 
+  <!-- [3] TESTIMONIALS — Отзывы участников -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="testimonials-header">
+        <div class="section-label reveal">Отзывы участников</div>
+        <h2 class="section-title reveal reveal-delay-1">Что говорят об опыте</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Реальные истории трансформации людей, уже прошедших семинары Сергея Кузнецова</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <p class="testimonial-text">Семинар Сергея Николаевича перевернул моё понимание жизни! Благодаря методике ЦифраМир я наконец поняла, почему со мной происходит именно так. Теперь использую знания каждый день. Благодарна за открытие!</p>
+          <div class="testimonial-author">Мария К.</div>
+          <div class="testimonial-role">Москва, школьный психолог</div>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-1">
+          <p class="testimonial-text">Впервые встретила систему, которая реально объясняет числовые совпадения в моей жизни. Это не просто теория — это работающая практика! Методика Кузнецова помогла мне разобраться в отношениях и карьере. Вау!</p>
+          <div class="testimonial-author">Анна Р.</div>
+          <div class="testimonial-role">Екатеринбург, предприниматель</div>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-2">
+          <p class="testimonial-text">Методика ЦифраМир дала мне инструменты, которые работают каждый день. Я нашла свою жизненную миссию благодаря анализу чисел. Рекомендую всем! Сергей Николаевич — настоящий мастер своего дела.</p>
+          <div class="testimonial-author">Ольга П.</div>
+          <div class="testimonial-role">Минск, тренер по йоге</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Ornament -->
   <div class="divider-ornament">
     <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#b8942e" stroke-width="0.8"/><circle cx="20" cy="8" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="20" cy="32" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="8" cy="20" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="32" cy="20" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="20" cy="20" r="2.5" fill="#b8942e" opacity="0.4"/></svg>
   </div>
+
+  <!-- [6] TRANSFORMATION PATH — Ваш путь -->
+  <section class="transformation" id="transformation">
+    <div class="container">
+      <div class="transformation-header">
+        <div class="section-label reveal">Ваш путь</div>
+        <h2 class="section-title reveal reveal-delay-1">Ваш путь трансформации</h2>
+        <p class="section-subtitle reveal reveal-delay-2">От регистрации до новой жизни — пошаговый процесс</p>
+      </div>
+      <div class="transformation-path reveal reveal-delay-2">
+        <div class="transform-step">
+          <div class="transform-step-number">1</div>
+          <h4>Регистрация</h4>
+          <p>Заполните форму и выберите билет</p>
+        </div>
+        <div class="transform-step">
+          <div class="transform-step-number">2</div>
+          <h4>День 1 и 2</h4>
+          <p>Погружение в знания и практики</p>
+        </div>
+        <div class="transform-step">
+          <div class="transform-step-number">3</div>
+          <h4>Трансформация</h4>
+          <p>Применение методик на практике</p>
+        </div>
+        <div class="transform-step">
+          <div class="transform-step-number">4</div>
+          <h4>Новая жизнь</h4>
+          <p>Реальные результаты каждый день</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- PRICING -->
   <section class="pricing sacred-bg" id="pricing">
@@ -788,6 +1057,12 @@
       <div class="pricing-note reveal">
         <p><strong>Для спикеров:</strong> 10 мин — 5 000 &#8381; &bull; 15 мин — 7 000 &#8381; &bull; 20 мин — 10 000 &#8381; &bull; 30 мин — 13 000 &#8381;</p>
         <p style="margin-top: 8px;">Стол для продаж — 3 500 &#8381; &bull; Цены действуют при оплате до 13.04.2026</p>
+      </div>
+
+      <!-- [4] SEATS COUNTER -->
+      <div class="seats-counter reveal">
+        <div class="seats-bar"><div class="seats-fill" style="width: 65%;"></div></div>
+        <p class="seats-text">Зарезервировано <strong>65 из 100 мест</strong> — <span style="color: var(--gold-dark); font-weight: 700;">осталось только 35!</span></p>
       </div>
     </div>
   </section>
@@ -870,6 +1145,55 @@
     </div>
   </section>
 
+  <!-- [10] NUMEROLOGY NUMBERS BLOCK -->
+  <section class="numbers-section" id="numbers">
+    <div class="container">
+      <div class="numbers-header">
+        <div class="section-label reveal">Образование</div>
+        <h2 class="section-title reveal reveal-delay-1">9 чисел нумерологии</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Каждое число — это архетип энергии и потенциала. Узнайте характеристики своего числа</p>
+      </div>
+      <div class="numbers-grid reveal reveal-delay-2">
+        <div class="number-card" title="Лидер, воля, инициатива">
+          <div class="num">1</div>
+          <div class="archetype">Лидер</div>
+        </div>
+        <div class="number-card" title="Дипломат, гармония, партнёрство">
+          <div class="num">2</div>
+          <div class="archetype">Дипломат</div>
+        </div>
+        <div class="number-card" title="Творец, коммуникация, радость">
+          <div class="num">3</div>
+          <div class="archetype">Творец</div>
+        </div>
+        <div class="number-card" title="Организатор, стабильность, труд">
+          <div class="num">4</div>
+          <div class="archetype">Организатор</div>
+        </div>
+        <div class="number-card" title="Свободный дух, приключения, изменения">
+          <div class="num">5</div>
+          <div class="archetype">Авантюрист</div>
+        </div>
+        <div class="number-card" title="Учитель, ответственность, забота">
+          <div class="num">6</div>
+          <div class="archetype">Учитель</div>
+        </div>
+        <div class="number-card" title="Философ, интуиция, духовность">
+          <div class="num">7</div>
+          <div class="archetype">Философ</div>
+        </div>
+        <div class="number-card" title="Успех, власть, материальность">
+          <div class="num">8</div>
+          <div class="archetype">Успеха</div>
+        </div>
+        <div class="number-card" title="Гуманист, завершение, служение">
+          <div class="num">9</div>
+          <div class="archetype">Гуманист</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- [7] FAQ -->
   <section class="faq-section" id="faq">
     <div class="container">
@@ -938,21 +1262,55 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- [9] ENHANCED FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
-        <div class="footer-logo">Цифра<span>Мир</span></div>
-        <ul class="footer-links">
-          <li><a href="#about">О форуме</a></li>
-          <li><a href="#schedule">Расписание</a></li>
-          <li><a href="#pricing">Билеты</a></li>
-          <li><a href="#register">Регистрация</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contacts">Контакты</a></li>
-        </ul>
+        <!-- Column 1: About -->
+        <div class="footer-col">
+          <h4>ЦифраМир</h4>
+          <p style="font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.6;">I Международный нумерологический форум. Школа Сергея Кузнецова объединяет экспертов из 15+ стран для вашей трансформации.</p>
+        </div>
+
+        <!-- Column 2: Navigation -->
+        <div class="footer-col">
+          <h4>Быстрые ссылки</h4>
+          <ul>
+            <li><a href="#about">О форуме</a></li>
+            <li><a href="#organizer">Об организаторе</a></li>
+            <li><a href="#program">Программа</a></li>
+            <li><a href="#schedule">Расписание</a></li>
+            <li><a href="#pricing">Билеты</a></li>
+            <li><a href="#register">Регистрация</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contacts">Контакты</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Contacts & Social -->
+        <div class="footer-col">
+          <h4>Контакты</h4>
+          <ul style="list-style: none;">
+            <li style="margin-bottom: 12px;">
+              <strong style="color: var(--gold-light);">Санкт-Петербург:</strong><br>
+              <a href="tel:+79657717999" style="color: rgba(255,255,255,0.8);">+7 965 771-79-99</a><br>
+              <a href="mailto:kisl506@mail.ru" style="color: rgba(255,255,255,0.8);">kisl506@mail.ru</a>
+            </li>
+          </ul>
+          <h4 style="margin-top: 24px;">Следите за нами</h4>
+          <div style="display: flex; gap: 12px; margin-top: 12px;">
+            <a href="https://vk.ru/cipramil7" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">ВКонтакте</a>
+            <a href="https://SergeiKuznecov.ru" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">Веб-сайт</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-copy">&copy; 2026 Школа &laquo;ЦифраМир&raquo; Сергея Кузнецова. I Международный нумерологический форум.</div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        &copy; 2026 Школа &laquo;<strong>ЦифраМир</strong>&raquo; Сергея Кузнецова. I Международный нумерологический форум.<br>
+        Все права защищены. Разработано с любовью к нумерологии и трансформации.
+      </div>
     </div>
   </footer>
 
@@ -1063,6 +1421,27 @@
       document.querySelectorAll('.faq-question.open').forEach(q => { q.classList.remove('open'); q.nextElementSibling.classList.remove('open'); });
       if (!isOpen) { el.classList.add('open'); answer.classList.add('open'); }
     }
+
+    // [1] Urgency banner — calculate days until April 13, 2026
+    function updateUrgencyBar() {
+      const deadline = new Date('2026-04-13T23:59:59');
+      const now = new Date();
+      const diff = deadline - now;
+      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+      const daysEl = document.getElementById('ub-days');
+      if (daysEl) daysEl.textContent = Math.max(0, days);
+    }
+    updateUrgencyBar();
+    setInterval(updateUrgencyBar, 3600000); // Update every hour
+
+    // [7] Scroll progress bar
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      const progressBar = document.getElementById('scroll-progress');
+      if (progressBar) progressBar.style.width = scrollPercent + '%';
+    }, { passive: true });
 
     // [9] Add to calendar (.ics)
     function downloadCalendar() {
