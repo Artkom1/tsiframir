@@ -2124,10 +2124,10 @@
       result.classList.add('show');
     }
 
-    // [18] Email bonus modal
-    function showEmailBonus() {
-      document.getElementById('emailBonusModal').classList.add('show');
-    }
+    // [18] Email bonus modal — отключено
+    // function showEmailBonus() {
+    //   document.getElementById('emailBonusModal').classList.add('show');
+    // }
     function closeEmailBonus() {
       document.getElementById('emailBonusModal').classList.remove('show');
     }
@@ -2141,14 +2141,14 @@
     document.getElementById('emailBonusModal').addEventListener('click', (e) => {
       if (e.target.id === 'emailBonusModal') closeEmailBonus();
     });
-    // Показать modal на scroll или по времени
-    window.addEventListener('scroll', () => {
-      const modal = document.getElementById('emailBonusModal');
-      if (window.scrollY > window.innerHeight * 1.5 && !modal.classList.contains('show')) {
-        setTimeout(() => showEmailBonus(), 1000);
-        window.removeEventListener('scroll', arguments.callee);
-      }
-    }, { once: true });
+    // Автоматический показ modal отключен
+    // window.addEventListener('scroll', () => {
+    //   const modal = document.getElementById('emailBonusModal');
+    //   if (window.scrollY > window.innerHeight * 1.5 && !modal.classList.contains('show')) {
+    //     setTimeout(() => showEmailBonus(), 1000);
+    //     window.removeEventListener('scroll', arguments.callee);
+    //   }
+    // }, { once: true });
   </script>
 </body>
 </html>
