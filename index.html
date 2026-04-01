@@ -805,6 +805,9 @@
       .hero-buttons { flex-direction: column; align-items: center; }
     }
   </style>
+
+  <!-- Numerology Calculator Styles -->
+  <link rel="stylesheet" href="assets/css/calculators.css">
 </head>
 <body>
 
@@ -1784,7 +1787,18 @@
     </div>
   </section>
 
-  <!-- [7] FAQ -->
+  <!-- [7] NUMEROLOGY CALCULATOR - CENTER OF CODES -->
+  <section class="center-of-codes" id="center-codes" style="display: block; margin: 80px auto; padding: 40px 30px;">
+    <div class="center-header">
+      <h2 style="font-family: 'Cinzel', serif; font-size: 2.5rem; color: #1a1a1a; margin: 0 0 12px 0; font-weight: 700; letter-spacing: 0.5px; text-align: center;">Центр Кодов</h2>
+      <p style="font-size: 1.1rem; color: #666; margin: 0; text-align: center; font-weight: 300; letter-spacing: 0.3px;">Раскройте ваши персональные числовые коды</p>
+    </div>
+    <div class="module-selector" style="margin-top: 40px;"></div>
+    <div class="calculator-form" style="margin-top: 20px;"></div>
+    <div class="result-area" style="margin-top: 40px;"></div>
+  </section>
+
+  <!-- [8] FAQ -->
   <section class="faq-section" id="faq">
     <div class="container">
       <div class="faq-header">
@@ -2139,5 +2153,12 @@
     //   }
     // }, { once: true });
   </script>
+
+  <!-- Numerology Calculator System Scripts -->
+  <script src="assets/js/calculators/calculator-core.js"></script>
+  <script src="assets/js/calculators/calculator-validation.js"></script>
+  <script src="assets/js/calculators/calculator-registry.js"></script>
+  <script src="assets/js/calculators/calculator-ui.js"></script>
+  <script src="assets/js/calculators.js"></script>
 </body>
 </html>

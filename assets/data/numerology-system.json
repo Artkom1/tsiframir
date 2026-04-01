@@ -1,0 +1,402 @@
+{
+  "metadata": {
+    "system": "Numerology System based on Russian Alphabet and Sacred Numbers",
+    "book": "2x Цифровая трансформация личности",
+    "author": "Сергей Кузнецов",
+    "version": "1.0",
+    "lastUpdated": "2026-04-01",
+    "confidence": "HIGH - verified from book tables"
+  },
+
+  "alphabet": {
+    "description": "Russian Alphabet = 33 letters (Таблица №1, стр. 21)",
+    "source": "Русский алфавит из сказок А.С. Пушкина",
+    "mapping": {
+      "А": 1,
+      "Б": 2,
+      "В": 3,
+      "Г": 4,
+      "Д": 5,
+      "Е": 6,
+      "Ё": 7,
+      "Ж": 8,
+      "З": 9,
+      "И": 10,
+      "Й": 11,
+      "К": 12,
+      "Л": 13,
+      "М": 14,
+      "Н": 15,
+      "О": 16,
+      "П": 17,
+      "Р": 18,
+      "С": 19,
+      "Т": 20,
+      "У": 21,
+      "Ф": 22,
+      "Х": 23,
+      "Ц": 24,
+      "Ч": 25,
+      "Ш": 26,
+      "Щ": 27,
+      "Ъ": 28,
+      "Ы": 29,
+      "Ь": 30,
+      "Э": 31,
+      "Ю": 32,
+      "Я": 33
+    },
+    "totalLetters": 33,
+    "notes": "Can be used as direct mapping (1-33) or cyclic mapping (1-9 by modulo)"
+  },
+
+  "reductionRules": {
+    "method1_digitSum": {
+      "name": "Sum all digits until single digit",
+      "description": "Add all digits of a number until you get a single digit (1-9)",
+      "examples": {
+        "25": "2+5=7",
+        "156": "1+5+6=12, 1+2=3",
+        "33": "3+3=6"
+      }
+    },
+    "method2_modulo": {
+      "name": "Modulo 9 (cycling 1-9)",
+      "description": "Use letter position modulo 9, where 0 becomes 9",
+      "formula": "if n mod 9 = 0 then 9, else n mod 9"
+    },
+    "masterNumbers": {
+      "description": "Some sources keep 11, 22, 33 as special master numbers",
+      "values": [11, 22, 33],
+      "status": "OPTIONAL - verify in next book sections"
+    }
+  },
+
+  "numberInterpretations": {
+    "description": "Interpretations of significant numbers (Таблица №3, стр. 43)",
+    "range": "1-59+",
+    "data": {
+      "1": "физическое тело",
+      "2": "священное знание",
+      "3": "духовность",
+      "4": "социальная роль",
+      "5": "карма родовых миров",
+      "6": "интуиция",
+      "7": "сила",
+      "8": "зависимость",
+      "9": "альтруизм",
+      "10": "понимание",
+      "11": "сеть",
+      "12": "вера",
+      "13": "без дух",
+      "14": "ясность",
+      "15": "способное мышление",
+      "16": "будущее",
+      "17": "душа",
+      "18": "общественное значение",
+      "19": "война",
+      "20": "зло",
+      "21": "счастье",
+      "22": "лидер",
+      "23": "ночница",
+      "24": "любовь",
+      "25": "день",
+      "26": "смерть",
+      "27": "жизнь",
+      "28": "в краю веровну",
+      "29": "знание",
+      "30": "решение задач",
+      "31": "мужчина",
+      "32": "финансовое развитие",
+      "33": "судьба",
+      "34": "господа",
+      "35": "геройство",
+      "36": "мечтание",
+      "37": "женщина",
+      "38": "величина",
+      "39": "качество",
+      "40": "реальность",
+      "41": "реформа",
+      "42": "армия",
+      "43": "государства",
+      "44": "силъ авторитета",
+      "45": "пропавец",
+      "46": "матриця рода",
+      "47": "гениальность",
+      "48": "судьба",
+      "49": "здоровье",
+      "50": "самостоятельность",
+      "51": "вознесение",
+      "52": "профессор",
+      "53": "тайные знания",
+      "54": "прямодность",
+      "55": "монашество",
+      "56": "добро",
+      "57": "сомнение",
+      "58": "трансформация",
+      "59": "пороворот"
+    }
+  },
+
+  "calculators": {
+    "birthDate": {
+      "id": "birthDate",
+      "title": "Расчет по дате рождения",
+      "description": "Личный код человека по дате рождения",
+      "priority": "CRITICAL",
+      "phase": 1,
+      "enabled": true,
+      "inputs": {
+        "day": {
+          "type": "number",
+          "min": 1,
+          "max": 31,
+          "required": true,
+          "label": "День"
+        },
+        "month": {
+          "type": "number",
+          "min": 1,
+          "max": 12,
+          "required": true,
+          "label": "Месяц"
+        },
+        "year": {
+          "type": "number",
+          "min": 1900,
+          "max": 2100,
+          "required": true,
+          "label": "Год"
+        }
+      },
+      "formula": {
+        "description": "Sum all digits of day + month + year, then reduce to 1-9",
+        "source": "Глава 9: Просчеты по дате рождения (стр. 69)",
+        "example": "11.09.2012 → sum digits → 17 → reduce → 8",
+        "steps": [
+          "Sum all digits: (1+1)+(0+9)+(2+0+1+2) = 16 or 17",
+          "Reduce to single digit: if > 9, sum digits again"
+        ]
+      },
+      "outputs": {
+        "primary": "Two-digit code or single digit (1-9)",
+        "secondary": "Reduced single digit",
+        "interpretation": "Mystical meaning from Table 3"
+      },
+      "confidenceLevel": "HIGH",
+      "notes": "Example in book shows 11.09.2012 = 17 = 8"
+    },
+
+    "fullName": {
+      "id": "fullName",
+      "title": "Расчет по ФИО (Фамилия, Имя, Отчество)",
+      "description": "Числовой код личности по полному имени",
+      "priority": "CRITICAL",
+      "phase": 1,
+      "enabled": true,
+      "inputs": {
+        "surname": {
+          "type": "text",
+          "required": true,
+          "label": "Фамилия",
+          "placeholder": "Глебова"
+        },
+        "name": {
+          "type": "text",
+          "required": true,
+          "label": "Имя",
+          "placeholder": "Сергей"
+        },
+        "patronymic": {
+          "type": "text",
+          "required": false,
+          "label": "Отчество",
+          "placeholder": "Николаевич"
+        }
+      },
+      "formula": {
+        "description": "Convert each letter to number using alphabet table, sum, reduce to code",
+        "source": "Глава 2: Русский алфавит (Таблица №1)",
+        "examples": [
+          "Глебова = 4,16,6,2,16,3,1 = (sum) = (reduce)",
+          "Дмитрий Донской = 5,5,12,9,12,12,9 = 5,7,6,1,3,7,2 (parts)",
+          "Михаил Кутузов = 5,15,11,4 = (calculate)"
+        ]
+      },
+      "outputs": {
+        "primary": "Numeric code (can be double digit or single)",
+        "secondary": "Reduced single digit (1-9)",
+        "interpretation": "Personality code from Table 3"
+      },
+      "confidenceLevel": "HIGH",
+      "notes": "Each letter uses alphabet mapping. Spaces ignored."
+    },
+
+    "nameVariant": {
+      "id": "nameVariant",
+      "title": "Расчет по выбранному имени",
+      "description": "Анализ используемого или выбранного имени",
+      "priority": "IMPORTANT",
+      "phase": 2,
+      "enabled": false,
+      "inputs": {
+        "chosenName": {
+          "type": "text",
+          "required": true,
+          "label": "Выбранное имя (как вас зовут в жизни)"
+        }
+      },
+      "formula": {
+        "description": "Same as fullName but for single name variant",
+        "notes": "Can differ from official name, affects personal vibration"
+      },
+      "confidenceLevel": "MEDIUM",
+      "status": "EXPERIMENTAL"
+    },
+
+    "compatibility": {
+      "id": "compatibility",
+      "title": "Совместимость двух людей",
+      "description": "Анализ совместимости между двумя людьми по их кодам",
+      "priority": "IMPORTANT",
+      "phase": 2,
+      "enabled": false,
+      "inputs": {
+        "person1": {
+          "type": "object",
+          "fields": {
+            "name": "text",
+            "birthDate": "date"
+          }
+        },
+        "person2": {
+          "type": "object",
+          "fields": {
+            "name": "text",
+            "birthDate": "date"
+          }
+        }
+      },
+      "formula": {
+        "description": "Compare both persons' codes, find harmony and tension zones",
+        "method": "PENDING - requires additional book section analysis"
+      },
+      "outputs": {
+        "person1Code": "Numeric code",
+        "person2Code": "Numeric code",
+        "compatibility": "Percentage or description",
+        "harmonies": "Compatible aspects",
+        "tensions": "Challenging aspects",
+        "recommendation": "Advice for relationship"
+      },
+      "confidenceLevel": "MEDIUM",
+      "status": "NOT YET IMPLEMENTED"
+    },
+
+    "passportNumber": {
+      "id": "passportNumber",
+      "title": "Расчет по номеру паспорта",
+      "description": "Анализ паспортных данных (СССР документ)",
+      "priority": "IMPORTANT",
+      "phase": 3,
+      "enabled": false,
+      "inputs": {
+        "series": "text",
+        "number": "text"
+      },
+      "formula": {
+        "source": "Паспортные данные - СССР.pdf (Глава 16)",
+        "description": "PENDING - requires detailed study of passport analysis section"
+      },
+      "confidenceLevel": "LOW",
+      "status": "REQUIRES DETAILED EXTRACTION"
+    },
+
+    "wordCode": {
+      "id": "wordCode",
+      "title": "Анализ слова/кода",
+      "description": "Числовой анализ любого слова, названия или кода",
+      "priority": "OPTIONAL",
+      "phase": 3,
+      "enabled": false,
+      "inputs": {
+        "word": {
+          "type": "text",
+          "required": true,
+          "label": "Слово или код"
+        }
+      },
+      "formula": {
+        "description": "Convert letters to numbers, sum, interpret",
+        "method": "Same as name calculation"
+      },
+      "confidenceLevel": "MEDIUM",
+      "status": "READY FOR IMPLEMENTATION"
+    },
+
+    "lifeCycles": {
+      "id": "lifeCycles",
+      "title": "Количество прожитых жизней",
+      "description": "Определение количества воплощений человека",
+      "priority": "OPTIONAL",
+      "phase": 3,
+      "enabled": false,
+      "formula": {
+        "source": "Глава 10: Количество жизней, прожитое личностью",
+        "description": "PENDING - requires detailed extraction"
+      },
+      "confidenceLevel": "MEDIUM",
+      "status": "REQUIRES DETAILED EXTRACTION"
+    }
+  },
+
+  "validationRules": {
+    "cyrillicOnly": {
+      "pattern": "^[А-Яа-яЁё\\s]*$",
+      "message": "Допускаются только буквы кириллицы"
+    },
+    "dateFormat": {
+      "format": "DD.MM.YYYY",
+      "minDate": "1850-01-01",
+      "maxDate": "today",
+      "message": "Введите корректную дату рождения"
+    }
+  },
+
+  "contentDictionary": {
+    "common": {
+      "calculate": "Рассчитать",
+      "recalculate": "Пересчитать",
+      "results": "Результаты",
+      "interpretation": "Интерпретация",
+      "yourCode": "Ваш код:",
+      "meaning": "Значение:"
+    },
+    "errors": {
+      "invalidInput": "Некорректный ввод",
+      "emptyField": "Заполните это поле",
+      "invalidDate": "Введите корректную дату"
+    }
+  },
+
+  "phaseStatus": {
+    "phase1": {
+      "name": "Foundation (Birth Date + Full Name)",
+      "status": "IN DEVELOPMENT",
+      "modules": ["birthDate", "fullName"],
+      "targetDate": "2026-04-05"
+    },
+    "phase2": {
+      "name": "Compatibility & Advanced Name",
+      "status": "PLANNING",
+      "modules": ["compatibility", "nameVariant"],
+      "targetDate": "2026-04-10"
+    },
+    "phase3": {
+      "name": "Passport, Codes, Life Cycles",
+      "status": "RESEARCH",
+      "modules": ["passportNumber", "wordCode", "lifeCycles"],
+      "targetDate": "2026-04-15"
+    }
+  }
+}
