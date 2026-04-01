@@ -72,11 +72,21 @@ const CalculatorRegistry = (() => {
     // Route to correct calculator
     switch (calculatorId) {
       // Phase 1
+      case 'personalMatrix':
+        return CalculatorCore.calculatePersonalMatrix(
+          parseInt(inputs.day, 10),
+          parseInt(inputs.month, 10),
+          parseInt(inputs.year, 10),
+          inputs.surname,
+          inputs.name,
+          inputs.patronymic || ''
+        );
+
       case 'birthDate':
         return CalculatorCore.calculateByBirthDate(
-          inputs.day,
-          inputs.month,
-          inputs.year
+          parseInt(inputs.day, 10),
+          parseInt(inputs.month, 10),
+          parseInt(inputs.year, 10)
         );
 
       case 'fullName':
@@ -92,17 +102,17 @@ const CalculatorRegistry = (() => {
           {
             name: inputs.person1Name,
             birthDate: {
-              day: inputs.person1Day,
-              month: inputs.person1Month,
-              year: inputs.person1Year
+              day: parseInt(inputs.person1Day, 10),
+              month: parseInt(inputs.person1Month, 10),
+              year: parseInt(inputs.person1Year, 10)
             }
           },
           {
             name: inputs.person2Name,
             birthDate: {
-              day: inputs.person2Day,
-              month: inputs.person2Month,
-              year: inputs.person2Year
+              day: parseInt(inputs.person2Day, 10),
+              month: parseInt(inputs.person2Month, 10),
+              year: parseInt(inputs.person2Year, 10)
             }
           }
         );
@@ -113,9 +123,9 @@ const CalculatorRegistry = (() => {
       // Phase 3
       case 'lifeCycles':
         return CalculatorCore.calculateLifeCycles(
-          inputs.day,
-          inputs.month,
-          inputs.year
+          parseInt(inputs.day, 10),
+          parseInt(inputs.month, 10),
+          parseInt(inputs.year, 10)
         );
 
       case 'passportAnalysis':
@@ -133,6 +143,68 @@ const CalculatorRegistry = (() => {
    * Initialize all Phase 1 calculators (CRITICAL)
    */
   const initPhase1 = () => {
+    // Personal Matrix (Combined Birth Date + Full Name)
+    registerCalculator({
+      id: 'personalMatrix',
+      title: 'Персональная матрица',
+      description: 'Полный числовой портрет по дате рождения и ФИО',
+      priority: 'CRITICAL',
+      phase: 1,
+      enabled: true,
+      inputs: {
+        day: {
+          type: 'number',
+          min: 1,
+          max: 31,
+          required: true,
+          label: 'День рождения'
+        },
+        month: {
+          type: 'number',
+          min: 1,
+          max: 12,
+          required: true,
+          label: 'Месяц рождения'
+        },
+        year: {
+          type: 'number',
+          min: 1900,
+          max: 2100,
+          required: true,
+          label: 'Год рождения'
+        },
+        surname: {
+          type: 'text',
+          required: true,
+          label: 'Фамилия',
+          placeholder: 'Иванов'
+        },
+        name: {
+          type: 'text',
+          required: true,
+          label: 'Имя',
+          placeholder: 'Сергей'
+        },
+        patronymic: {
+          type: 'text',
+          required: false,
+          label: 'Отчество (опционально)',
+          placeholder: 'Николаевич'
+        }
+      },
+      formula: {
+        description: 'Число судьбы (дата) + Число личности (имя) = Число выражения',
+        source: 'Интегрированный расчет'
+      },
+      outputs: {
+        destiny: 'Число судьбы по дате рождения',
+        personality: 'Число личности по ФИО',
+        expression: 'Число выражения (внутреннего предназначения)'
+      },
+      confidenceLevel: 'VERY_HIGH',
+      notes: 'Полный числовой портрет человека'
+    });
+
     // Birth Date Calculator
     registerCalculator({
       id: 'birthDate',

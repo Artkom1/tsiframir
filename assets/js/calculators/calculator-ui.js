@@ -108,6 +108,69 @@ const CalculatorUI = (() => {
     console.log('Calculator inputs:', Object.keys(calculator.inputs));
     let formHTML = '';
 
+    // Special form for personal matrix calculator
+    if (calculatorId === 'personalMatrix') {
+      console.log('Using personal matrix form');
+      formHTML = `
+        <div class="form-section-group">
+          <h4 style="margin-bottom: 16px; color: var(--text); font-size: 0.95rem; font-weight: 600;">📅 Дата рождения</h4>
+          <div class="form-group">
+            <label class="form-label">День</label>
+            <input type="number" class="form-input" name="day" min="1" max="31" placeholder="01-31" required />
+            <span class="form-error hidden" data-field="day"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Месяц</label>
+            <input type="number" class="form-input" name="month" min="1" max="12" placeholder="01-12" required />
+            <span class="form-error hidden" data-field="month"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Год</label>
+            <input type="number" class="form-input" name="year" min="1900" max="2100" placeholder="1990" required />
+            <span class="form-error hidden" data-field="year"></span>
+          </div>
+        </div>
+
+        <div class="form-section-group">
+          <h4 style="margin-bottom: 16px; color: var(--text); font-size: 0.95rem; font-weight: 600;">👤 Полное имя</h4>
+          <div class="form-group">
+            <label class="form-label">Фамилия</label>
+            <input type="text" class="form-input" name="surname" placeholder="Иванов" required />
+            <span class="form-error hidden" data-field="surname"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Имя</label>
+            <input type="text" class="form-input" name="name" placeholder="Сергей" required />
+            <span class="form-error hidden" data-field="name"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Отчество <span class="hint">(опционально)</span></label>
+            <input type="text" class="form-input" name="patronymic" placeholder="Николаевич" />
+            <span class="form-error hidden" data-field="patronymic"></span>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = formHTML;
+
+      // Add button
+      container.innerHTML += `
+        <div class="button-group">
+          <button type="button" class="btn btn-primary" data-calculator="${calculatorId}">
+            Построить матрицу
+          </button>
+        </div>
+      `;
+
+      const submitBtn = container.querySelector('.btn-primary');
+      if (submitBtn) {
+        console.log('Attaching click handler to submit button (personalMatrix)');
+        submitBtn.removeEventListener('click', handleFormSubmit);
+        submitBtn.addEventListener('click', handleFormSubmit);
+      }
+      return;
+    }
+
     // Special compact form for compatibility calculator
     if (calculatorId === 'compatibility') {
       console.log('Using compact form for compatibility calculator');
@@ -420,6 +483,88 @@ const CalculatorUI = (() => {
   };
 
   /**
+   * Render personal matrix result (birth date + full name combined)
+   */
+  const renderPersonalMatrixResult = (container, result) => {
+    const { destiny, personality, expression } = result.output;
+    const { day, month, year, surname, name, patronymic } = result.inputs;
+
+    const destinyInterp = INTERPRETATIONS_DB[destiny.number] || {};
+    const personalityInterp = INTERPRETATIONS_DB[personality.number] || {};
+    const expressionInterp = INTERPRETATIONS_DB[expression.number] || {};
+
+    const html = `
+      <div class="result-panel">
+        <div class="result-header">
+          <h3>👤 Ваша персональная матрица</h3>
+          <p style="font-size: 0.95rem; color: var(--text-light); margin-top: 8px;">${surname} ${name} ${patronymic ? patronymic : ''} • ${String(day).padStart(2, '0')}.${String(month).padStart(2, '0')}.${year}</p>
+        </div>
+
+        <!-- ТРИ ЧИСЛА МАТРИЦЫ -->
+        <div class="interpretation-sections">
+          <!-- ЧИСЛО СУДЬБЫ (ДАТА) -->
+          <section class="interp-section" style="border-left: 4px solid #d4b85a; padding-left: 16px;">
+            <h4>1️⃣ Число судьбы (по дате рождения)</h4>
+            <div style="font-size: 2.5rem; font-weight: 700; color: #d4b85a; margin: 12px 0;">${destiny.number}</div>
+            <p class="meaning-highlight">${destiny.meaning}</p>
+            <p style="font-size: 0.95rem; color: var(--text-light); margin-top: 8px;">
+              <strong>🎯 Миссия:</strong> Это ваш жизненный путь, основной урок и направление развития.
+            </p>
+            ${destinyInterp.description ? `<p>${destinyInterp.description}</p>` : ''}
+          </section>
+
+          <!-- ЧИСЛО ЛИЧНОСТИ (ИМЕНА) -->
+          <section class="interp-section" style="border-left: 4px solid #b8942e; padding-left: 16px;">
+            <h4>2️⃣ Число личности (по ФИО)</h4>
+            <div style="font-size: 2.5rem; font-weight: 700; color: #b8942e; margin: 12px 0;">${personality.number}</div>
+            <p class="meaning-highlight">${personality.meaning}</p>
+            <p style="font-size: 0.95rem; color: var(--text-light); margin-top: 8px;">
+              <strong>💫 Характер:</strong> Это ваши врождённые качества, таланты и способности.
+            </p>
+            ${personalityInterp.description ? `<p>${personalityInterp.description}</p>` : ''}
+          </section>
+
+          <!-- ЧИСЛО ВЫРАЖЕНИЯ -->
+          <section class="interp-section" style="border-left: 4px solid #a89856; padding-left: 16px;">
+            <h4>3️⃣ Число выражения (внутреннее предназначение)</h4>
+            <div style="font-size: 2.5rem; font-weight: 700; color: #a89856; margin: 12px 0;">${expression.number}</div>
+            <p class="meaning-highlight">${expression.meaning}</p>
+            <p style="font-size: 0.95rem; color: var(--text-light); margin-top: 8px;">
+              <strong>🌟 Синтез:</strong> Это ваше истинное предназначение, результат слияния судьбы и характера.
+            </p>
+            ${expressionInterp.description ? `<p>${expressionInterp.description}</p>` : ''}
+          </section>
+
+          <!-- СИНЕРГИЯ -->
+          <section class="interp-section" style="background: rgba(212, 184, 90, 0.05); border-radius: 8px; padding: 16px;">
+            <h4>⚡ Синергия ваших чисел</h4>
+            <p>
+              Ваши три ключевых числа взаимодействуют, создавая уникальный паттерн.
+              <strong>Число судьбы ${destiny.number}</strong> определяет стратегию вашей жизни,
+              <strong>число личности ${personality.number}</strong> — тактику, а
+              <strong>число выражения ${expression.number}</strong> — то, как вы будете воплощать свой потенциал в мире.
+            </p>
+          </section>
+        </div>
+
+        <!-- ТРАССИРОВКА РАСЧЁТА -->
+        ${result.trace && result.trace.length > 0 ? `
+          <details class="calculation-trace" style="margin-top: 24px; padding: 16px; background: rgba(0,0,0,0.02); border-radius: 8px; cursor: pointer;">
+            <summary style="font-weight: 600; color: var(--text); cursor: pointer; user-select: none;">
+              📐 Как мы рассчитали вашу матрицу
+            </summary>
+            <div style="margin-top: 12px; font-size: 0.9rem; color: var(--text-light); line-height: 1.8;">
+              ${result.trace.map(line => `<div>${line}</div>`).join('')}
+            </div>
+          </details>
+        ` : ''}
+      </div>
+    `;
+
+    container.innerHTML = html;
+  };
+
+  /**
    * Render word code analysis result
    */
   const renderWordCodeResult = (container, result) => {
@@ -638,8 +783,16 @@ const CalculatorUI = (() => {
     console.log('renderLocalInterpretation called');
     console.log('result.method type:', typeof result.method);
     console.log('result.method value:', result.method);
+    console.log('result.method === "personalMatrix":', result.method === 'personalMatrix');
     console.log('result.method === "compatibility":', result.method === 'compatibility');
     console.log('result.method === "wordCode":', result.method === 'wordCode');
+
+    // Handle personal matrix results separately
+    if (result.method === 'personalMatrix') {
+      console.log('👤 ✅ Rendering personal matrix result');
+      renderPersonalMatrixResult(container, result);
+      return;
+    }
 
     // Handle compatibility results separately
     if (result.method === 'compatibility') {

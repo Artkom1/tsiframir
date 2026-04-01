@@ -254,6 +254,88 @@ const CalculatorCore = (() => {
   };
 
   /**
+   * Calculate personal matrix combining birth date + full name
+   * Formula: Combine destiny number (birth date) + personality number (full name)
+   */
+  const calculatePersonalMatrix = (day, month, year, surname, name, patronymic) => {
+    const birthDateResult = calculateByBirthDate(day, month, year);
+    const fullNameResult = calculateByFullName(surname, name, patronymic);
+
+    if (!birthDateResult.success || !fullNameResult.success) {
+      return {
+        success: false,
+        error: birthDateResult.error || fullNameResult.error
+      };
+    }
+
+    const destinyNumber = birthDateResult.output.secondary;
+    const personalityNumber = fullNameResult.output.secondary;
+
+    // Calculate soul/expression number by combining both
+    const combinedSum = destinyNumber + personalityNumber;
+    const combinedReduction = getReductionSteps(combinedSum);
+    const expressionNumber = combinedReduction[combinedReduction.length - 1];
+
+    return {
+      success: true,
+      method: 'personalMatrix',
+      inputs: { day, month, year, surname, name, patronymic },
+      calculation: {
+        birthDate: birthDateResult.calculation,
+        fullName: fullNameResult.calculation,
+        expression: {
+          sum: combinedSum,
+          reductionSteps: combinedReduction,
+          final: expressionNumber
+        }
+      },
+      output: {
+        destiny: {
+          number: destinyNumber,
+          meaning: getInterpretation(destinyNumber)
+        },
+        personality: {
+          number: personalityNumber,
+          meaning: getInterpretation(personalityNumber)
+        },
+        expression: {
+          number: expressionNumber,
+          meaning: getInterpretation(expressionNumber)
+        }
+      },
+      trace: buildPersonalMatrixTrace(
+        day, month, year, surname, name, patronymic,
+        destinyNumber, personalityNumber, expressionNumber
+      )
+    };
+  };
+
+  /**
+   * Build trace for personal matrix calculation
+   */
+  const buildPersonalMatrixTrace = (day, month, year, surname, name, patronymic, destinyNum, personalityNum, expressionNum) => {
+    const trace = [];
+
+    trace.push(`<strong>👤 Персональная матрица</strong>`);
+    trace.push(`<strong>Дата рождения:</strong> ${String(day).padStart(2, '0')}.${String(month).padStart(2, '0')}.${year}`);
+    trace.push(`<strong>Полное имя:</strong> ${surname} ${name} ${patronymic}`);
+    trace.push(``);
+
+    trace.push(`<strong>1️⃣ Число судьбы (по дате):</strong> ${destinyNum}`);
+    trace.push(`   Значение: ${getInterpretation(destinyNum)}`);
+    trace.push(``);
+
+    trace.push(`<strong>2️⃣ Число личности (по имени):</strong> ${personalityNum}`);
+    trace.push(`   Значение: ${getInterpretation(personalityNum)}`);
+    trace.push(``);
+
+    trace.push(`<strong>3️⃣ Число выражения/внутреннего предназначения:</strong> ${destinyNum} + ${personalityNum} = ${destinyNum + personalityNum} → ${expressionNum}`);
+    trace.push(`   Значение: ${getInterpretation(expressionNum)}`);
+
+    return trace;
+  };
+
+  /**
    * Build trace for birth date calculation
    */
   const buildBirthDateTrace = (day, month, year, digits, sum, reductionSteps) => {
@@ -766,6 +848,7 @@ const CalculatorCore = (() => {
     // Phase 1 Calculations
     calculateByBirthDate,
     calculateByFullName,
+    calculatePersonalMatrix,
 
     // Phase 2 Calculations
     calculateCompatibility,
