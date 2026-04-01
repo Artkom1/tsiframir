@@ -291,6 +291,30 @@
     .countdown-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 8px; font-family: 'Cinzel', serif; }
     .countdown-sep { font-family: 'Cinzel', serif; font-size: 2.8rem; color: var(--gold-light); opacity: 0.5; align-self: flex-start; padding-top: 4px; }
 
+    /* ===== ECOSYSTEM NAVIGATOR HUB ===== */
+    .ecosystem-navigator { padding: var(--section-pad) 0; background: var(--white); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+    .ecosystem-navigator-header { text-align: center; margin-bottom: 56px; }
+    .ecosystem-navigator-header h2 { font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; margin-bottom: 12px; }
+    .ecosystem-navigator-header p { font-size: 1.05rem; color: var(--text-light); }
+    .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; }
+    .nav-card { display: flex; flex-direction: column; gap: 16px; padding: 32px 24px; background: var(--white); border: 1px solid var(--border-light); border-radius: 16px; border-left: 4px solid var(--gold); text-decoration: none; color: inherit; transition: all 0.3s ease; cursor: pointer; }
+    .nav-card:hover { transform: translateY(-8px); box-shadow: 0 16px 48px rgba(184,148,46,0.15); border-color: var(--gold-light); }
+    .nav-card.nav-card-blue { border-left-color: var(--blue); }
+    .nav-card.nav-card-purple { border-left-color: #a855b7; }
+    .nav-card.nav-card-green { border-left-color: #10b981; }
+    .nav-card.nav-card-orange { border-left-color: #f97316; }
+    .nav-card.nav-card-red { border-left-color: #ef4444; }
+    .nav-icon { font-size: 3rem; height: 56px; display: flex; align-items: center; }
+    .nav-card h3 { font-family: 'Cinzel', serif; font-size: 1.35rem; font-weight: 700; color: var(--text); margin: 0; }
+    .nav-card p { font-size: 0.95rem; color: var(--text-light); margin: 0; flex: 1; line-height: 1.6; }
+    .nav-arrow { display: flex; align-items: center; gap: 6px; font-size: 0.95rem; color: var(--gold); font-weight: 600; margin-top: 4px; }
+    .nav-arrow::after { content: '→'; transition: transform 0.3s; }
+    .nav-card:hover .nav-arrow::after { transform: translateX(4px); }
+    @media (max-width: 768px) {
+      .nav-grid { grid-template-columns: 1fr; }
+      .ecosystem-navigator { padding: calc(var(--section-pad) * 0.8) 0; }
+    }
+
     /* ===== ABOUT ===== */
     .about { padding: var(--section-pad) 0; background: var(--cream); }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
@@ -1219,6 +1243,66 @@
   <div class="divider-ornament">
     <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#b8942e" stroke-width="0.8"/><circle cx="20" cy="20" r="12" stroke="#b8942e" stroke-width="0.6"/><circle cx="20" cy="20" r="6" stroke="#b8942e" stroke-width="0.5"/><circle cx="20" cy="20" r="2" fill="#b8942e"/><line x1="20" y1="2" x2="20" y2="38" stroke="#b8942e" stroke-width="0.3"/><line x1="2" y1="20" x2="38" y2="20" stroke="#b8942e" stroke-width="0.3"/></svg>
   </div>
+
+  <!-- [ARCHITECTURE v3] ECOSYSTEM NAVIGATOR HUB -->
+  <section class="ecosystem-navigator" id="navigator">
+    <div class="container">
+      <div class="ecosystem-navigator-header">
+        <h2>Карта ЦифраМир</h2>
+        <p>Выберите интересующий вас раздел и погрузитесь в мир цифровой трансформации</p>
+      </div>
+
+      <div class="nav-grid">
+        <!-- Card 1: Форум -->
+        <a href="#program" class="nav-card reveal">
+          <div class="nav-icon">🎯</div>
+          <h3>Форум</h3>
+          <p>13–14 июня в Санкт-Петербурге. Первый международный нумерологический форум.</p>
+          <span class="nav-arrow">Программа</span>
+        </a>
+
+        <!-- Card 2: Школа -->
+        <a href="#about" class="nav-card nav-card-blue reveal reveal-delay-1">
+          <div class="nav-icon">🎓</div>
+          <h3>Школа</h3>
+          <p>Методика ЦифраМир и учение Сергея Николаевича Кузнецова.</p>
+          <span class="nav-arrow">О нас</span>
+        </a>
+
+        <!-- Card 3: Инструменты -->
+        <a href="#book" class="nav-card nav-card-purple reveal reveal-delay-2">
+          <div class="nav-icon">🔮</div>
+          <h3>Инструменты</h3>
+          <p>Книги, цифровые карты и персональные матрицы для практики.</p>
+          <span class="nav-arrow">Начать</span>
+        </a>
+
+        <!-- Card 4: Расчёты -->
+        <a href="#center-codes" class="nav-card nav-card-green reveal reveal-delay-3">
+          <div class="nav-icon">🔢</div>
+          <h3>Расчёты</h3>
+          <p>Персональная матрица, совместимость и интерактивные калькуляторы.</p>
+          <span class="nav-arrow">Рассчитать</span>
+        </a>
+
+        <!-- Card 5: Результаты -->
+        <a href="#cases" class="nav-card nav-card-orange reveal reveal-delay-4">
+          <div class="nav-icon">⭐</div>
+          <h3>Результаты</h3>
+          <p>Отзывы участников и истории трансформации людей.</p>
+          <span class="nav-arrow">Читать</span>
+        </a>
+
+        <!-- Card 6: Контакты -->
+        <a href="#contacts" class="nav-card nav-card-red reveal reveal-delay-5">
+          <div class="nav-icon">📞</div>
+          <h3>Контакты</h3>
+          <p>Команда ЦифраМир готова ответить на все ваши вопросы.</p>
+          <span class="nav-arrow">Написать</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- ABOUT -->
   <section class="about sacred-bg" id="about">
