@@ -471,13 +471,13 @@ const CalculatorUI = (() => {
             </section>
           ` : ''}
 
-          <!-- AI АНАЛИЗ КНОПКА -->
+          <!-- РАСШИРЕННЫЙ АНАЛИЗ -->
           <section class="interp-section ai-button-section">
             <button class="btn btn-ai" data-number="${num}" data-type="${result.method}">
-              ✨ Получить профессиональный AI анализ
+              ✨ Получить расширенный анализ
             </button>
             <p style="font-size: 0.9rem; color: #999; margin-top: 12px; text-align: center;">
-              Персонализированный анализ на основе OpenAI ChatGPT и нумерологических принципов
+              Более подробный анализ с практическими рекомендациями
             </p>
           </section>
         </div>
@@ -642,8 +642,8 @@ const CalculatorUI = (() => {
 
     aiSection.innerHTML = `
       <div class="ai-analysis-header">
-        <h3>✨ Профессиональный анализ (${cached ? 'из кэша' : 'OpenAI ChatGPT'})</h3>
-        <p style="font-size: 0.85rem; color: #999; margin: 4px 0 0 0;">На основе нумерологии и ChatGPT</p>
+        <h3>✨ Расширенный анализ</h3>
+        <p style="font-size: 0.85rem; color: #999; margin: 4px 0 0 0;">На основе нумерологических принципов</p>
       </div>
       <div class="ai-analysis-content">
         ${htmlContent}
