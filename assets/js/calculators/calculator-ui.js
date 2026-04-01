@@ -508,12 +508,13 @@ const CalculatorUI = (() => {
    */
   const loadInterpretations = async () => {
     try {
+      console.log('📚 Loading interpretations...');
       const response = await fetch('/assets/data/numerology-system.json');
       const data = await response.json();
       INTERPRETATIONS_DB = data.numberInterpretations.data;
-      console.log('✓ Interpretations loaded:', Object.keys(INTERPRETATIONS_DB).length, 'numbers');
+      console.log('✅ Interpretations loaded:', Object.keys(INTERPRETATIONS_DB).length, 'numbers');
     } catch (error) {
-      console.error('Error loading interpretations:', error);
+      console.error('❌ Error loading interpretations:', error);
     }
   };
 
@@ -521,12 +522,16 @@ const CalculatorUI = (() => {
    * Attach AI button handlers
    */
   const attachAIButtonHandlers = (container) => {
+    console.log('🔗 attachAIButtonHandlers called');
     const buttons = container.querySelectorAll('.btn-ai');
-    buttons.forEach(button => {
+    console.log('Found AI buttons:', buttons.length);
+
+    buttons.forEach((button, index) => {
+      console.log(`Attaching handler to button ${index}:`, button.dataset);
       button.addEventListener('click', () => {
         const number = button.dataset.number;
         const type = button.dataset.type;
-        console.log('AI button clicked for number:', number, 'type:', type);
+        console.log('🖱️  AI button clicked for number:', number, 'type:', type);
         requestAIAnalysis(number, type);
       });
     });
@@ -536,8 +541,14 @@ const CalculatorUI = (() => {
    * Request AI analysis
    */
   const requestAIAnalysis = async (number, calculatorType) => {
+    console.log('🔄 requestAIAnalysis called:', { number, calculatorType });
+
     const button = document.querySelector(`[data-number="${number}"]`);
-    if (!button) return;
+    console.log('Button found:', button);
+    if (!button) {
+      console.error('Button not found for number:', number);
+      return;
+    }
 
     const originalText = button.textContent;
 
@@ -546,7 +557,15 @@ const CalculatorUI = (() => {
       button.textContent = '⏳ Генерирую анализ... (5-10 сек)';
       button.style.opacity = '0.6';
 
-      const response = await fetch('/api/ai-interpretation', {
+      console.log('📤 Sending API request...');
+      const apiUrl = 'https://numerology-forum-landing.vercel.app/api/ai-interpretation';
+      console.log('API URL:', apiUrl);
+
+      // Create timeout controller (30 second timeout)
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -554,12 +573,23 @@ const CalculatorUI = (() => {
         body: JSON.stringify({
           number: parseInt(number),
           calculatorType: calculatorType || 'birthDate'
-        })
+        }),
+        signal: controller.signal
       });
 
+      clearTimeout(timeout);
+
+      console.log('📥 API response status:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`API returned status ${response.status}: ${response.statusText}`);
+      }
+
       const result = await response.json();
+      console.log('📋 API response:', result);
 
       if (!result.success) {
+        console.warn('API returned success=false');
         if (result.fallback) {
           showMessage('ℹ️ ' + (result.message || 'AI анализ недоступен. Используем локальный анализ.'), 'info');
         } else {
@@ -569,12 +599,26 @@ const CalculatorUI = (() => {
       }
 
       // Показать AI анализ
+      console.log('✨ Displaying AI analysis...');
       displayAIAnalysis(result.analysis, result.cached);
       button.style.display = 'none';
 
     } catch (error) {
-      console.error('Error requesting AI analysis:', error);
-      showMessage('❌ Ошибка соединения. Проверьте интернет.', 'error');
+      console.error('❌ Error requesting AI analysis:', error);
+      console.error('Error type:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+
+      // More specific error messages
+      if (error.name === 'AbortError') {
+        showMessage('❌ Ошибка: Запрос истекшелся (30 сек). Сервер медленно отвечает. Попробуйте позже.', 'error');
+      } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        showMessage('❌ Ошибка: fetch не работает. Проверьте сетевое соединение.', 'error');
+      } else if (error.name === 'SyntaxError') {
+        showMessage('❌ Ошибка: Неверный ответ от сервера. Попробуйте позже.', 'error');
+      } else {
+        showMessage('❌ Ошибка: ' + error.message, 'error');
+      }
 
     } finally {
       button.disabled = false;

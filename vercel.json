@@ -1,21 +1,11 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "env": {
-    "OPENAI_API_KEY": "@openai-api-key"
-  },
+  "buildCommand": "echo 'Skipping build'",
+  "outputDirectory": ".",
   "functions": {
     "api/*.js": {
-      "runtime": "nodejs18.x",
       "memory": 512,
       "maxDuration": 30
     }
-  },
-  "redirects": [
-    {
-      "source": "/api/ai-interpretation",
-      "destination": "/api/ai-interpretation.js",
-      "permanent": false
-    }
-  ]
+  }
 }
