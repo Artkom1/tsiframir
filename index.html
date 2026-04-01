@@ -782,6 +782,102 @@
       transform: translateY(-2px);
     }
 
+    /* ===== MATRIX PROCESS VISUALIZATION ===== */
+    .matrix-process { margin: 80px 0; }
+
+    .matrix-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      align-items: stretch;
+      position: relative;
+    }
+
+    .matrix-step {
+      padding: 32px 24px;
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      text-align: center;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+    .matrix-step:hover {
+      box-shadow: 0 12px 32px rgba(184,148,46,0.15);
+      border-color: var(--gold-light);
+    }
+
+    .step-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .step-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .step-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    .matrix-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--gold);
+      font-weight: 700;
+      padding: 0 -8px;
+      margin: 0 -1px;
+      z-index: 2;
+    }
+
+    .matrix-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .matrix-features li {
+      padding-left: 28px;
+      position: relative;
+      color: var(--text-light);
+      margin-bottom: 14px;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .matrix-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    /* Responsive Matrix */
+    @media (max-width: 968px) {
+      .matrix-steps { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .matrix-arrow { display: none; }
+      .personal-matrix-block { grid-template-columns: 1fr !important; gap: 40px !important; }
+    }
+    @media (max-width: 600px) {
+      .matrix-steps { grid-template-columns: 1fr; }
+      .matrix-step { padding: 24px; }
+    }
+
     /* Responsive */
     @media (max-width: 968px) {
       .cards-content-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -1372,14 +1468,21 @@
     <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#b8942e" stroke-width="0.8"/><circle cx="20" cy="8" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="20" cy="32" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="8" cy="20" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="32" cy="20" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="20" cy="20" r="2.5" fill="#b8942e" opacity="0.4"/></svg>
   </div>
 
-  <!-- [13] DIGITAL CARDS SECTION -->
+  <!-- [13] DIGITAL CARDS & PERSONAL MATRICES SECTION -->
   <section class="digital-cards-section" id="digital-cards">
     <div class="container">
       <!-- Header -->
       <div class="cards-header reveal">
         <div class="section-label">Практические инструменты</div>
-        <h2 class="section-title">Цифровые карты<br><span class="highlight">как инструмент намерения</span></h2>
-        <p class="section-subtitle">Используйте числовые матрицы для внутренней фокусировки и активации личного потенциала</p>
+        <h2 class="section-title">Цифровые карты и персональные матрицы<br><span class="highlight">ваша система внутренней настройки</span></h2>
+        <p class="section-subtitle">Универсальные карты для жизненных тем + персональная матрица по вашей дате рождения</p>
+      </div>
+
+      <!-- Intro Block -->
+      <div class="cards-intro reveal" style="max-width: 800px; margin: 0 auto 60px; text-align: center; padding: 24px;">
+        <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-light);">
+          Цифровые карты — это не просто красивые образы. Это <strong>работающие инструменты смысловой и числовой настройки</strong>, помогающие сосредоточиться на важной жизненной задаче, усилить намерение и направить внутреннее внимание в нужную сферу. А персональные матрицы, созданные по вашей дате рождения, — это индивидуальный цифровой ключ для глубокой практики и самопознания.
+        </p>
       </div>
 
       <!-- Main Content Grid -->
@@ -1423,9 +1526,108 @@
         </div>
       </div>
 
+      <!-- PERSONAL MATRIX PROCESS VISUALIZATION -->
+      <div class="matrix-process reveal" style="margin: 80px 0;">
+        <h3 style="text-align: center; font-family: 'Cinzel', serif; font-size: 1.3rem; margin-bottom: 48px; color: var(--blue);">От даты рождения к персональной матрице</h3>
+
+        <!-- Step-by-step process -->
+        <div class="matrix-steps">
+          <div class="matrix-step">
+            <div class="step-icon">📅</div>
+            <div class="step-text">
+              <div class="step-label">Шаг 1</div>
+              <div class="step-title">Дата рождения</div>
+              <div class="step-desc">Ваша уникальная дата содержит код, который формирует вашу личную матрицу</div>
+            </div>
+          </div>
+
+          <div class="matrix-arrow">→</div>
+
+          <div class="matrix-step">
+            <div class="step-icon">🔢</div>
+            <div class="step-text">
+              <div class="step-label">Шаг 2</div>
+              <div class="step-title">Личный код</div>
+              <div class="step-desc">Расчёт вашего цифрового кода по авторской методике ЦифраМир</div>
+            </div>
+          </div>
+
+          <div class="matrix-arrow">→</div>
+
+          <div class="matrix-step">
+            <div class="step-icon">🎯</div>
+            <div class="step-text">
+              <div class="step-label">Шаг 3</div>
+              <div class="step-title">Персональная матрица</div>
+              <div class="step-desc">Создание вашей уникальной цифровой структуры на основе кода</div>
+            </div>
+          </div>
+
+          <div class="matrix-arrow">→</div>
+
+          <div class="matrix-step">
+            <div class="step-icon">✨</div>
+            <div class="step-text">
+              <div class="step-label">Шаг 4</div>
+              <div class="step-title">Практика в жизни</div>
+              <div class="step-desc">Использование матрицы как инструмента внутренней фокусировки и развития</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal Matrix Block -->
+      <div class="personal-matrix-block reveal" style="margin: 80px 0;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+          <!-- Left: Personal Matrix Info -->
+          <div>
+            <h3 style="font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--blue); margin-bottom: 20px;">Персональные матрицы</h3>
+            <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 16px;">
+              <strong>Персональная матрица</strong> — это не универсальная карта, а индивидуальный цифровой инструмент, созданный специально для вас на основе вашей даты рождения.
+            </p>
+            <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 20px;">
+              Процесс простой:
+            </p>
+            <ul class="matrix-features">
+              <li>Ваша дата рождения → расчёт личного цифрового кода</li>
+              <li>Формирование вашей уникальной матрицы с персональными кодами</li>
+              <li>Применение матрицы как инструмента самопознания и внутренней практики</li>
+              <li>Использование как символа личного развития и фокусировки</li>
+            </ul>
+            <p style="color: var(--text); line-height: 1.8; margin-top: 24px; padding: 16px; background: rgba(232,240,248,0.5); border-radius: 10px; border-left: 4px solid var(--gold);">
+              <strong>💎 Вы можете носить свою матрицу с собой</strong> — в кошельке, кармане или рядом с собой — как символ личной настройки, концентрации и связи с важной для вас сферой жизни.
+            </p>
+          </div>
+
+          <!-- Right: Matrix Visualization -->
+          <div style="text-align: center;">
+            <div style="background: linear-gradient(135deg, rgba(184,148,46,0.1), rgba(232,240,248,0.2)); padding: 48px; border-radius: 16px; border: 2px solid rgba(184,148,46,0.3);">
+              <div style="font-size: 3rem; margin-bottom: 16px;">📊</div>
+              <h4 style="font-family: 'Cinzel', serif; color: var(--blue); margin-bottom: 12px; font-size: 1.1rem;">Ваша личная матрица</h4>
+              <p style="color: var(--text-light); font-size: 0.9rem; line-height: 1.6; margin-bottom: 24px;">
+                Индивидуальная цифровая структура, содержащая коды и значения, уникальные именно для вас
+              </p>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;">
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">3</div>
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">7</div>
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">5</div>
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">1</div>
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">9</div>
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">2</div>
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">4</div>
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">6</div>
+                <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold); font-size: 1.2rem; font-weight: bold; color: var(--gold);">8</div>
+              </div>
+              <p style="color: #999; font-size: 0.8rem;">Каждое число содержит смысловой и энергетический код</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Applications Grid -->
       <div class="cards-applications reveal" style="margin-top: 60px;">
-        <h3 style="width: 100%; text-align: center; font-size: 1.3rem; margin-bottom: 40px;">Направления применения</h3>
+        <h3 style="width: 100%; text-align: center; font-size: 1.3rem; margin-bottom: 12px; color: var(--blue);">По каким сферам работает</h3>
+        <p style="width: 100%; text-align: center; color: var(--text-light); margin-bottom: 40px; font-size: 0.95rem;">Как универсальные карты, так и персональные матрицы помогают с важнейшими направлениями жизни</p>
 
         <div class="app-card">
           <div class="app-icon">💰</div>
@@ -1465,13 +1667,19 @@
       </div>
 
       <!-- CTA Section -->
-      <div class="cards-cta reveal" style="margin-top: 60px; text-align: center;">
-        <p style="font-size: 1.05rem; color: var(--text-light); margin-bottom: 28px; max-width: 700px; margin-left: auto; margin-right: auto;">
-          Цифровые карты — это не просто красивые изображения, а <strong>работающий инструмент</strong> для людей, которые ценят глубину, смыслы и осознанный подход к своей жизни.
+      <div class="cards-cta reveal" style="margin-top: 80px; text-align: center;">
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--blue); margin-bottom: 20px;">Начните свой путь</h3>
+        <p style="font-size: 1.05rem; color: var(--text-light); margin-bottom: 32px; max-width: 750px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+          Цифровые карты и персональные матрицы — это не просто красивые образы, а <strong>действительно работающие инструменты</strong> для людей, которые ценят глубину, смыслы, осознанность и готовы работать над собой через внутреннюю фокусировку.
         </p>
-        <a href="#register" class="btn-primary" style="display: inline-block; padding: 14px 36px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: white; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.3s;">
-          Узнать больше на форуме
-        </a>
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+          <a href="#register" class="btn-primary" style="display: inline-block; padding: 14px 36px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: white; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.3s;">
+            ✨ Откройте свою персональную матрицу
+          </a>
+          <a href="#register" class="btn-primary" style="display: inline-block; padding: 14px 36px; background: linear-gradient(135deg, var(--blue), var(--blue-light)); color: white; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.3s;">
+            📖 Узнать больше на форуме
+          </a>
+        </div>
       </div>
     </div>
   </section>
