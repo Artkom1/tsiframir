@@ -408,9 +408,87 @@ const CalculatorUI = (() => {
   };
 
   /**
+   * Render compatibility result
+   */
+  const renderCompatibilityResult = (container, result) => {
+    const { person1, person2, compatibility } = result.output;
+    const { percent, level, description } = compatibility;
+
+    const html = `
+      <div class="result-panel">
+        <div class="result-header">
+          <h3>💑 Совместимость двух людей</h3>
+        </div>
+
+        <div class="compatibility-display" style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; margin: 30px 0;">
+          <!-- Человек 1 -->
+          <div style="text-align: center; padding: 20px; background: #f0f0f0; border-radius: 10px;">
+            <h4 style="margin: 0 0 10px 0;">${person1.name}</h4>
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--gold); margin: 10px 0;">${person1.code}</div>
+            <p style="color: #666; margin: 10px 0 0 0;">${person1.meaning}</p>
+          </div>
+
+          <!-- Результат совместимости -->
+          <div style="text-align: center;">
+            <div style="font-size: 3rem; font-weight: bold; color: var(--gold); margin: 10px 0;">
+              ${percent}%
+            </div>
+            <div style="background: linear-gradient(90deg, #d4b85a 0%, #d4b85a ${percent}%, #e0e0e0 ${percent}%, #e0e0e0 100%); height: 8px; border-radius: 4px; margin: 10px 0; width: 100px;"></div>
+            <p style="color: #666; margin: 10px 0; font-weight: bold;">${level}</p>
+          </div>
+
+          <!-- Человек 2 -->
+          <div style="text-align: center; padding: 20px; background: #f0f0f0; border-radius: 10px;">
+            <h4 style="margin: 0 0 10px 0;">${person2.name}</h4>
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--gold); margin: 10px 0;">${person2.code}</div>
+            <p style="color: #666; margin: 10px 0 0 0;">${person2.meaning}</p>
+          </div>
+        </div>
+
+        <!-- Описание совместимости -->
+        <div class="interpretation-sections" style="margin-top: 30px;">
+          <section class="interp-section">
+            <h4>📊 Анализ совместимости</h4>
+            <p>${description}</p>
+          </section>
+
+          <!-- РАСШИРЕННЫЙ АНАЛИЗ -->
+          <section class="interp-section ai-button-section">
+            <button class="btn btn-ai" data-number="${result.calculation.person1Code}" data-type="${result.method}">
+              ✨ Получить расширенный анализ
+            </button>
+            <p style="font-size: 0.9rem; color: #999; margin-top: 12px; text-align: center;">
+              Более подробный анализ с практическими рекомендациями
+            </p>
+          </section>
+        </div>
+
+        <!-- РАСЧЁТНЫЙ ШАГ ЗА ШАГОМ -->
+        <div class="calculation-trace">
+          <details>
+            <summary>📐 Как мы считали</summary>
+            <ol class="trace-steps">
+              ${result.trace.map((step) => `<li>${step}</li>`).join('')}
+            </ol>
+          </details>
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = html;
+    attachAIButtonHandlers(container);
+  };
+
+  /**
    * Render local interpretation with AI button
    */
   const renderLocalInterpretation = (container, result) => {
+    // Handle compatibility results separately
+    if (result.method === 'compatibility') {
+      renderCompatibilityResult(container, result);
+      return;
+    }
+
     const num = result.output.secondary;
     const interp = INTERPRETATIONS_DB[num] || {};
 
