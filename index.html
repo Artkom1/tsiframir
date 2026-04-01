@@ -2159,6 +2159,62 @@
   <script src="assets/js/calculators/calculator-validation.js"></script>
   <script src="assets/js/calculators/calculator-registry.js"></script>
   <script src="assets/js/calculators/calculator-ui.js"></script>
+  <script src="assets/js/calculators/calculator-test.js"></script>
   <script src="assets/js/calculators.js"></script>
+
+  <!-- Diagnostic tools for debugging calculator system -->
+  <script>
+    // Add diagnostic functions to window for easy testing
+    window.testCalculator = {
+      // Test birth date calculation
+      birthDate: (day = 11, month = 9, year = 2012) => {
+        console.log(`\nTesting birth date: ${day}.${month}.${year}`);
+        const result = CalculatorCore.calculateByBirthDate(day, month, year);
+        console.log('Result:', result);
+        return result;
+      },
+
+      // Test full name calculation
+      fullName: (surname = 'Иванов', name = 'Сергей', patronymic = '') => {
+        console.log(`\nTesting full name: ${surname} ${name} ${patronymic}`);
+        const result = CalculatorCore.calculateByFullName(surname, name, patronymic);
+        console.log('Result:', result);
+        return result;
+      },
+
+      // Test the entire form submission flow
+      submitForm: () => {
+        console.log('\n=== TESTING FORM SUBMISSION ===');
+        const button = document.querySelector('.btn-primary');
+        if (!button) {
+          console.error('Button not found!');
+          return;
+        }
+        console.log('Button found:', button);
+        console.log('Simulating button click...');
+        button.click();
+      },
+
+      // Run all tests
+      runAll: () => {
+        console.log('\n\n🚀 RUNNING ALL DIAGNOSTIC TESTS\n');
+        window.testCalculator.birthDate();
+        window.testCalculator.fullName();
+        if (NumerologyCalculator && NumerologyCalculator.Test) {
+          NumerologyCalculator.Test.runAll();
+        }
+      }
+    };
+
+    // Log when diagnostic tools are ready
+    setTimeout(() => {
+      console.log('\n💡 Diagnostic tools available:');
+      console.log('  - window.testCalculator.birthDate()');
+      console.log('  - window.testCalculator.fullName()');
+      console.log('  - window.testCalculator.submitForm()');
+      console.log('  - window.testCalculator.runAll()');
+      console.log('\n💡 Or use: NumerologyCalculator.Test.runAll()');
+    }, 300);
+  </script>
 </body>
 </html>
