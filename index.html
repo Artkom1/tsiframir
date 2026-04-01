@@ -153,19 +153,27 @@
     }
     .navbar .container { display: flex; justify-content: space-between; align-items: center; }
     .nav-logo {
-      display: flex; align-items: center; gap: 12px;
+      display: flex; align-items: center; gap: 14px;
       font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.4rem;
       color: var(--white); text-decoration: none;
       transition: all 0.4s; letter-spacing: 1px;
     }
     .navbar.scrolled .nav-logo { color: var(--text); }
     .nav-logo-img {
-      width: 48px; height: 48px; border-radius: 10px;
-      object-fit: contain; background: rgba(255,255,255,0.1);
-      padding: 4px; transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+      width: 56px; height: 56px; border-radius: 12px;
+      object-fit: contain; background: rgba(255,255,255,0.12);
+      padding: 6px; transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    .navbar.scrolled .nav-logo-img { background: rgba(184,148,46,0.12); }
-    .nav-logo:hover .nav-logo-img { transform: scale(1.08); background: rgba(184,148,46,0.2); }
+    .navbar.scrolled .nav-logo-img {
+      background: rgba(184,148,46,0.15);
+      box-shadow: 0 6px 16px rgba(184,148,46,0.2);
+    }
+    .nav-logo:hover .nav-logo-img {
+      transform: scale(1.12) rotate(2deg);
+      background: rgba(184,148,46,0.25);
+      box-shadow: 0 8px 24px rgba(184,148,46,0.3);
+    }
     .nav-logo span { color: var(--gold); }
     .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
     .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
@@ -1083,6 +1091,7 @@
     }
 
     @media (max-width: 968px) {
+      .nav-logo-img { width: 52px; height: 52px; }
       .about-grid, .venue-grid, .reg-content { grid-template-columns: 1fr; gap: 40px; }
       .why-grid, .transformation-path { grid-template-columns: 1fr; }
       .timeline-days { grid-template-columns: 1fr; }
@@ -2727,9 +2736,9 @@
       <div class="footer-content">
         <!-- Column 1: About -->
         <div class="footer-col">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-            <img src="img/logotip.jpg" alt="ЦифраМир логотип" loading="lazy" style="width: 56px; height: 56px; border-radius: 10px; object-fit: contain; background: rgba(255,255,255,0.1); padding: 6px;">
-            <h4 style="margin: 0;">ЦифраМир</h4>
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform='translateX(0)'">
+            <img src="img/logotip.jpg" alt="ЦифраМир логотип" loading="lazy" style="width: 56px; height: 56px; border-radius: 12px; object-fit: contain; background: rgba(255,255,255,0.15); padding: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.3s ease;">
+            <h4 style="margin: 0; font-size: 1.2rem;">Цифра<span style="color: var(--gold-light);">Мир</span></h4>
           </div>
           <p style="font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.6;">I Международный нумерологический форум. Школа Сергея Кузнецова объединяет экспертов из 15+ стран для вашей трансформации.</p>
         </div>
