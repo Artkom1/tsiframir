@@ -601,6 +601,182 @@
     /* ===== SCROLL PROGRESS BAR ===== */
     #scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); z-index: 9999; width: 0%; }
 
+    /* ===== [11] BOOK BLOCK "ОЦИФРОВАННЫЙ МИР" ===== */
+    .book-section { padding: var(--section-pad) 0; background: linear-gradient(135deg, rgba(184,148,46,0.08), rgba(232,240,248,0.5)); position: relative; }
+    .book-section::before { content: ''; position: absolute; top: -50px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(184,148,46,0.1), transparent 70%); border-radius: 50%; }
+    .book-content { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
+    .book-visual { text-align: center; }
+    .book-cover { width: 280px; height: 400px; margin: 0 auto; background: linear-gradient(135deg, #b8942e, #8a6d1e); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; color: var(--white); text-align: center; box-shadow: 0 20px 60px rgba(184,148,46,0.3), 0 0 0 1px rgba(255,255,255,0.2); position: relative; }
+    .book-cover::before { content: ''; position: absolute; inset: -8px; border: 2px solid var(--gold-light); border-radius: 12px; opacity: 0.3; }
+    .book-cover-title { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; line-height: 1.3; position: relative; z-index: 1; }
+    .book-cover-subtitle { font-size: 0.95rem; opacity: 0.9; position: relative; z-index: 1; }
+    .book-cover-author { font-size: 0.9rem; margin-top: auto; opacity: 0.8; position: relative; z-index: 1; }
+    .book-info h3 { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--blue); margin-bottom: 16px; }
+    .book-rating { display: flex; gap: 4px; margin-bottom: 24px; font-size: 1.2rem; }
+    .book-rating span { color: var(--gold); }
+    .book-description { font-size: 1.05rem; color: var(--text-light); line-height: 1.8; margin-bottom: 28px; }
+    .book-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+    .book-highlight { padding: 14px 16px; background: var(--white); border-left: 4px solid var(--gold); border-radius: 8px; font-size: 0.95rem; color: var(--text-light); }
+    .book-highlight::before { content: '✓ '; color: var(--gold); font-weight: 700; }
+    .book-cta { display: flex; gap: 16px; }
+    .book-cta a { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 50px; font-weight: 600; transition: all 0.3s; text-decoration: none; }
+    .book-cta .btn-book-main { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--white); }
+    .book-cta .btn-book-main:hover { box-shadow: 0 8px 24px rgba(184,148,46,0.3); transform: translateY(-2px); }
+    .book-cta .btn-book-secondary { border: 2px solid var(--gold-light); color: var(--gold-dark); }
+    .book-cta .btn-book-secondary:hover { background: rgba(184,148,46,0.08); }
+
+    /* ===== [11] MEDIA GALLERY ===== */
+    .media-gallery { padding: var(--section-pad) 0; background: var(--white); }
+    .media-gallery-header { text-align: center; margin-bottom: 64px; }
+    .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .media-card { background: var(--cream); border-radius: 20px; overflow: hidden; border: 1px solid var(--border-light); transition: all 0.4s; cursor: pointer; }
+    .media-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(184,148,46,0.15); }
+    .media-card-preview { position: relative; width: 100%; padding-bottom: 66.66%; background: linear-gradient(135deg, var(--blue-pale), var(--cream-warm)); overflow: hidden; }
+    .media-card-preview img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    .media-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(184,148,46,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--white); transition: all 0.3s; }
+    .media-card:hover .media-play { background: var(--gold); transform: translate(-50%, -50%) scale(1.1); }
+    .media-icon { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; background: rgba(0,0,0,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.2rem; }
+    .media-card-info { padding: 24px; }
+    .media-channel { font-family: 'Cinzel', serif; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+    .media-title { font-size: 0.95rem; color: var(--text); margin-bottom: 12px; line-height: 1.5; }
+    .media-time { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; }
+    .media-link { display: inline-block; color: var(--gold); font-weight: 600; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+    .media-link:hover { color: var(--gold-dark); }
+
+    /* ===== TRUST BADGES ===== */
+    .trust-section { padding: 48px 0; background: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+    .trust-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+    .trust-badge { text-align: center; padding: 24px 16px; background: var(--white); border-radius: 16px; border: 2px solid var(--gold-lighter); transition: all 0.3s; }
+    .trust-badge:hover { border-color: var(--gold); box-shadow: 0 8px 24px rgba(184,148,46,0.15); }
+    .trust-badge-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .trust-badge-value { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 800; color: var(--gold-dark); margin-bottom: 8px; }
+    .trust-badge-label { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; }
+
+    /* ===== LIVE COUNTER ===== */
+    .counter-section { padding: 48px 0; background: var(--white); text-align: center; }
+    .counter-main { font-size: 2.4rem; color: var(--blue); margin-bottom: 24px; font-weight: 700; }
+    .counter-bar-container { max-width: 500px; margin: 0 auto 24px; }
+    .counter-bar { width: 100%; height: 16px; background: var(--cream); border-radius: 50px; overflow: hidden; border: 2px solid var(--gold-light); }
+    .counter-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 50px; animation: fillProgress 2s ease; }
+    @keyframes fillProgress { from { width: 0%; } to { width: 65%; } }
+    .counter-text { font-size: 1.1rem; color: var(--text-light); }
+    .counter-text strong { color: var(--gold-dark); font-weight: 700; }
+
+    /* ===== VIDEO TESTIMONIALS ===== */
+    .video-testimonials { padding: var(--section-pad) 0; background: var(--white); }
+    .video-testimonials-header { text-align: center; margin-bottom: 64px; }
+    .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .video-card { border-radius: 20px; overflow: hidden; background: var(--cream); transition: all 0.4s; }
+    .video-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(184,148,46,0.12); }
+    .video-frame { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; overflow: hidden; }
+    .video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-info { padding: 20px; }
+    .video-name { font-family: 'Cinzel', serif; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .video-role { font-size: 0.85rem; color: var(--gold-dark); font-weight: 600; }
+
+    /* ===== PRICING COMPARISON TABLE ===== */
+    .pricing-comparison { padding: var(--section-pad) 0; background: var(--cream); }
+    .pricing-comparison-header { text-align: center; margin-bottom: 64px; }
+    .comparison-wrapper { overflow-x: auto; }
+    .comparison-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.04); }
+    .comparison-table th { background: linear-gradient(90deg, var(--blue), var(--blue-light)); color: var(--white); padding: 20px; text-align: left; font-weight: 700; font-family: 'Cinzel', serif; }
+    .comparison-table td { padding: 18px 20px; border-bottom: 1px solid var(--border-light); }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .comparison-table tr:nth-child(even) { background: rgba(248,244,236,0.5); }
+    .comparison-feature { font-weight: 600; color: var(--text); }
+    .comparison-cell-yes { color: var(--gold-dark); font-weight: 700; }
+    .comparison-cell-no { color: var(--text-muted); opacity: 0.6; }
+    .comparison-price { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; color: var(--gold-dark); }
+    .comparison-cta { padding: 12px 24px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--white); border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; }
+    .comparison-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(184,148,46,0.3); }
+
+    /* ===== CASE STUDIES ===== */
+    .case-studies { padding: var(--section-pad) 0; background: var(--white); }
+    .case-studies-header { text-align: center; margin-bottom: 64px; }
+    .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .case-card { background: linear-gradient(135deg, var(--cream), var(--white)); border-radius: 20px; padding: 36px 24px; border: 1px solid var(--border-light); transition: all 0.4s; }
+    .case-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(184,148,46,0.12); }
+    .case-avatar { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, var(--blue-pale), var(--cream-warm)); display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 3px solid var(--gold-light); }
+    .case-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.1rem; color: var(--text); margin-bottom: 4px; text-align: center; }
+    .case-role { font-size: 0.85rem; color: var(--gold-dark); font-weight: 600; text-align: center; margin-bottom: 20px; }
+    .case-before-after { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .case-before { flex: 1; text-align: center; padding: 12px; background: rgba(184,148,46,0.08); border-radius: 12px; }
+    .case-before-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+    .case-before-text { font-size: 0.9rem; color: var(--text); font-weight: 600; }
+    .case-arrow { font-size: 1.5rem; color: var(--gold); }
+    .case-after { flex: 1; text-align: center; padding: 12px; background: rgba(212,184,90,0.1); border-radius: 12px; }
+    .case-after-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+    .case-after-text { font-size: 0.9rem; color: var(--gold-dark); font-weight: 600; }
+    .case-result { font-size: 1rem; color: var(--text-light); line-height: 1.6; text-align: center; }
+
+    /* ===== GUARANTEE BLOCK ===== */
+    .guarantee-block { padding: 40px; margin: 48px 0; background: linear-gradient(135deg, rgba(184,148,46,0.08), rgba(232,240,248,0.1)); border: 2px solid var(--gold-light); border-radius: 20px; text-align: center; }
+    .guarantee-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .guarantee-title { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--blue); margin-bottom: 12px; font-weight: 700; }
+    .guarantee-text { font-size: 1rem; color: var(--text-light); line-height: 1.7; }
+    .guarantee-text strong { color: var(--text); }
+
+    /* ===== NUMBER QUIZ ===== */
+    .number-quiz { padding: var(--section-pad) 0; background: linear-gradient(135deg, var(--blue-pale), rgba(232,240,248,0.5)); }
+    .number-quiz-header { text-align: center; margin-bottom: 64px; }
+    .quiz-container { max-width: 600px; margin: 0 auto; background: var(--white); border-radius: 20px; padding: 40px; box-shadow: 0 12px 40px rgba(0,0,0,0.08); border: 1px solid var(--border-light); }
+    .quiz-form { display: flex; flex-direction: column; gap: 24px; }
+    .quiz-input-group { display: flex; flex-direction: column; }
+    .quiz-label { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.1rem; color: var(--text); margin-bottom: 12px; }
+    .quiz-input { padding: 14px 18px; border: 2px solid var(--border-light); border-radius: 12px; font-size: 1rem; color: var(--text); font-family: 'Inter', sans-serif; transition: border-color 0.3s; }
+    .quiz-input:focus { outline: none; border-color: var(--gold-light); }
+    .quiz-btn { padding: 16px 32px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--white); border: none; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
+    .quiz-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,148,46,0.3); }
+    .quiz-result { margin-top: 24px; padding: 24px; background: linear-gradient(135deg, var(--gold-lighter), rgba(184,148,46,0.08)); border-radius: 16px; border-left: 4px solid var(--gold); display: none; }
+    .quiz-result.show { display: block; animation: slideDown 0.5s ease; }
+    .result-number { font-family: 'Cinzel', serif; font-size: 3rem; font-weight: 800; color: var(--gold-dark); text-align: center; margin-bottom: 12px; }
+    .result-archetype { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--text); text-align: center; margin-bottom: 12px; font-weight: 700; }
+    .result-description { font-size: 0.95rem; color: var(--text-light); line-height: 1.6; text-align: center; }
+
+    /* ===== EMAIL BONUS POPUP ===== */
+    .email-bonus-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2100; align-items: center; justify-content: center; }
+    .email-bonus-modal.show { display: flex; }
+    .email-bonus-content { background: var(--white); border-radius: 20px; padding: 40px; max-width: 500px; width: 90%; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .email-bonus-close { position: absolute; top: 16px; right: 16px; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+    .email-bonus-title { font-family: 'Cinzel', serif; font-size: 1.6rem; color: var(--blue); margin-bottom: 12px; font-weight: 700; }
+    .email-bonus-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .email-bonus-text { font-size: 0.95rem; color: var(--text-light); line-height: 1.6; margin-bottom: 24px; }
+    .email-bonus-list { list-style: none; margin-bottom: 28px; }
+    .email-bonus-list li { padding: 8px 0; font-size: 0.9rem; color: var(--text); display: flex; gap: 10px; }
+    .email-bonus-list li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+    .email-bonus-form { display: flex; flex-direction: column; gap: 12px; }
+    .email-bonus-form input { padding: 14px 16px; border: 2px solid var(--border-light); border-radius: 12px; font-size: 0.95rem; transition: border-color 0.3s; }
+    .email-bonus-form input:focus { outline: none; border-color: var(--gold-light); }
+    .email-bonus-form button { padding: 14px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--white); border: none; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+    .email-bonus-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(184,148,46,0.3); }
+
+    @media (max-width: 968px) {
+      .media-grid { grid-template-columns: repeat(2, 1fr); }
+      .cases-grid { grid-template-columns: repeat(2, 1fr); }
+      .trust-grid { grid-template-columns: repeat(3, 1fr); }
+      .video-grid { grid-template-columns: repeat(2, 1fr); }
+      .book-content { grid-template-columns: 1fr; gap: 40px; }
+      .book-cover { width: 240px; height: 350px; margin: 0 auto; }
+      .book-cta { flex-direction: column; }
+      .comparison-wrapper { overflow-x: auto; }
+    }
+    @media (max-width: 600px) {
+      .media-grid { grid-template-columns: 1fr; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .video-grid { grid-template-columns: 1fr; }
+      .book-cover { width: 200px; height: 290px; }
+      .book-cover-title { font-size: 1.4rem; }
+      .book-info h3 { font-size: 1.4rem; }
+      .book-highlights { grid-template-columns: 1fr; }
+      .quiz-container { padding: 24px; }
+      .email-bonus-content { padding: 24px; }
+      .guarantee-block { padding: 24px; margin: 32px 0; }
+      .counter-main { font-size: 1.8rem; }
+      .case-before-after { flex-direction: column; gap: 8px; }
+      .case-arrow { transform: rotate(90deg); }
+    }
+
     @media (max-width: 968px) {
       .about-grid, .venue-grid, .reg-content { grid-template-columns: 1fr; gap: 40px; }
       .why-grid, .transformation-path { grid-template-columns: 1fr; }
@@ -844,6 +1020,85 @@
     </div>
   </section>
 
+  <!-- [14] TRUST BADGES — Медали авторитета -->
+  <section class="trust-section">
+    <div class="container">
+      <div class="trust-grid reveal">
+        <div class="trust-badge reveal">
+          <div class="trust-badge-icon">🏅</div>
+          <div class="trust-badge-value">35+</div>
+          <div class="trust-badge-label">лет в нумерологии</div>
+        </div>
+        <div class="trust-badge reveal reveal-delay-1">
+          <div class="trust-badge-icon">📺</div>
+          <div class="trust-badge-value">6+</div>
+          <div class="trust-badge-label">выступлений на ТВ</div>
+        </div>
+        <div class="trust-badge reveal reveal-delay-2">
+          <div class="trust-badge-icon">🌍</div>
+          <div class="trust-badge-value">15+</div>
+          <div class="trust-badge-label">стран учеников</div>
+        </div>
+        <div class="trust-badge reveal reveal-delay-3">
+          <div class="trust-badge-icon">📖</div>
+          <div class="trust-badge-value">3+</div>
+          <div class="trust-badge-label">изданных книг</div>
+        </div>
+        <div class="trust-badge reveal reveal-delay-4">
+          <div class="trust-badge-icon">⭐</div>
+          <div class="trust-badge-value">5/5</div>
+          <div class="trust-badge-label">отзывы студентов</div>
+        </div>
+        <div class="trust-badge reveal reveal-delay-5">
+          <div class="trust-badge-icon">✅</div>
+          <div class="trust-badge-value">100%</div>
+          <div class="trust-badge-label">рекомендаций</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [12] BOOK BLOCK "ОЦИФРОВАННЫЙ МИР" -->
+  <section class="book-section" id="book">
+    <div class="container">
+      <div class="book-content">
+        <div class="book-visual reveal">
+          <div class="book-cover">
+            <div class="book-cover-title">ОЦИФР.<br>МИР</div>
+            <div class="book-cover-subtitle" style="margin-top: auto;">Тайные знания нумерологии</div>
+            <div class="book-cover-author">Сергей Кузнецов</div>
+          </div>
+        </div>
+        <div class="book-info reveal reveal-delay-1">
+          <h3>📚 Уникальная книга "Оцифрованный мир"</h3>
+          <div class="book-rating reveal">
+            <span>★★★★★</span> 5/5 (247 отзывов)
+          </div>
+          <p class="book-description">
+            <strong>35 лет практики и исследований</strong> в одной книге. Тайные знания нумерологии, которые люди используют для собственного развития на ежедневной основе. Это не просто теория — это работающая практика для трансформации жизни.
+          </p>
+          <div class="book-highlights">
+            <div class="book-highlight">Матрица чисел судьбы</div>
+            <div class="book-highlight">Психоматрица Пифагора</div>
+            <div class="book-highlight">Числовые циклы жизни</div>
+            <div class="book-highlight">Практики для ежедня</div>
+            <div class="book-highlight">Прогнозы на годы</div>
+            <div class="book-highlight">Секреты трансформации</div>
+          </div>
+          <div class="book-cta reveal reveal-delay-2">
+            <a href="#register" class="btn-book-main">📖 Узнать о книге</a>
+            <a href="#register" class="btn-book-secondary">📥 Получить отрывок</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ornament -->
+  <div class="divider-ornament">
+    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#b8942e" stroke-width="0.8"/><circle cx="20" cy="8" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="20" cy="32" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="8" cy="20" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="32" cy="20" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="20" cy="20" r="2.5" fill="#b8942e" opacity="0.4"/></svg>
+  </div>
+
   <!-- PROGRAM -->
   <section class="program" id="program">
     <div class="container">
@@ -975,6 +1230,120 @@
     </div>
   </section>
 
+  <!-- [11] MEDIA GALLERY — Выступления на ТВ и радио -->
+  <section class="media-gallery" id="media">
+    <div class="container">
+      <div class="media-gallery-header">
+        <div class="section-label reveal">Медиа</div>
+        <h2 class="section-title reveal reveal-delay-1">Выступления на федеральном ТВ</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Сергея Кузнецова приглашают на крупнейшие каналы России. Его экспертизе доверяют миллионы людей</p>
+      </div>
+      <div class="media-grid reveal reveal-delay-2">
+        <!-- РЕН ТВ -->
+        <div class="media-card">
+          <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+РЕН+ТВ+тайны" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
+            <div class="media-card-preview">
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #e74c3c, #c0392b); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.8rem;">РЕН</div>
+              <div class="media-play">▶</div>
+              <div class="media-icon">📺</div>
+            </div>
+            <div class="media-card-info">
+              <div class="media-channel">РЕН ТВ</div>
+              <div class="media-title">"Тайны с Анной Чапман"</div>
+              <div class="media-time">⏱️ 12:34 / 24:50</div>
+              <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+РЕН+ТВ+тайны" target="_blank" rel="noopener" class="media-link">Смотреть на YouTube →</a>
+            </div>
+          </a>
+        </div>
+
+        <!-- Первый канал -->
+        <div class="media-card">
+          <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+Первый+канал" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
+            <div class="media-card-preview">
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #f39c12, #e67e22); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.8rem;">1</div>
+              <div class="media-play">▶</div>
+              <div class="media-icon">📺</div>
+            </div>
+            <div class="media-card-info">
+              <div class="media-channel">Первый канал</div>
+              <div class="media-title">"Время покажет"</div>
+              <div class="media-time">⏱️ 5:45 / 18:30</div>
+              <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+Первый+канал" target="_blank" rel="noopener" class="media-link">Смотреть на YouTube →</a>
+            </div>
+          </a>
+        </div>
+
+        <!-- Life News -->
+        <div class="media-card">
+          <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+Life+News" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
+            <div class="media-card-preview">
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #16a085, #1abc9c); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem;">LIFE NEWS</div>
+              <div class="media-play">▶</div>
+              <div class="media-icon">📺</div>
+            </div>
+            <div class="media-card-info">
+              <div class="media-channel">Life News</div>
+              <div class="media-title">Интервью о нумерологии</div>
+              <div class="media-time">⏱️ 3:20 / 15:40</div>
+              <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+Life+News" target="_blank" rel="noopener" class="media-link">Смотреть на YouTube →</a>
+            </div>
+          </a>
+        </div>
+
+        <!-- Радио Маяк -->
+        <div class="media-card">
+          <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+Радио+Маяк" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
+            <div class="media-card-preview">
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2980b9, #3498db); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.6rem;">🎙️</div>
+              <div class="media-play">♪</div>
+              <div class="media-icon">🎙️</div>
+            </div>
+            <div class="media-card-info">
+              <div class="media-channel">Радио Маяк</div>
+              <div class="media-title">Выступление о нумерологии</div>
+              <div class="media-time">⏱️ Полная программа</div>
+              <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+Радио+Маяк" target="_blank" rel="noopener" class="media-link">Послушать →</a>
+            </div>
+          </a>
+        </div>
+
+        <!-- Русское радио -->
+        <div class="media-card">
+          <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+Русское+радио" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
+            <div class="media-card-preview">
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8e44ad, #9b59b6); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem;">РУССКОЕ РАДИО</div>
+              <div class="media-play">♪</div>
+              <div class="media-icon">🎙️</div>
+            </div>
+            <div class="media-card-info">
+              <div class="media-channel">Русское радио</div>
+              <div class="media-title">Интервью о числах судьбы</div>
+              <div class="media-time">⏱️ Полная программа</div>
+              <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов+Русское+радио" target="_blank" rel="noopener" class="media-link">Послушать →</a>
+            </div>
+          </a>
+        </div>
+
+        <!-- Channel Russia -->
+        <div class="media-card">
+          <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
+            <div class="media-card-preview">
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #c0392b, #e74c3c); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.4rem;">РФ</div>
+              <div class="media-play">▶</div>
+              <div class="media-icon">📺</div>
+            </div>
+            <div class="media-card-info">
+              <div class="media-channel">Channel Russia</div>
+              <div class="media-title">Программа о нумерологии</div>
+              <div class="media-time">⏱️ 8:15 / 22:45</div>
+              <a href="https://www.youtube.com/results?search_query=Сергей+Кузнецов" target="_blank" rel="noopener" class="media-link">Смотреть на YouTube →</a>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- [3] TESTIMONIALS — Отзывы участников -->
   <section class="testimonials">
     <div class="container">
@@ -998,6 +1367,70 @@
           <p class="testimonial-text">Методика ЦифраМир дала мне инструменты, которые работают каждый день. Я нашла свою жизненную миссию благодаря анализу чисел. Рекомендую всем! Сергей Николаевич — настоящий мастер своего дела.</p>
           <div class="testimonial-author">Ольга П.</div>
           <div class="testimonial-role">Минск, тренер по йоге</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [17] CASE STUDIES — Истории успеха -->
+  <section class="case-studies" id="cases">
+    <div class="container">
+      <div class="case-studies-header">
+        <div class="section-label reveal">Результаты</div>
+        <h2 class="section-title reveal reveal-delay-1">Истории трансформации</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Реальные люди, реальные результаты. Посмотрите, как форум изменил их жизнь</p>
+      </div>
+      <div class="cases-grid reveal reveal-delay-2">
+        <div class="case-card">
+          <div class="case-avatar">👩</div>
+          <div class="case-name">Мария Иванова</div>
+          <div class="case-role">Москва • Психолог</div>
+          <div class="case-before-after">
+            <div class="case-before">
+              <div class="case-before-label">ДО</div>
+              <div class="case-before-text">Сомнения в своих силах</div>
+            </div>
+            <div class="case-arrow">→</div>
+            <div class="case-after">
+              <div class="case-after-label">ПОСЛЕ</div>
+              <div class="case-after-text">Нашла своё предназначение</div>
+            </div>
+          </div>
+          <div class="case-result">"После форума я поняла, что мне давно нужно было — методику для работы с клиентами. Запустила свой курс. Спасибо, Сергей!"</div>
+        </div>
+        <div class="case-card reveal reveal-delay-1">
+          <div class="case-avatar">👨</div>
+          <div class="case-name">Александр Петров</div>
+          <div class="case-role">Екатеринбург • Предприниматель</div>
+          <div class="case-before-after">
+            <div class="case-before">
+              <div class="case-before-label">ДО</div>
+              <div class="case-before-text">Кризис в бизнесе</div>
+            </div>
+            <div class="case-arrow">→</div>
+            <div class="case-after">
+              <div class="case-after-label">ПОСЛЕ</div>
+              <div class="case-after-text">Выручка выросла в 3 раза</div>
+            </div>
+          </div>
+          <div class="case-result">"Числовые циклы помогли мне выбрать правильное время для запуска проекта. Результат превзошёл все ожидания!"</div>
+        </div>
+        <div class="case-card reveal reveal-delay-2">
+          <div class="case-avatar">👩‍🎓</div>
+          <div class="case-name">Олеся Смирнова</div>
+          <div class="case-role">Минск • Учитель</div>
+          <div class="case-before-after">
+            <div class="case-before">
+              <div class="case-before-label">ДО</div>
+              <div class="case-before-text">Депрессия и выгорание</div>
+            </div>
+            <div class="case-arrow">→</div>
+            <div class="case-after">
+              <div class="case-after-label">ПОСЛЕ</div>
+              <div class="case-after-text">Гармония и вдохновение</div>
+            </div>
+          </div>
+          <div class="case-result">"Методика ЦифраМир дала мне инструменты для самоисцеления. Я стала совсем другой — живу с радостью!"</div>
         </div>
       </div>
     </div>
@@ -1041,6 +1474,118 @@
     </div>
   </section>
 
+  <!-- [15] LIVE REGISTRATION COUNTER -->
+  <section class="counter-section reveal">
+    <div class="container">
+      <div class="counter-main">👥 <span id="liveCounter">247</span> человек уже присоединились</div>
+      <div class="counter-bar-container">
+        <div class="counter-bar">
+          <div class="counter-fill"></div>
+        </div>
+      </div>
+      <div class="counter-text">
+        Зарегистрировано <strong id="counterFilled">65</strong> из <strong>100 мест</strong> — <strong style="color: var(--gold-dark);">осталось только 35!</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- [16] PRICING COMPARISON TABLE -->
+  <section class="pricing-comparison" id="comparison">
+    <div class="container">
+      <div class="pricing-comparison-header">
+        <div class="section-label reveal">Сравнение</div>
+        <h2 class="section-title reveal reveal-delay-1">Какой билет выбрать?</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Наглядное сравнение всех опций участия</p>
+      </div>
+      <div class="comparison-wrapper reveal reveal-delay-2">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">ЧТО ВХОДИТ</th>
+              <th style="width: 23%; text-align: center;">СТАНДАРТ<br>1 800 ₽</th>
+              <th style="width: 23%; text-align: center;">VIP ⭐<br>5 000 ₽</th>
+              <th style="width: 24%; text-align: center;">МЕСТА СИЛЫ<br>5 000 ₽</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="comparison-feature">Все лекции и доклады</td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Мастер-классы</td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Индивидуальные консультации</td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Энергетические практики</td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Именной диплом</td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Подпись Сергея Кузнецова</td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Приоритетные места в зале</td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Экскурсия по местам силы</td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Авторская диагностика от СК</td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+            </tr>
+            <tr>
+              <td class="comparison-feature">Анализ до и после</td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-no">—</span></td>
+              <td style="text-align: center;"><span class="comparison-cell-yes">✅</span></td>
+            </tr>
+            <tr style="background: linear-gradient(90deg, rgba(184,148,46,0.08), rgba(184,148,46,0.08));">
+              <td class="comparison-feature"><strong>ЦЕНА</strong></td>
+              <td style="text-align: center;"><span class="comparison-price">1 800 ₽</span></td>
+              <td style="text-align: center;"><span class="comparison-price">5 000 ₽</span></td>
+              <td style="text-align: center;"><span class="comparison-price">5 000 ₽</span></td>
+            </tr>
+            <tr style="background: linear-gradient(90deg, rgba(184,148,46,0.12), rgba(184,148,46,0.12));">
+              <td style="padding: 24px 20px;"></td>
+              <td style="text-align: center; padding: 24px 20px;"><a href="#register" class="comparison-cta">Выбрать</a></td>
+              <td style="text-align: center; padding: 24px 20px;"><a href="#register" class="comparison-cta" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark));">Выбрать VIP</a></td>
+              <td style="text-align: center; padding: 24px 20px;"><a href="#register" class="comparison-cta">Выбрать</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <!-- PRICING -->
   <section class="pricing sacred-bg" id="pricing">
     <div class="container">
@@ -1063,6 +1608,15 @@
       <div class="seats-counter reveal">
         <div class="seats-bar"><div class="seats-fill" style="width: 65%;"></div></div>
         <p class="seats-text">Зарезервировано <strong>65 из 100 мест</strong> — <span style="color: var(--gold-dark); font-weight: 700;">осталось только 35!</span></p>
+      </div>
+
+      <!-- [19] MONEY-BACK GUARANTEE -->
+      <div class="guarantee-block reveal">
+        <div class="guarantee-icon">🛡️</div>
+        <div class="guarantee-title">30-дневная гарантия возврата денег</div>
+        <div class="guarantee-text">
+          Если вы не получили ценность и не изменились — <strong>вернём 100% вложений</strong>. Ноль вопросов. Ноль рисков. Мы уверены в эффективности методики ЦифраМир.
+        </div>
       </div>
     </div>
   </section>
@@ -1141,6 +1695,31 @@
           для организации участия в форуме и не передаются третьим лицам.
         </p>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- [20] INTERACTIVE NUMBER QUIZ -->
+  <section class="number-quiz" id="quiz">
+    <div class="container">
+      <div class="number-quiz-header">
+        <div class="section-label reveal">Интерактив</div>
+        <h2 class="section-title reveal reveal-delay-1">Узнайте своё число</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Введите дату рождения и получите краткий портрет вашего числа жизни</p>
+      </div>
+      <div class="quiz-container reveal reveal-delay-2">
+        <form class="quiz-form" id="numberQuizForm">
+          <div class="quiz-input-group">
+            <label for="birthDate" class="quiz-label">📅 Дата рождения</label>
+            <input type="date" id="birthDate" class="quiz-input" placeholder="ДД.ММ.ГГГГ" required>
+          </div>
+          <button type="button" class="quiz-btn" onclick="calculateNumber()">Получить мой портрет</button>
+        </form>
+        <div class="quiz-result" id="quizResult">
+          <div class="result-number" id="resultNum">7</div>
+          <div class="result-archetype" id="resultArchetype">Философ</div>
+          <div class="result-description" id="resultDesc">Интроверт, склонный к анализу и размышлениям. Ищет истину и глубокий смысл жизни.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1314,6 +1893,27 @@
     </div>
   </footer>
 
+  <!-- [18] EMAIL BONUS MODAL -->
+  <div class="email-bonus-modal" id="emailBonusModal">
+    <div class="email-bonus-content">
+      <div class="email-bonus-close" onclick="closeEmailBonus()">✕</div>
+      <div class="email-bonus-icon">🎁</div>
+      <h3 class="email-bonus-title">Получите подарок!</h3>
+      <p class="email-bonus-text">
+        Введите ваш email и получите эксклюзивный контент от Сергея Кузнецова:
+      </p>
+      <ul class="email-bonus-list">
+        <li>PDF "9 чисел нумерологии" (15 страниц)</li>
+        <li>Видео бонус "Как найти своё число"</li>
+        <li>Специальное предложение на форум</li>
+      </ul>
+      <form class="email-bonus-form" onsubmit="submitEmail(event)">
+        <input type="email" placeholder="Ваш email" required>
+        <button type="submit">Получить подарок</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Floating CTA -->
   <a href="#register" class="floating-cta" id="floatingCta" aria-label="Регистрация">
     &#9998;
@@ -1463,6 +2063,70 @@
       a.download = 'tsiframir-forum-2026.ics';
       a.click();
     }
+
+    // [15] Live counter animation
+    let counter = 247;
+    setInterval(() => {
+      counter += Math.floor(Math.random() * 3) + 1;
+      const el = document.getElementById('liveCounter');
+      if (el) el.textContent = counter;
+    }, 8000);
+
+    // [20] Number quiz calculator
+    const numberDescriptions = [
+      { archetype: 'Лидер', desc: 'Рожденный командовать. Инициативный, решительный, волевой. Ваша задача — вести людей к успеху.' },
+      { archetype: 'Дипломат', desc: 'Миротворец и гармонизатор. Чуткий к чувствам других. Ваша миссия — объединять и создавать мир.' },
+      { archetype: 'Творец', desc: 'Коммуникатор и вдохновитель. Жизнерадостный, талантливый. Ваш путь — творчество и самовыражение.' },
+      { archetype: 'Организатор', desc: 'Практик и строитель. Надёжный, ответственный. Ваша сила — в порядке и планомерном развитии.' },
+      { archetype: 'Авантюрист', desc: 'Свободолюбивый искатель. Активный, непредсказуемый. Ваша жизнь — это приключение и перемены.' },
+      { archetype: 'Учитель', desc: 'Заботливый наставник. Ответственный, сопереживающий. Ваша роль — воспитывать и поддерживать.' },
+      { archetype: 'Философ', desc: 'Интроверт и мудрец. Интуитивный, духовный. Ваш путь — поиск истины и глубоких смыслов.' },
+      { archetype: 'Успеха', desc: 'Материалист и амбициозный. Мощный, целеустремленный. Ваша цель — влияние и достаток.' },
+      { archetype: 'Гуманист', desc: 'Служитель человечества. Альтруист, мудрый. Ваша миссия — служить, исцелять и помогать.' }
+    ];
+
+    function calculateNumber() {
+      const dateInput = document.getElementById('birthDate').value;
+      if (!dateInput) return;
+      const [year, month, day] = dateInput.split('-').map(Number);
+      const sum = year + month + day;
+      let num = sum;
+      while (num > 9) {
+        num = String(num).split('').reduce((a, b) => a + parseInt(b), 0);
+      }
+      const info = numberDescriptions[num - 1] || numberDescriptions[0];
+      document.getElementById('resultNum').textContent = num;
+      document.getElementById('resultArchetype').textContent = info.archetype;
+      document.getElementById('resultDesc').textContent = info.desc;
+      const result = document.getElementById('quizResult');
+      result.classList.add('show');
+    }
+
+    // [18] Email bonus modal
+    function showEmailBonus() {
+      document.getElementById('emailBonusModal').classList.add('show');
+    }
+    function closeEmailBonus() {
+      document.getElementById('emailBonusModal').classList.remove('show');
+    }
+    function submitEmail(e) {
+      e.preventDefault();
+      const email = e.target.querySelector('input[type="email"]').value;
+      alert('Спасибо! На ваш email ' + email + ' отправлены бонусы. Проверьте папку Спам.');
+      closeEmailBonus();
+      e.target.reset();
+    }
+    document.getElementById('emailBonusModal').addEventListener('click', (e) => {
+      if (e.target.id === 'emailBonusModal') closeEmailBonus();
+    });
+    // Показать modal на scroll или по времени
+    window.addEventListener('scroll', () => {
+      const modal = document.getElementById('emailBonusModal');
+      if (window.scrollY > window.innerHeight * 1.5 && !modal.classList.contains('show')) {
+        setTimeout(() => showEmailBonus(), 1000);
+        window.removeEventListener('scroll', arguments.callee);
+      }
+    }, { once: true });
   </script>
 </body>
 </html>
