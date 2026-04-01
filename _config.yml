@@ -1,0 +1,7 @@
+# GitHub Pages configuration
+baseurl: ""
+url: "https://tsiframir.ru"
+enforce_ssl: true
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
