@@ -645,6 +645,157 @@
     .book-card:hover .book-card-image img { transform: scale(1.05); }
 
     .book-card-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+
+    /* ===== DIGITAL CARDS SECTION ===== */
+    .digital-cards-section { padding: var(--section-pad) 0; background: linear-gradient(135deg, rgba(30,58,95,0.04), rgba(240,239,248,0.3)); position: relative; }
+    .digital-cards-section::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -150px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(212,184,90,0.08), transparent 70%);
+      border-radius: 50%;
+    }
+
+    .cards-header { text-align: center; margin-bottom: 64px; position: relative; z-index: 1; }
+    .cards-header .section-title { color: var(--blue); margin-bottom: 20px; }
+    .cards-header .section-title .highlight { color: var(--gold); }
+    .cards-header .section-subtitle { max-width: 600px; margin: 0 auto; font-size: 1.05rem; line-height: 1.7; }
+
+    .cards-content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-bottom: 80px; position: relative; z-index: 1; }
+
+    .cards-gallery { display: flex; flex-direction: column; gap: 20px; }
+    .cards-gallery-main { display: flex; flex-direction: column; gap: 20px; }
+
+    .card-large figure, .card-secondary figure { margin: 0; }
+    .card-large img, .card-secondary img {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(30,58,95,0.15);
+      display: block;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+    }
+    .card-large img:hover, .card-secondary img:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 80px rgba(30,58,95,0.25);
+    }
+
+    .card-large figcaption, .card-secondary figcaption {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-style: italic;
+      text-align: center;
+    }
+
+    .cards-text h3 { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+    .cards-text p { color: var(--text-light); line-height: 1.8; margin-bottom: 16px; font-size: 0.95rem; }
+
+    .cards-benefits {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0;
+    }
+    .cards-benefits li {
+      padding-left: 28px;
+      position: relative;
+      color: var(--text-light);
+      margin-bottom: 12px;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .cards-benefits li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .cards-applications {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .app-card {
+      background: var(--white);
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+      text-align: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .app-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(184,148,46,0.12);
+      border-color: var(--gold-light);
+    }
+
+    .app-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .app-card h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+    .app-card p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .cards-cta {
+      background: rgba(232,240,248,0.5);
+      padding: 48px;
+      border-radius: 20px;
+      border: 2px solid rgba(184,148,46,0.2);
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 14px 40px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 12px 32px rgba(184,148,46,0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 968px) {
+      .cards-content-grid { grid-template-columns: 1fr; gap: 40px; }
+      .cards-applications { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    }
+    @media (max-width: 600px) {
+      .cards-header .section-title { font-size: 1.6rem; }
+      .cards-content-grid { gap: 30px; }
+      .cards-text h3 { font-size: 1.1rem; }
+      .cards-text p { font-size: 0.9rem; }
+      .app-card { padding: 24px; }
+      .cards-applications { grid-template-columns: 1fr; }
+      .cards-cta { padding: 32px 24px; }
+    }
     .book-card h3 { font-family: 'Cinzel', serif; font-size: 1.25rem; font-weight: 700; color: var(--blue); margin-bottom: 16px; line-height: 1.4; }
     .book-card-description { font-size: 0.95rem; color: var(--text-light); line-height: 1.7; margin-bottom: 20px; flex: 1; }
 
@@ -1212,6 +1363,115 @@
             <a href="#register" class="btn-book-main">📖 Подробнее</a>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ornament -->
+  <div class="divider-ornament">
+    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#b8942e" stroke-width="0.8"/><circle cx="20" cy="8" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="20" cy="32" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="8" cy="20" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="32" cy="20" r="12" stroke="#b8942e" stroke-width="0.3" fill="none"/><circle cx="20" cy="20" r="2.5" fill="#b8942e" opacity="0.4"/></svg>
+  </div>
+
+  <!-- [13] DIGITAL CARDS SECTION -->
+  <section class="digital-cards-section" id="digital-cards">
+    <div class="container">
+      <!-- Header -->
+      <div class="cards-header reveal">
+        <div class="section-label">Практические инструменты</div>
+        <h2 class="section-title">Цифровые карты<br><span class="highlight">как инструмент намерения</span></h2>
+        <p class="section-subtitle">Используйте числовые матрицы для внутренней фокусировки и активации личного потенциала</p>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="cards-content-grid">
+        <!-- Left: Cards Gallery -->
+        <div class="cards-gallery reveal">
+          <div class="cards-gallery-main">
+            <figure class="card-large">
+              <img src="img/cards/1-digital-cards.jpg" alt="Набор цифровых карт с числовыми матрицами и сакральными символами" loading="lazy">
+              <figcaption>Цифровые карты для работы с различными сферами жизни</figcaption>
+            </figure>
+            <figure class="card-secondary">
+              <img src="img/cards/2-digital-cards.jpg" alt="Физический набор цифровых карт для практики и консультаций" loading="lazy">
+              <figcaption>Полный набор для личной практики и глубокого анализа</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Right: Text Content -->
+        <div class="cards-text reveal reveal-delay-1">
+          <h3>Что такое цифровые карты</h3>
+          <p>
+            Цифровые карты — это инструмент внутренней настройки через числовые алгоритмы, символические матрицы и смысловые коды. В основе карт лежат авторские цифровые системы, связанные с числом Пи, последовательностями Фибоначчи и сакральными значениями цифр 1–9.
+          </p>
+
+          <h3 style="margin-top: 24px;">Зачем они нужны</h3>
+          <p>
+            Карты используются как практика <strong>концентрации, осознанности и личной настройки</strong>. Когда человеку важно:
+          </p>
+          <ul class="cards-benefits">
+            <li>Сосредоточиться на конкретной жизненной сфере</li>
+            <li>Усилить личное намерение и внутренний фокус</li>
+            <li>Активировать свои ресурсы в нужном направлении</li>
+            <li>Провести глубокую самодиагностику и анализ</li>
+          </ul>
+
+          <h3 style="margin-top: 24px;">Как это работает</h3>
+          <p>
+            Человек выбирает карту по интересующей его сфере жизни, изучает её числовую структуру, символику и рекомендации. Карта становится точкой фокуса для медитации, размышления, планирования или личной практики. Через работу с числами и образами активируется внимание и формируется осознанное намерение.
+          </p>
+        </div>
+      </div>
+
+      <!-- Applications Grid -->
+      <div class="cards-applications reveal" style="margin-top: 60px;">
+        <h3 style="width: 100%; text-align: center; font-size: 1.3rem; margin-bottom: 40px;">Направления применения</h3>
+
+        <div class="app-card">
+          <div class="app-icon">💰</div>
+          <h4>Финансы и развитие</h4>
+          <p>Активируйте смысловые коды для привлечения финансовых возможностей, развития навыков и успеха в бизнесе.</p>
+        </div>
+
+        <div class="app-card">
+          <div class="app-icon">❤️</div>
+          <h4>Любовь и отношения</h4>
+          <p>Работайте с внутренними программами привлечения, гармонии в паре, глубины чувств и взаимного понимания.</p>
+        </div>
+
+        <div class="app-card">
+          <div class="app-icon">🌿</div>
+          <h4>Здоровье и баланс</h4>
+          <p>Используйте карты для фокусировки на физическом и эмоциональном здоровье, внутреннем равновесии и восстановлении.</p>
+        </div>
+
+        <div class="app-card">
+          <div class="app-icon">✨</div>
+          <h4>Удача и успех</h4>
+          <p>Активируйте числовые коды удачи, реализации целей, личной силы и раскрытия собственного потенциала.</p>
+        </div>
+
+        <div class="app-card">
+          <div class="app-icon">🚀</div>
+          <h4>Личное развитие</h4>
+          <p>Ведите глубокую работу над собой через анализ своих числовых кодов, паттернов и возможностей роста.</p>
+        </div>
+
+        <div class="app-card">
+          <div class="app-icon">🧘</div>
+          <h4>Духовная практика</h4>
+          <p>Используйте карты как инструмент медитации, контемпляции и связи с более глубокими смыслами жизни.</p>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="cards-cta reveal" style="margin-top: 60px; text-align: center;">
+        <p style="font-size: 1.05rem; color: var(--text-light); margin-bottom: 28px; max-width: 700px; margin-left: auto; margin-right: auto;">
+          Цифровые карты — это не просто красивые изображения, а <strong>работающий инструмент</strong> для людей, которые ценят глубину, смыслы и осознанный подход к своей жизни.
+        </p>
+        <a href="#register" class="btn-primary" style="display: inline-block; padding: 14px 36px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: white; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.3s;">
+          Узнать больше на форуме
+        </a>
       </div>
     </div>
   </section>
