@@ -678,7 +678,10 @@ const CalculatorCore = (() => {
   const buildLifeCyclesTrace = (day, month, year, frequency, total) => {
     const trace = [];
     trace.push(`Дата: ${day}.${month}.${year}`);
-    trace.push(`Все цифры: ${[...day, ...month, ...year].join(' + ')}`);
+
+    // Properly split all digits
+    const allDigitsStr = (day + month + year).split('').join(' + ');
+    trace.push(`Все цифры: ${allDigitsStr}`);
     trace.push(`Всего цифр: <span class="trace-highlight">${total}</span> (столько жизней прожито)`);
 
     const freq = [];
