@@ -408,10 +408,233 @@ const CalculatorUI = (() => {
   };
 
   /**
+   * Render local interpretation with AI button
+   */
+  const renderLocalInterpretation = (container, result) => {
+    const num = result.output.secondary;
+    const interp = INTERPRETATIONS_DB[num] || {};
+
+    const html = `
+      <div class="result-panel">
+        <div class="result-header">
+          <h3>📊 Ваш код: ${result.output.primary}${result.output.secondary !== result.output.primary ? ` → ${result.output.secondary}` : ''}</h3>
+        </div>
+
+        <!-- ОСНОВНОЙ АНАЛИЗ -->
+        <div class="interpretation-sections">
+          <section class="interp-section">
+            <h4>🔮 Значение</h4>
+            <p class="meaning-highlight">${result.output.meaning}</p>
+            <p>${interp.description || 'Это число содержит глубокую энергию и множество граней для исследования.'}</p>
+          </section>
+
+          ${interp.psychology ? `
+            <section class="interp-section">
+              <h4>💫 Психологический портрет</h4>
+              <div class="two-columns">
+                <div>
+                  <strong>✨ Сильные стороны:</strong>
+                  <ul>
+                    ${(interp.psychology.strengths || []).map(s => `<li>${s}</li>`).join('')}
+                  </ul>
+                </div>
+                <div>
+                  <strong>🌱 Развитие:</strong>
+                  <ul>
+                    ${(interp.psychology.challenges || []).map(c => `<li>${c}</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
+            </section>
+          ` : ''}
+
+          ${interp.lifeLesson ? `
+            <section class="interp-section">
+              <h4>🎯 Жизненный урок</h4>
+              <p><em>"${interp.lifeLesson}"</em></p>
+            </section>
+          ` : ''}
+
+          ${interp.career ? `
+            <section class="interp-section">
+              <h4>🏢 Карьера и вызов</h4>
+              <ul>
+                ${interp.career.map(c => `<li>${c}</li>`).join('')}
+              </ul>
+            </section>
+          ` : ''}
+
+          ${interp.relationships ? `
+            <section class="interp-section">
+              <h4>❤️ В отношениях</h4>
+              <p>${interp.relationships}</p>
+            </section>
+          ` : ''}
+
+          <!-- AI АНАЛИЗ КНОПКА -->
+          <section class="interp-section ai-button-section">
+            <button class="btn btn-ai" data-number="${num}" data-type="${result.method}">
+              ✨ Получить профессиональный AI анализ
+            </button>
+            <p style="font-size: 0.9rem; color: #999; margin-top: 12px; text-align: center;">
+              Персонализированный анализ на основе OpenAI ChatGPT и нумерологических принципов
+            </p>
+          </section>
+        </div>
+
+        <!-- РАСЧЁТНЫЙ ШАГ ЗА ШАГОМ -->
+        <div class="calculation-trace">
+          <details>
+            <summary>📐 Как мы считали</summary>
+            <ol class="trace-steps">
+              ${result.trace.map((step) => `<li>${step}</li>`).join('')}
+            </ol>
+          </details>
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = html;
+    attachAIButtonHandlers(container);
+  };
+
+  /**
+   * Database of interpretations (loaded from JSON)
+   */
+  let INTERPRETATIONS_DB = {};
+
+  /**
+   * Load interpretations from JSON
+   */
+  const loadInterpretations = async () => {
+    try {
+      const response = await fetch('/assets/data/numerology-system.json');
+      const data = await response.json();
+      INTERPRETATIONS_DB = data.numberInterpretations.data;
+      console.log('✓ Interpretations loaded:', Object.keys(INTERPRETATIONS_DB).length, 'numbers');
+    } catch (error) {
+      console.error('Error loading interpretations:', error);
+    }
+  };
+
+  /**
+   * Attach AI button handlers
+   */
+  const attachAIButtonHandlers = (container) => {
+    const buttons = container.querySelectorAll('.btn-ai');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const number = button.dataset.number;
+        const type = button.dataset.type;
+        console.log('AI button clicked for number:', number, 'type:', type);
+        requestAIAnalysis(number, type);
+      });
+    });
+  };
+
+  /**
+   * Request AI analysis
+   */
+  const requestAIAnalysis = async (number, calculatorType) => {
+    const button = document.querySelector(`[data-number="${number}"]`);
+    if (!button) return;
+
+    const originalText = button.textContent;
+
+    try {
+      button.disabled = true;
+      button.textContent = '⏳ Генерирую анализ... (5-10 сек)';
+      button.style.opacity = '0.6';
+
+      const response = await fetch('/api/ai-interpretation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          number: parseInt(number),
+          calculatorType: calculatorType || 'birthDate'
+        })
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        if (result.fallback) {
+          showMessage('ℹ️ ' + (result.message || 'AI анализ недоступен. Используем локальный анализ.'), 'info');
+        } else {
+          showMessage('❌ ' + (result.message || 'Ошибка при генерации анализа'), 'error');
+        }
+        return;
+      }
+
+      // Показать AI анализ
+      displayAIAnalysis(result.analysis, result.cached);
+      button.style.display = 'none';
+
+    } catch (error) {
+      console.error('Error requesting AI analysis:', error);
+      showMessage('❌ Ошибка соединения. Проверьте интернет.', 'error');
+
+    } finally {
+      button.disabled = false;
+      button.textContent = originalText;
+      button.style.opacity = '1';
+    }
+  };
+
+  /**
+   * Display AI analysis result
+   */
+  const displayAIAnalysis = (analysis, cached = false) => {
+    const resultArea = document.querySelector('.result-area');
+    const aiSection = document.createElement('div');
+    aiSection.className = 'ai-analysis-section';
+
+    // Parse markdown to HTML (simple version)
+    let htmlContent = analysis.text
+      .replace(/## /g, '<h3 style="margin-top: 20px; margin-bottom: 10px; color: var(--primary-dark); font-size: 1.1rem;">')
+      .replace(/\n\n/g, '</h3><p style="margin: 8px 0;">') + '</p>';
+
+    aiSection.innerHTML = `
+      <div class="ai-analysis-header">
+        <h3>✨ Профессиональный анализ (${cached ? 'из кэша' : 'OpenAI ChatGPT'})</h3>
+        <p style="font-size: 0.85rem; color: #999; margin: 4px 0 0 0;">На основе нумерологии и ChatGPT</p>
+      </div>
+      <div class="ai-analysis-content">
+        ${htmlContent}
+      </div>
+      <div class="ai-analysis-footer">
+        <small>🕐 ${new Date().toLocaleString('ru-RU')}</small>
+      </div>
+    `;
+
+    resultArea.appendChild(aiSection);
+    aiSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  /**
+   * Show message to user
+   */
+  const showMessage = (message, type = 'info') => {
+    const resultArea = document.querySelector('.result-area');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message message-${type}`;
+    msgDiv.textContent = message;
+    resultArea.appendChild(msgDiv);
+
+    setTimeout(() => msgDiv.remove(), 4000);
+  };
+
+  /**
    * Render result panel (handles different calculator types)
    */
   const renderResult = (container, result) => {
     const { output, trace, method } = result;
+
+    // Render local interpretation with AI button
+    renderLocalInterpretation(container, result);
+    return;
 
     let resultHTML = '<div class="result-panel">';
 
@@ -584,6 +807,9 @@ const CalculatorUI = (() => {
       console.warn('Calculator container not found');
       return;
     }
+
+    // Load interpretations from JSON
+    loadInterpretations();
 
     // Find or create elements
     const selectorContainer = container.querySelector('.module-selector') ||
