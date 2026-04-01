@@ -621,6 +621,33 @@
     .book-cta .btn-book-secondary { border: 2px solid var(--gold-light); color: var(--gold-dark); }
     .book-cta .btn-book-secondary:hover { background: rgba(184,148,46,0.08); }
 
+    /* ===== BOOKS GRID COLLECTION ===== */
+    .books-header { text-align: center; margin-bottom: 64px; position: relative; z-index: 1; }
+    .books-header h2 { font-family: 'Cinzel', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+    .books-subtitle { font-size: 1.1rem; color: var(--text-light); max-width: 700px; margin: 0 auto; line-height: 1.7; }
+
+    .books-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; position: relative; z-index: 1; }
+
+    .book-card { background: var(--white); border-radius: 16px; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1); border: 1px solid var(--border-light); display: flex; flex-direction: column; height: 100%; }
+    .book-card:hover { transform: translateY(-12px); box-shadow: 0 24px 48px rgba(184,148,46,0.2); border-color: var(--gold-light); }
+
+    .book-card-image { position: relative; width: 100%; padding-bottom: 140%; background: linear-gradient(135deg, var(--blue-pale), var(--cream-warm)); overflow: hidden; }
+    .book-card-image figure { position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: 0; padding: 0; }
+    .book-card-image img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.4s; }
+    .book-card:hover .book-card-image img { transform: scale(1.05); }
+
+    .book-card-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .book-card h3 { font-family: 'Cinzel', serif; font-size: 1.25rem; font-weight: 700; color: var(--blue); margin-bottom: 16px; line-height: 1.4; }
+    .book-card-description { font-size: 0.95rem; color: var(--text-light); line-height: 1.7; margin-bottom: 20px; flex: 1; }
+
+    .book-card-features { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+    .feature { font-size: 0.9rem; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .feature::before { content: ''; display: inline-block; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+
+    .book-card-cta { padding: 0 24px 24px 24px; }
+    .book-card-cta a { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--white); border-radius: 10px; font-weight: 600; text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; font-size: 0.95rem; }
+    .book-card-cta a:hover { box-shadow: 0 12px 28px rgba(184,148,46,0.3); transform: translateY(-2px); }
+
     /* ===== [11] MEDIA GALLERY ===== */
     .media-gallery { padding: var(--section-pad) 0; background: var(--white); }
     .media-gallery-header { text-align: center; margin-bottom: 64px; }
@@ -753,6 +780,7 @@
       .video-grid { grid-template-columns: repeat(2, 1fr); }
       .book-content { grid-template-columns: 1fr; gap: 40px; }
       .book-cta { flex-direction: column; }
+      .books-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
       .comparison-wrapper { overflow-x: auto; }
     }
     @media (max-width: 600px) {
@@ -762,6 +790,11 @@
       .video-grid { grid-template-columns: 1fr; }
       .book-info h3 { font-size: 1.4rem; }
       .book-highlights { grid-template-columns: 1fr; }
+      .books-grid { grid-template-columns: 1fr; gap: 20px; }
+      .books-header h2 { font-size: 1.6rem; }
+      .books-subtitle { font-size: 0.95rem; }
+      .book-card-content { padding: 18px; }
+      .book-card-cta { padding: 0 18px 18px 18px; }
       .quiz-container { padding: 24px; }
       .email-bonus-content { padding: 24px; }
       .guarantee-block { padding: 24px; margin: 32px 0; }
@@ -1054,56 +1087,119 @@
     </div>
   </section>
 
-  <!-- [12] BOOK BLOCK "ОЦИФРОВАННЫЙ МИР" -->
+  <!-- [12] BOOKS COLLECTION -->
   <section class="book-section" id="book">
     <div class="container">
-      <div class="book-content">
-        <div class="book-visual reveal">
-          <img src="img/book-cover.png" alt="2x Цифровая трансформация личности" style="width: 280px; height: auto; border-radius: 12px; box-shadow: 0 20px 60px rgba(184,148,46,0.3), 0 0 0 1px rgba(255,255,255,0.2); border: 2px solid var(--gold-light);">
-        </div>
-        <div class="book-info reveal reveal-delay-1">
-          <h3>📚 "2x ЦИФРОВАЯ ТРАНСФОРМАЦИЯ ЛИЧНОСТИ"</h3>
-          <div class="book-rating reveal">
-            <span>★★★★★</span> 5/5 (285 отзывов)
-          </div>
+      <div class="books-header reveal">
+        <h2>📚 Книги автора</h2>
+        <p class="books-subtitle">Полный курс нумерологии и цифрового кодирования жизни от Сергея Кузнецова</p>
+      </div>
 
-          <!-- Отрывок из книги -->
-          <div style="background: rgba(232,240,248,0.5); border-left: 4px solid var(--gold); padding: 20px; border-radius: 12px; margin: 24px 0; font-size: 0.95rem; color: var(--text-light); line-height: 1.8; font-style: italic;">
-            <strong style="color: var(--blue); display: block; margin-bottom: 12px;">💎 Отрывок из книги:</strong>
-            "Каждое число несёт в себе вибрацию Вселенной. Цифры не просто символы — они ключи к пониманию сути всего, что происходит в вашей жизни. Матрица вашего рождения содержит код здоровья, финансового благополучия, любви и предназначения. Когда вы научитесь читать этот код, жизнь перестанет быть случайностью. Она станет гармоничным танцем с законами Мироздания."
-            <div style="margin-top: 12px; font-size: 0.85rem; color: var(--gold-dark); font-weight: 600;">— Сергей Кузнецов, введение к книге</div>
+      <div class="books-grid">
+        <!-- Book 1 -->
+        <article class="book-card reveal">
+          <div class="book-card-image">
+            <figure>
+              <img src="img/books/1.jpg" alt="Оцифрованный мир: Матрица судьбы" loading="lazy">
+            </figure>
           </div>
-
-          <!-- Профессиональный текст о цифрах -->
-          <div style="background: linear-gradient(135deg, rgba(184,148,46,0.08), rgba(232,240,248,0.1)); border-radius: 12px; padding: 24px; margin-bottom: 28px;">
-            <h4 style="font-family: 'Cinzel', serif; color: var(--blue); margin-bottom: 12px; font-size: 1.1rem; font-weight: 700;">Что скрывают в себе цифры:</h4>
-            <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 16px;">
-              Цифры — это универсальный язык Вселенной, в котором зашифрована информация о всех аспектах вашего существования. Они раскрывают не только поверхностные события, но и глубинные причины того, почему в вашей жизни происходит именно то, а не другое.
-            </p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.9rem; color: var(--text);">
-              <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold);"><strong>💪 ЗДОРОВЬЕ</strong><br/>Числа показывают предрасположенности, слабые и сильные точки организма. Матрица рождения раскрывает ваши энергетические дисбалансы.</div>
-              <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold);"><strong>💰 ФИНАНСЫ</strong><br/>Цифры судьбы определяют ваш финансовый потенциал, благоприятные периоды для инвестиций, бизнеса и материального накопления.</div>
-              <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold);"><strong>❤️ ЛЮБОВЬ</strong><br/>Нумерология раскрывает глубинные потребности в отношениях, совместимость с партнёром и уроки, которые вы проходите через любовь.</div>
-              <div style="padding: 12px; background: var(--white); border-radius: 8px; border-left: 3px solid var(--gold);"><strong>🎯 СУДЬБА</strong><br/>Ваш жизненный код содержит миссию, талант и предназначение. Цифры показывают путь, который ведёт к полному раскрытию потенциала.</div>
+          <div class="book-card-content">
+            <h3>Оцифрованный мир: Матрица судьбы</h3>
+            <p class="book-card-description">Первая ступень понимания числовых закономерностей. Вы узнаете, как цифры формируют события вашей жизни, раскроете скрытые коды личности и научитесь предугадывать судьбоносные изменения. Основополагающий курс для всех, кто хочет овладеть методикой ЦифраМир.</p>
+            <div class="book-card-features">
+              <span class="feature">✓ Психоматрица Пифагора</span>
+              <span class="feature">✓ Числовые циклы</span>
+              <span class="feature">✓ Коды рождения</span>
             </div>
-            <p style="color: var(--text-light); line-height: 1.8; margin-top: 16px;">
-              <strong style="color: var(--text);">Результат применения методики ЦифраМир:</strong> вы перестаёте видеть жизнь как случайность и начинаете понимать скрытые закономерности, управляющие вашей реальностью. Это даёт полный контроль и возможность осознанно создавать желаемую жизнь.
-            </p>
           </div>
+          <div class="book-card-cta">
+            <a href="#register" class="btn-book-main">📖 Подробнее</a>
+          </div>
+        </article>
 
-          <div class="book-highlights">
-            <div class="book-highlight">Личная матрица чисел</div>
-            <div class="book-highlight">Психоматрица Пифагора</div>
-            <div class="book-highlight">Числовые циклы жизни</div>
-            <div class="book-highlight">Трансформация через цифры</div>
-            <div class="book-highlight">Прогнозы и планирование</div>
-            <div class="book-highlight">Практические инструменты</div>
+        <!-- Book 2 -->
+        <article class="book-card reveal">
+          <div class="book-card-image">
+            <figure>
+              <img src="img/books/2.jpg" alt="Цифровая трансформация личности" loading="lazy">
+            </figure>
           </div>
-          <div class="book-cta reveal reveal-delay-2">
-            <a href="#register" class="btn-book-main">📖 Узнать о книге</a>
-            <a href="#register" class="btn-book-secondary">📥 Получить отрывок</a>
+          <div class="book-card-content">
+            <h3>Цифровая трансформация личности</h3>
+            <p class="book-card-description">Самая популярная работа автора, переизданная дважды. Практическое руководство по использованию нумерологии для изменения качества жизни. Содержит пошаговые методики, реальные примеры трансформаций и упражнения для активации потенциала. Идеально для тех, кто готов действовать.</p>
+            <div class="book-card-features">
+              <span class="feature">✓ Методика трансформации</span>
+              <span class="feature">✓ Практические упражнения</span>
+              <span class="feature">✓ Реальные кейсы</span>
+            </div>
           </div>
-        </div>
+          <div class="book-card-cta">
+            <a href="#register" class="btn-book-main">📖 Подробнее</a>
+          </div>
+        </article>
+
+        <!-- Book 3 -->
+        <article class="book-card reveal">
+          <div class="book-card-image">
+            <figure>
+              <img src="img/books/3.jpg" alt="Число Пи: Точка опоры Вселенной" loading="lazy">
+            </figure>
+          </div>
+          <div class="book-card-content">
+            <h3>Число Пи: Точка опоры Вселенной</h3>
+            <p class="book-card-description">Глубокое исследование священной геометрии и фундаментальных числовых констант. Книга раскрывает связь между математикой, космосом и человеческим сознанием. Для читателей, ищущих философское понимание роли цифр в устройстве реальности.</p>
+            <div class="book-card-features">
+              <span class="feature">✓ Священная геометрия</span>
+              <span class="feature">✓ Космические законы</span>
+              <span class="feature">✓ Философия чисел</span>
+            </div>
+          </div>
+          <div class="book-card-cta">
+            <a href="#register" class="btn-book-main">📖 Подробнее</a>
+          </div>
+        </article>
+
+        <!-- Book 4 -->
+        <article class="book-card reveal">
+          <div class="book-card-image">
+            <figure>
+              <img src="img/books/4.jpg" alt="Оцифрованный экологический мир" loading="lazy">
+            </figure>
+          </div>
+          <div class="book-card-content">
+            <h3>Оцифрованный экологический мир</h3>
+            <p class="book-card-description">Уникальное исследование числовых закономерностей в природе и экологии. Автор показывает, как циклические процессы Земли подчиняются математическим законам, и как понимание этих закономерностей помогает жить в гармонии с окружающей средой. Для сознательных читателей.</p>
+            <div class="book-card-features">
+              <span class="feature">✓ Циклы природы</span>
+              <span class="feature">✓ Экоцифровое сознание</span>
+              <span class="feature">✓ Гармоничное развитие</span>
+            </div>
+          </div>
+          <div class="book-card-cta">
+            <a href="#register" class="btn-book-main">📖 Подробнее</a>
+          </div>
+        </article>
+
+        <!-- Book 5 -->
+        <article class="book-card reveal">
+          <div class="book-card-image">
+            <figure>
+              <img src="img/books/6.jpg" alt="Чувашия, Россия и мир: Сакральная геометрия" loading="lazy">
+            </figure>
+          </div>
+          <div class="book-card-content">
+            <h3>Чувашия, Россия и мир: Сакральная геометрия</h3>
+            <p class="book-card-description">Монография об архаичных символах, геометрических кодах и числовых паттернах в традиции русской и чувашской культуры. Автор раскрывает исторические и духовные смыслы, зашифрованные в графике и символике. Для глубокого понимания культурного наследия.</p>
+            <div class="book-card-features">
+              <span class="feature">✓ Древние символы</span>
+              <span class="feature">✓ Культурные коды</span>
+              <span class="feature">✓ Геометрия наследия</span>
+            </div>
+          </div>
+          <div class="book-card-cta">
+            <a href="#register" class="btn-book-main">📖 Подробнее</a>
+          </div>
+        </article>
       </div>
     </div>
   </section>
