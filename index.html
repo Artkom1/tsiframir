@@ -936,7 +936,7 @@
     .counter-bar-container { max-width: 500px; margin: 0 auto 24px; }
     .counter-bar { width: 100%; height: 16px; background: var(--cream); border-radius: 50px; overflow: hidden; border: 2px solid var(--gold-light); }
     .counter-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 50px; animation: fillProgress 2s ease; }
-    @keyframes fillProgress { from { width: 0%; } to { width: 65%; } }
+    @keyframes fillProgress { from { width: 0%; } to { width: 22%; } }
     .counter-text { font-size: 1.1rem; color: var(--text-light); }
     .counter-text strong { color: var(--gold-dark); font-weight: 700; }
 
@@ -2064,18 +2064,21 @@
     </div>
   </section>
 
-  <!-- [15] LIVE REGISTRATION COUNTER -->
+  <!-- [15] LIVE REGISTRATION COUNTER - HONEST & TRANSPARENT -->
   <section class="counter-section reveal">
     <div class="container">
-      <div class="counter-main">👥 <span id="liveCounter">247</span> человек уже присоединились</div>
+      <div class="counter-main" style="margin-bottom: 12px;">🎯 Форум ограничен <strong>200 участниками</strong></div>
       <div class="counter-bar-container">
         <div class="counter-bar">
-          <div class="counter-fill"></div>
+          <div class="counter-fill" style="width: 22%;"></div>
         </div>
       </div>
       <div class="counter-text">
-        Зарегистрировано <strong id="counterFilled">65</strong> из <strong>100 мест</strong> — <strong style="color: var(--gold-dark);">осталось только 35!</strong>
+        Зарезервировано <strong id="counterFilled">44</strong> из <strong>200 мест</strong> — <strong style="color: var(--gold-dark);">осталось <span id="counterRemaining">156</span> мест</strong>
       </div>
+      <p style="text-align: center; color: #999; font-size: 0.85rem; margin-top: 16px;">
+        ✓ Честная информация о наполнении. Форум начинается 13–14 июня 2026.
+      </p>
     </div>
   </section>
 
@@ -2668,13 +2671,9 @@
       a.click();
     }
 
-    // [15] Live counter animation
-    let counter = 247;
-    setInterval(() => {
-      counter += Math.floor(Math.random() * 3) + 1;
-      const el = document.getElementById('liveCounter');
-      if (el) el.textContent = counter;
-    }, 8000);
+    // [15] Registration counter - Static (honest, real data)
+    // Counter is now static and reflects actual registrations
+    // Updated to show 44/200 places reserved (22% fill rate)
 
     // [20] Number quiz calculator
     const numberDescriptions = [
