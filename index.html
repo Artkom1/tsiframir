@@ -153,11 +153,19 @@
     }
     .navbar .container { display: flex; justify-content: space-between; align-items: center; }
     .nav-logo {
+      display: flex; align-items: center; gap: 12px;
       font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.4rem;
       color: var(--white); text-decoration: none;
-      transition: color 0.4s; letter-spacing: 1px;
+      transition: all 0.4s; letter-spacing: 1px;
     }
     .navbar.scrolled .nav-logo { color: var(--text); }
+    .nav-logo-img {
+      width: 48px; height: 48px; border-radius: 10px;
+      object-fit: contain; background: rgba(255,255,255,0.1);
+      padding: 4px; transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+    }
+    .navbar.scrolled .nav-logo-img { background: rgba(184,148,46,0.12); }
+    .nav-logo:hover .nav-logo-img { transform: scale(1.08); background: rgba(184,148,46,0.2); }
     .nav-logo span { color: var(--gold); }
     .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
     .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.3s; }
@@ -865,7 +873,10 @@
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="container">
-      <a href="#" class="nav-logo">Цифра<span>Мир</span></a>
+      <a href="#" class="nav-logo">
+        <img src="img/logotip.jpg" alt="ЦифраМир логотип" class="nav-logo-img">
+        <span style="display: flex; gap: 2px;">Цифра<span style="color: var(--gold);">Мир</span></span>
+      </a>
       <ul class="nav-links" id="navLinks">
         <li><a href="#about">О форуме</a></li>
         <li><a href="#schedule">Расписание</a></li>
@@ -892,6 +903,7 @@
 
     <div class="hero-content">
       <div class="hero-badge reveal">I Международный форум ЦифраМир</div>
+      <img src="img/logotip.jpg" alt="ЦифраМир логотип" class="hero-logo reveal reveal-delay-1" style="width: 120px; height: 120px; border-radius: 16px; margin-bottom: 32px; object-fit: contain;">
       <h1 class="reveal reveal-delay-1">
         Цифровая<br><span class="highlight">Трансформация</span><br>Человека
       </h1>
@@ -1968,7 +1980,10 @@
       <div class="footer-content">
         <!-- Column 1: About -->
         <div class="footer-col">
-          <h4>ЦифраМир</h4>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+            <img src="img/logotip.jpg" alt="ЦифраМир логотип" style="width: 56px; height: 56px; border-radius: 10px; object-fit: contain; background: rgba(255,255,255,0.1); padding: 6px;">
+            <h4 style="margin: 0;">ЦифраМир</h4>
+          </div>
           <p style="font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.6;">I Международный нумерологический форум. Школа Сергея Кузнецова объединяет экспертов из 15+ стран для вашей трансформации.</p>
         </div>
 
