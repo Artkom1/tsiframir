@@ -408,6 +408,71 @@ const CalculatorUI = (() => {
   };
 
   /**
+   * Render word code analysis result
+   */
+  const renderWordCodeResult = (container, result) => {
+    const { primary, secondary, meaning } = result.output;
+    const interp = INTERPRETATIONS_DB[secondary] || {};
+
+    const html = `
+      <div class="result-panel">
+        <div class="result-header">
+          <h3>📝 Анализ слова</h3>
+        </div>
+
+        <!-- ОСНОВНОЙ КОД -->
+        <div class="interpretation-sections">
+          <section class="interp-section">
+            <h4>🔢 Цифровой код слова</h4>
+            <div style="display: flex; gap: 20px; align-items: center; margin: 20px 0;">
+              <div style="flex: 1;">
+                <p style="font-size: 0.9rem; color: #666; margin: 0 0 10px 0;"><strong>Слово:</strong></p>
+                <p style="font-size: 1.8rem; font-weight: bold; color: var(--gold); margin: 0;">${result.inputs.word.toUpperCase()}</p>
+              </div>
+              <div style="text-align: center; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                <p style="font-size: 0.85rem; color: #999; margin: 0 0 5px 0;">Итоговый код</p>
+                <p style="font-size: 2.5rem; font-weight: bold; color: var(--gold); margin: 0;">${secondary}</p>
+              </div>
+            </div>
+            ${primary !== secondary ? `<p style="color: #666; font-size: 0.9rem;">Промежуточный результат: <strong>${primary}</strong> → <strong>${secondary}</strong></p>` : ''}
+          </section>
+
+          <!-- ЗНАЧЕНИЕ КОДА -->
+          <section class="interp-section">
+            <h4>🔮 Значение числа ${secondary}</h4>
+            <p style="font-size: 1.1rem; font-weight: 500; color: var(--blue); margin: 15px 0;">${meaning}</p>
+            <p>${interp.description || 'Это число содержит глубокую энергию и множество граней для исследования.'}</p>
+            ${interp.lifeLesson ? `<p style="margin-top: 15px;"><em><strong>Жизненный урок:</strong> "${interp.lifeLesson}"</em></p>` : ''}
+          </section>
+
+          <!-- РАСШИРЕННЫЙ АНАЛИЗ -->
+          <section class="interp-section ai-button-section">
+            <button class="btn btn-ai" data-number="${secondary}" data-type="${result.method}">
+              ✨ Получить расширенный анализ
+            </button>
+            <p style="font-size: 0.9rem; color: #999; margin-top: 12px; text-align: center;">
+              Более подробный анализ с практическими рекомендациями
+            </p>
+          </section>
+        </div>
+
+        <!-- РАСЧЁТНЫЙ ШАГ ЗА ШАГОМ -->
+        <div class="calculation-trace">
+          <details>
+            <summary>📐 Как мы считали</summary>
+            <ol class="trace-steps">
+              ${result.trace.map((step) => `<li>${step}</li>`).join('')}
+            </ol>
+          </details>
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = html;
+    attachAIButtonHandlers(container);
+  };
+
+  /**
    * Render compatibility result
    */
   const renderCompatibilityResult = (container, result) => {
@@ -486,6 +551,12 @@ const CalculatorUI = (() => {
     // Handle compatibility results separately
     if (result.method === 'compatibility') {
       renderCompatibilityResult(container, result);
+      return;
+    }
+
+    // Handle word code analysis separately
+    if (result.method === 'wordCode') {
+      renderWordCodeResult(container, result);
       return;
     }
 
