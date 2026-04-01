@@ -1116,6 +1116,46 @@
       .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
       .hero-buttons { flex-direction: column; align-items: center; }
     }
+
+    /* Program Tabs (Phase 4.1) */
+    .program-tabs {
+      display: flex;
+      gap: 16px;
+      margin: 32px 0 40px;
+      border-bottom: 2px solid var(--border-light);
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+      position: relative;
+      bottom: -2px;
+    }
+    .tab-btn:hover {
+      color: var(--gold);
+    }
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 
   <!-- Numerology Calculator Styles -->
@@ -1357,14 +1397,36 @@
         <h2 class="section-title reveal reveal-delay-1">Что вас ждёт на форуме</h2>
         <p class="section-subtitle reveal reveal-delay-2">Два дня, наполненных знаниями, практиками и трансформацией</p>
       </div>
-      <div class="program-grid">
-        <div class="program-card reveal"><div class="program-icon">&#127891;</div><h3>Выступления экспертов</h3><p>Лекции известных российских и международных специалистов в области нумерологии, астрологии, нетрадиционной медицины и других направлений.</p></div>
-        <div class="program-card reveal reveal-delay-1"><div class="program-icon">&#128736;</div><h3>Мастер-классы</h3><p>Практические занятия от опытных мастеров. Получите инструменты, которые сможете применять в повседневной жизни уже на следующий день.</p></div>
-        <div class="program-card reveal reveal-delay-2"><div class="program-icon">&#128172;</div><h3>Консультации</h3><p>Индивидуальные консультации ведущих специалистов в разных областях на любую интересующую вас тему.</p></div>
-        <div class="program-card reveal reveal-delay-3"><div class="program-icon">&#9889;</div><h3>Энергетические практики</h3><p>Йога, цигун, космоэнергетика и другие практики для наполнения энергией и восстановления баланса.</p></div>
-        <div class="program-card reveal reveal-delay-4"><div class="program-icon">&#127961;</div><h3>Места силы Петербурга</h3><p>Эксклюзивная поездка по местам силы города с авторской диагностикой от Сергея Кузнецова &mdash; до и после экскурсии.</p></div>
-        <div class="program-card reveal"><div class="program-icon">&#129309;</div><h3>Нетворкинг</h3><p>Приятное общение и полезные знакомства среди единомышленников со всего мира.</p></div>
+
+      <!-- TAB NAVIGATION -->
+      <div class="program-tabs reveal reveal-delay-1">
+        <button class="tab-btn active" onclick="switchTab(this, 'program-schedule')">📋 Программа</button>
+        <button class="tab-btn" onclick="switchTab(this, 'program-benefits')">⭐ Преимущества</button>
       </div>
+
+      <!-- TAB 1: PROGRAM SCHEDULE -->
+      <div class="tab-content active" id="program-schedule">
+        <div class="program-grid">
+          <div class="program-card reveal"><div class="program-icon">&#127891;</div><h3>Выступления экспертов</h3><p>Лекции известных российских и международных специалистов в области нумерологии, астрологии, нетрадиционной медицины и других направлений.</p></div>
+          <div class="program-card reveal reveal-delay-1"><div class="program-icon">&#128736;</div><h3>Мастер-классы</h3><p>Практические занятия от опытных мастеров. Получите инструменты, которые сможете применять в повседневной жизни уже на следующий день.</p></div>
+          <div class="program-card reveal reveal-delay-2"><div class="program-icon">&#128172;</div><h3>Консультации</h3><p>Индивидуальные консультации ведущих специалистов в разных областях на любую интересующую вас тему.</p></div>
+          <div class="program-card reveal reveal-delay-3"><div class="program-icon">&#9889;</div><h3>Энергетические практики</h3><p>Йога, цигун, космоэнергетика и другие практики для наполнения энергией и восстановления баланса.</p></div>
+          <div class="program-card reveal reveal-delay-4"><div class="program-icon">&#127961;</div><h3>Места силы Петербурга</h3><p>Эксклюзивная поездка по местам силы города с авторской диагностикой от Сергея Кузнецова &mdash; до и после экскурсии.</p></div>
+          <div class="program-card reveal"><div class="program-icon">&#129309;</div><h3>Нетворкинг</h3><p>Приятное общение и полезные знакомства среди единомышленников со всего мира.</p></div>
+        </div>
+      </div>
+
+      <!-- TAB 2: BENEFITS (from Why Attend) -->
+      <div class="tab-content" id="program-benefits">
+        <div class="why-grid">
+          <div class="why-card reveal"><div class="why-icon">&#128218;</div><h3>Уникальные знания</h3><p>Авторские методики Сергея Кузнецова, выступления международных экспертов, инновационные подходы к диагностике и восстановлению &mdash; знания, которые невозможно получить из книг.</p></div>
+          <div class="why-card reveal reveal-delay-1"><div class="why-icon">&#10024;</div><h3>Личная трансформация</h3><p>Мастер-классы, энергетические практики, авторская диагностика и поездка по местам силы Петербурга &mdash; каждый получит конкретные инструменты для изменений.</p></div>
+          <div class="why-card reveal reveal-delay-2"><div class="why-icon">&#127760;</div><h3>Сильное окружение</h3><p>Единомышленники со всего мира, практикующие специалисты и ведущие эксперты. Связи, которые будут работать долго после форума.</p></div>
+        </div>
+      </div>
+
+      <!-- ANCHOR ALIAS FOR #why -->
+      <div id="why" style="display:none;"></div>
     </div>
   </section>
 
@@ -2040,22 +2102,6 @@
   <!-- ║  Блоки: Why Attend → Transformation Path → Books → Digital Cards     ║ -->
   <!-- ║                                                                       ║ -->
   <!-- ╚═══════════════════════════════════════════════════════════════════════╝ -->
-
-  <!-- WHY ATTEND -->
-  <section class="why-attend" id="why">
-    <div class="container">
-      <div class="why-header">
-        <div class="section-label reveal">Почему стоит участвовать</div>
-        <h2 class="section-title reveal reveal-delay-1">Три причины быть на форуме</h2>
-        <p class="section-subtitle reveal reveal-delay-2">Каждый участник уносит нечто большее, чем просто знания</p>
-      </div>
-      <div class="why-grid">
-        <div class="why-card reveal"><div class="why-icon">&#128218;</div><h3>Уникальные знания</h3><p>Авторские методики Сергея Кузнецова, выступления международных экспертов, инновационные подходы к диагностике и восстановлению &mdash; знания, которые невозможно получить из книг.</p></div>
-        <div class="why-card reveal reveal-delay-1"><div class="why-icon">&#10024;</div><h3>Личная трансформация</h3><p>Мастер-классы, энергетические практики, авторская диагностика и поездка по местам силы Петербурга &mdash; каждый получит конкретные инструменты для изменений.</p></div>
-        <div class="why-card reveal reveal-delay-2"><div class="why-icon">&#127760;</div><h3>Сильное окружение</h3><p>Единомышленники со всего мира, практикующие специалисты и ведущие эксперты. Связи, которые будут работать долго после форума.</p></div>
-      </div>
-    </div>
-  </section>
 
   <!-- [11] MEDIA GALLERY — Выступления на ТВ и радио -->
   <section class="media-gallery" id="media">
@@ -2917,6 +2963,30 @@
       console.log('  - window.testCalculator.runAll()');
       console.log('\n💡 Or use: NumerologyCalculator.Test.runAll()');
     }, 300);
+  </script>
+
+  <!-- Tab Switching (Phase 4.1) -->
+  <script>
+    function switchTab(button, tabId) {
+      // Deactivate all buttons in the same tab group
+      const tabGroup = button.parentElement;
+      tabGroup.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      // Activate clicked button
+      button.classList.add('active');
+
+      // Hide all tab contents in the same container
+      const container = button.closest('.container');
+      container.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+
+      // Show the selected tab
+      const selectedTab = container.querySelector('#' + tabId);
+      if (selectedTab) {
+        selectedTab.classList.add('active');
+      }
+    }
   </script>
 </body>
 </html>
