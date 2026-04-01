@@ -957,7 +957,7 @@ const CalculatorUI = (() => {
       button.style.opacity = '0.6';
 
       console.log('📤 Sending API request...');
-      const apiUrl = 'https://numerology-forum-landing.vercel.app/api/ai-interpretation';
+      const apiUrl = '/api/ai-interpretation';
       console.log('API URL:', apiUrl);
 
       // Create timeout controller (30 second timeout)
@@ -1034,10 +1034,33 @@ const CalculatorUI = (() => {
     const aiSection = document.createElement('div');
     aiSection.className = 'ai-analysis-section';
 
-    // Parse markdown to HTML (simple version)
-    let htmlContent = analysis.text
-      .replace(/## /g, '<h3 style="margin-top: 20px; margin-bottom: 10px; color: var(--primary-dark); font-size: 1.1rem;">')
-      .replace(/\n\n/g, '</h3><p style="margin: 8px 0;">') + '</p>';
+    // Parse markdown to HTML (proper implementation)
+    const lines = analysis.text.split('\n');
+    let htmlParts = [];
+    let inList = false;
+
+    for (let line of lines) {
+      if (line.startsWith('### ')) {
+        if (inList) { htmlParts.push('</ul>'); inList = false; }
+        htmlParts.push(`<h4 style="margin-top: 16px; margin-bottom: 8px; color: #4a90e2; font-weight: 600;">${line.slice(4)}</h4>`);
+      } else if (line.startsWith('## ')) {
+        if (inList) { htmlParts.push('</ul>'); inList = false; }
+        htmlParts.push(`<h3 style="margin-top: 20px; margin-bottom: 10px; color: var(--primary-dark); font-size: 1.1rem; font-weight: 700;">${line.slice(3)}</h3>`);
+      } else if (line.startsWith('- ') || line.startsWith('* ')) {
+        if (!inList) { htmlParts.push('<ul style="margin: 10px 0; padding-left: 24px;">'); inList = true; }
+        let item = line.slice(2).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        htmlParts.push(`<li style="margin-bottom: 6px;">${item}</li>`);
+      } else if (line.trim() === '') {
+        if (inList) { htmlParts.push('</ul>'); inList = false; }
+      } else if (line.trim()) {
+        if (inList) { htmlParts.push('</ul>'); inList = false; }
+        let content = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        htmlParts.push(`<p style="margin: 10px 0; line-height: 1.6; color: #555;">${content}</p>`);
+      }
+    }
+    if (inList) htmlParts.push('</ul>');
+
+    let htmlContent = htmlParts.join('');
 
     aiSection.innerHTML = `
       <div class="ai-analysis-header">
@@ -1046,6 +1069,10 @@ const CalculatorUI = (() => {
       </div>
       <div class="ai-analysis-content">
         ${htmlContent}
+      </div>
+      <div class="ai-cta-block" style="margin-top: 24px; padding: 20px; background: rgba(184,148,46,0.08); border-radius: 8px; text-align: center;">
+        <p style="margin: 0 0 12px 0; font-weight: 600; color: var(--primary-dark);">🎯 Хотите узнать больше о вашем числовом коде?</p>
+        <a href="#register" class="btn-ai-cta" style="display: inline-block; padding: 12px 28px; background: var(--primary-gold); color: white; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Записаться на форум →</a>
       </div>
       <div class="ai-analysis-footer">
         <small>🕐 ${new Date().toLocaleString('ru-RU')}</small>

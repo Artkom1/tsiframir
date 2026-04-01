@@ -994,7 +994,7 @@
 }
 
 .btn-ai {
-  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  background: linear-gradient(135deg, var(--primary-gold) 0%, #9a7520 100%);
   color: white;
   padding: 16px 32px;
   border: none;
@@ -1004,13 +1004,13 @@
   font-weight: 600;
   width: 100%;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+  box-shadow: 0 4px 15px rgba(184, 148, 46, 0.35);
 }
 
 .btn-ai:hover {
-  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+  box-shadow: 0 6px 20px rgba(184, 148, 46, 0.5);
   transform: translateY(-2px);
-  background: linear-gradient(135deg, #5a9ef2 0%, #4580c5 100%);
+  background: linear-gradient(135deg, var(--primary-gold-light) 0%, #aa8530 100%);
 }
 
 .btn-ai:active {
@@ -1029,8 +1029,8 @@
 .ai-analysis-section {
   margin-top: 32px;
   padding: 24px;
-  background: linear-gradient(135deg, rgba(74, 144, 226, 0.05) 0%, rgba(74, 144, 226, 0.02) 100%);
-  border-left: 4px solid #4a90e2;
+  background: linear-gradient(135deg, rgba(184, 148, 46, 0.06) 0%, rgba(184, 148, 46, 0.02) 100%);
+  border-left: 4px solid var(--primary-gold);
   border-radius: 6px;
   animation: slideIn 0.5s ease-out;
 }
@@ -1050,7 +1050,7 @@
 }
 
 .ai-analysis-content h3 {
-  color: #4a90e2;
+  color: var(--primary-dark);
   font-size: 1.05rem;
   margin-top: 24px !important;
   margin-bottom: 12px !important;
