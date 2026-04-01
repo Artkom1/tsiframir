@@ -606,11 +606,7 @@
     .book-section::before { content: ''; position: absolute; top: -50px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(184,148,46,0.1), transparent 70%); border-radius: 50%; }
     .book-content { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
     .book-visual { text-align: center; }
-    .book-cover { width: 280px; height: 400px; margin: 0 auto; background: linear-gradient(135deg, #b8942e, #8a6d1e); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; color: var(--white); text-align: center; box-shadow: 0 20px 60px rgba(184,148,46,0.3), 0 0 0 1px rgba(255,255,255,0.2); position: relative; }
-    .book-cover::before { content: ''; position: absolute; inset: -8px; border: 2px solid var(--gold-light); border-radius: 12px; opacity: 0.3; }
-    .book-cover-title { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; line-height: 1.3; position: relative; z-index: 1; }
-    .book-cover-subtitle { font-size: 0.95rem; opacity: 0.9; position: relative; z-index: 1; }
-    .book-cover-author { font-size: 0.9rem; margin-top: auto; opacity: 0.8; position: relative; z-index: 1; }
+    .book-visual img { max-width: 100%; height: auto; display: block; }
     .book-info h3 { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--blue); margin-bottom: 16px; }
     .book-rating { display: flex; gap: 4px; margin-bottom: 24px; font-size: 1.2rem; }
     .book-rating span { color: var(--gold); }
@@ -756,7 +752,6 @@
       .trust-grid { grid-template-columns: repeat(3, 1fr); }
       .video-grid { grid-template-columns: repeat(2, 1fr); }
       .book-content { grid-template-columns: 1fr; gap: 40px; }
-      .book-cover { width: 240px; height: 350px; margin: 0 auto; }
       .book-cta { flex-direction: column; }
       .comparison-wrapper { overflow-x: auto; }
     }
@@ -765,8 +760,6 @@
       .cases-grid { grid-template-columns: 1fr; }
       .trust-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .video-grid { grid-template-columns: 1fr; }
-      .book-cover { width: 200px; height: 290px; }
-      .book-cover-title { font-size: 1.4rem; }
       .book-info h3 { font-size: 1.4rem; }
       .book-highlights { grid-template-columns: 1fr; }
       .quiz-container { padding: 24px; }
@@ -1063,11 +1056,7 @@
     <div class="container">
       <div class="book-content">
         <div class="book-visual reveal">
-          <div class="book-cover">
-            <div class="book-cover-title" style="font-size: 1.3rem;">2x<br>ЦИФРОВАЯ<br>ТРАНСФОРМ.<br>ЛИЧНОСТИ</div>
-            <div class="book-cover-subtitle" style="margin-top: auto;">Полный код вашей судьбы</div>
-            <div class="book-cover-author">Сергей Кузнецов</div>
-          </div>
+          <img src="img/book-cover.png" alt="2x Цифровая трансформация личности" style="width: 280px; height: auto; border-radius: 12px; box-shadow: 0 20px 60px rgba(184,148,46,0.3), 0 0 0 1px rgba(255,255,255,0.2); border: 2px solid var(--gold-light);">
         </div>
         <div class="book-info reveal reveal-delay-1">
           <h3>📚 "2x ЦИФРОВАЯ ТРАНСФОРМАЦИЯ ЛИЧНОСТИ"</h3>
