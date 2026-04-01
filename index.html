@@ -857,7 +857,7 @@
 
   <!-- [7] URGENCY BANNER -->
   <div class="urgency-bar">
-    ⏰ Ранняя цена действует до <strong>13 апреля 2026</strong> — осталось <span id="ub-days">12</span> дней
+    ⏰ Ранняя цена действует до <strong>30 мая 2026</strong> — осталось <span id="ub-days">59</span> дней
     <a href="#pricing">Забронировать сейчас →</a>
   </div>
 
@@ -1714,7 +1714,7 @@
       <div class="pricing-header">
         <div class="section-label reveal">Билеты</div>
         <h2 class="section-title reveal reveal-delay-1">Выберите ваш формат участия</h2>
-        <p class="section-subtitle reveal reveal-delay-2">Специальные цены при оплате до 13 апреля 2026 года</p>
+        <p class="section-subtitle reveal reveal-delay-2">Специальные цены при оплате до 30 мая 2026 года</p>
       </div>
       <div class="pricing-grid">
         <div class="price-card reveal"><div class="price-icon">&#127915;</div><div class="price-name">Стандарт</div><div class="price-desc">Входной билет на форум</div><div class="price-amount">1 800 <span>&#8381;</span></div><ul class="price-features"><li>Доступ ко всем лекциям</li><li>Мастер-классы</li><li>Нетворкинг-зона</li><li>Кофе-брейки</li></ul><a href="#register" class="price-btn price-btn-outline">Выбрать</a></div>
@@ -2158,9 +2158,9 @@
       if (!isOpen) { el.classList.add('open'); answer.classList.add('open'); }
     }
 
-    // [1] Urgency banner — calculate days until April 13, 2026
+    // [1] Urgency banner — calculate days until May 30, 2026
     function updateUrgencyBar() {
-      const deadline = new Date('2026-04-13T23:59:59');
+      const deadline = new Date('2026-05-30T23:59:59');
       const now = new Date();
       const diff = deadline - now;
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
