@@ -19,14 +19,25 @@
         console.error('❌ CalculatorCore not loaded');
         return;
       }
+      console.log('✓ CalculatorCore loaded');
+
       if (typeof CalculatorRegistry === 'undefined') {
         console.error('❌ CalculatorRegistry not loaded');
         return;
       }
+      console.log('✓ CalculatorRegistry loaded');
+
+      if (typeof CalculatorValidation === 'undefined') {
+        console.error('❌ CalculatorValidation not loaded');
+        return;
+      }
+      console.log('✓ CalculatorValidation loaded');
+
       if (typeof CalculatorUI === 'undefined') {
         console.error('❌ CalculatorUI not loaded');
         return;
       }
+      console.log('✓ CalculatorUI loaded');
 
       console.log('✓ All dependencies loaded');
 
@@ -34,26 +45,33 @@
       const container = document.querySelector('.center-of-codes');
       if (!container) {
         console.error('❌ Container .center-of-codes not found in DOM');
-        console.log('Available sections:', document.querySelectorAll('section').map(s => s.className).join(', '));
+        console.log('Available sections:', Array.from(document.querySelectorAll('section')).map(s => s.className).join(', '));
         return;
       }
 
       console.log('✓ Container found');
 
       // Initialize UI
-      const uiElements = CalculatorUI.init();
+      try {
+        const uiElements = CalculatorUI.init();
 
-      if (!uiElements) {
-        console.warn('⚠️ Calculator UI initialization returned null');
-        return;
+        if (!uiElements) {
+          console.warn('⚠️ Calculator UI initialization returned null');
+          return;
+        }
+
+        console.log('✓ Calculator System initialized successfully');
+        console.log(`✓ Registered calculators: ${CalculatorRegistry.getCount()}`);
+        console.log(`✓ Enabled calculators: ${CalculatorRegistry.getEnabledCount()}`);
+
+        const enabledCalcs = CalculatorRegistry.getAllCalculators(true);
+        console.log('✓ Enabled calculator IDs:', enabledCalcs.map(c => c.id).join(', '));
+        console.log('✓ All calculators ready!');
+        console.log('Try: NumerologyCalculator.Test.runAll()');
+      } catch (error) {
+        console.error('❌ Error initializing Calculator UI:', error);
       }
-
-      console.log('✓ Calculator System initialized successfully');
-      console.log(`✓ Registered calculators: ${CalculatorRegistry.getCount()}`);
-      console.log(`✓ Enabled calculators: ${CalculatorRegistry.getEnabledCount()}`);
-      console.log('✓ All 5 calculators ready!');
-      console.log('Try: NumerologyCalculator.Test.runAll()');
-    }, 100);
+    }, 200);
   };
 
   /**

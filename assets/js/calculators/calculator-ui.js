@@ -37,6 +37,7 @@ const CalculatorUI = (() => {
    * Switch active calculator
    */
   const switchCalculator = (calculatorId, selectorContainer) => {
+    console.log('🔄 Switching to calculator:', calculatorId);
     currentCalculatorId = calculatorId;
 
     // Update active tab
@@ -46,6 +47,7 @@ const CalculatorUI = (() => {
 
     // Render new form
     const formContainer = document.querySelector('.calculator-form');
+    console.log('Rendering form for:', calculatorId);
     renderForm(formContainer, calculatorId);
 
     // Clear previous result
@@ -62,13 +64,17 @@ const CalculatorUI = (() => {
    * Render dynamic form based on calculator config
    */
   const renderForm = (container, calculatorId) => {
+    console.log('📋 Rendering form for calculator:', calculatorId);
     const calculator = CalculatorRegistry.getCalculator(calculatorId);
+    console.log('Calculator config retrieved:', !!calculator);
 
     if (!calculator) {
+      console.error('Calculator not found:', calculatorId);
       container.innerHTML = '<p class="form-error">Калькулятор не найден</p>';
       return;
     }
 
+    console.log('Calculator inputs:', Object.keys(calculator.inputs));
     let formHTML = '';
     let currentSection = '';
 
@@ -132,7 +138,7 @@ const CalculatorUI = (() => {
     // Add button
     formHTML += `
       <div class="button-group">
-        <button type="submit" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" data-calculator="${calculatorId}">
           Рассчитать
         </button>
       </div>
@@ -140,20 +146,20 @@ const CalculatorUI = (() => {
 
     container.innerHTML = formHTML;
 
-    // Add form submission handler
-    const form = container.closest('form') || container.parentElement.querySelector('form');
-    if (form) {
-      form.removeEventListener('submit', handleFormSubmit);
-      form.addEventListener('submit', handleFormSubmit);
+    // Add click handler to submit button
+    const submitBtn = container.querySelector('.btn-primary');
+    console.log('Submit button found:', !!submitBtn);
+    if (submitBtn) {
+      console.log('Attaching click handler to submit button');
+      submitBtn.removeEventListener('click', handleFormSubmit);
+      submitBtn.addEventListener('click', handleFormSubmit);
+
+      // Test that the listener was attached
+      submitBtn.addEventListener('click', () => {
+        console.log('✓ Button click is firing');
+      });
     } else {
-      // If no form wrapper, create event listener directly
-      const submitBtn = container.querySelector('.btn-primary');
-      if (submitBtn) {
-        submitBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          handleFormSubmit.call(container);
-        });
-      }
+      console.error('❌ Submit button not found');
     }
   };
 
@@ -161,20 +167,47 @@ const CalculatorUI = (() => {
    * Handle form submission
    */
   const handleFormSubmit = function(e) {
+    console.log('📝 Form submission triggered');
     e.preventDefault();
 
-    // Get form data
-    const form = e.target.tagName === 'FORM' ? e.target : this.closest('form');
-    const formData = new FormData(form || this);
-    const data = Object.fromEntries(formData);
+    // Find the form container
+    const formContainer = e.target.closest('.calculator-form') || document.querySelector('.calculator-form');
+    console.log('Form container found:', !!formContainer);
+
+    if (!formContainer) {
+      console.error('❌ Form container not found');
+      return;
+    }
+
+    // Get all input fields
+    const inputs = formContainer.querySelectorAll('input');
+    console.log('Input fields found:', inputs.length);
+    const data = {};
+
+    inputs.forEach(input => {
+      data[input.name] = input.value;
+      console.log(`  - ${input.name}: "${input.value}"`);
+    });
+
+    console.log('Collected data:', data);
 
     // Validate
     const calculator = CalculatorRegistry.getCalculator(currentCalculatorId);
+    console.log('Calculator found:', !!calculator);
+
+    if (!calculator) {
+      console.error('Calculator not found:', currentCalculatorId);
+      showError('Калькулятор не найден');
+      return;
+    }
+
     const validation = CalculatorValidation.validateForm(data, calculator.inputs);
+    console.log('Validation result:', validation.valid, validation.errors);
 
     if (!validation.valid) {
       // Show errors
       for (const [fieldName, error] of Object.entries(validation.errors)) {
+        console.log(`Error on field ${fieldName}: ${error}`);
         showFieldError(fieldName, error);
       }
       return;
@@ -185,10 +218,13 @@ const CalculatorUI = (() => {
       el.classList.add('hidden');
     });
 
+    console.log('🧮 Executing calculation...');
     // Execute calculation
     const result = CalculatorRegistry.executeCalculation(currentCalculatorId, data);
+    console.log('Calculation result:', result);
 
     if (!result.success) {
+      console.error('Calculation failed:', result.error);
       showError(result.error);
       return;
     }
@@ -196,6 +232,7 @@ const CalculatorUI = (() => {
     // Show result
     lastResult = result;
     const resultArea = document.querySelector('.result-area');
+    console.log('Rendering result to:', resultArea);
     renderResult(resultArea, result);
 
     // Scroll to result
