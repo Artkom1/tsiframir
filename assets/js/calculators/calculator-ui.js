@@ -76,10 +76,17 @@ const CalculatorUI = (() => {
     const year = parseInt(dateParts[2], 10);
 
     if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+    if (day < 1 || day > 31) return null;
+    if (month < 1 || month > 12) return null;
+    if (year < 1900 || year > new Date().getFullYear()) return null;
 
     const surname = parts[1];
     const name = parts[2];
     const patronymic = parts[3] || '';
+
+    // Validate that parts are Cyrillic only
+    const cyrillic = /^[А-Яа-яЁё-]*$/.test(surname + name + patronymic);
+    if (!cyrillic) return null;
 
     return { day, month, year, surname, name, patronymic };
   };
@@ -278,18 +285,24 @@ const CalculatorUI = (() => {
 
     // Special handling for compatibility calculator (parse compact format)
     if (currentCalculatorId === 'compatibility') {
-      console.log('Parsing compact format for compatibility...');
+      console.log('🔍 Parsing compact format for compatibility...');
+      console.log('Person 1 raw:', data.person1Data);
+      console.log('Person 2 raw:', data.person2Data);
+
       const person1Parsed = parseDateName(data.person1Data);
       const person2Parsed = parseDateName(data.person2Data);
 
+      console.log('Person 1 parsed:', person1Parsed);
+      console.log('Person 2 parsed:', person2Parsed);
+
       if (!person1Parsed) {
-        console.error('Cannot parse person 1 data');
+        console.error('❌ Cannot parse person 1 data:', data.person1Data);
         showFieldError('person1Data', 'Неправильный формат. Используйте: 30.07.1982 Петров Иван Иванович');
         return;
       }
 
       if (!person2Parsed) {
-        console.error('Cannot parse person 2 data');
+        console.error('❌ Cannot parse person 2 data:', data.person2Data);
         showFieldError('person2Data', 'Неправильный формат. Используйте: 15.03.1985 Иванова Анна Сергеевна');
         return;
       }
@@ -306,7 +319,7 @@ const CalculatorUI = (() => {
         person2Year: person2Parsed.year
       };
 
-      console.log('Parsed data:', data);
+      console.log('✓ Successfully parsed compatibility data:', data);
     }
 
     // Validate
