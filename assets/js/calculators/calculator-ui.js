@@ -308,7 +308,7 @@ const CalculatorUI = (() => {
       }
 
       // Convert to registry format
-      data = {
+      const newData = {
         person1Name: person1Parsed.surname + ' ' + person1Parsed.name,
         person1Day: person1Parsed.day,
         person1Month: person1Parsed.month,
@@ -319,7 +319,12 @@ const CalculatorUI = (() => {
         person2Year: person2Parsed.year
       };
 
-      console.log('✓ Successfully parsed compatibility data:', data);
+      console.log('✓ Successfully parsed compatibility data:', newData);
+
+      // Replace data object with parsed data
+      Object.keys(data).forEach(key => delete data[key]);
+      Object.assign(data, newData);
+      console.log('✓ Data object updated:', data);
     }
 
     // Validate
@@ -350,9 +355,15 @@ const CalculatorUI = (() => {
     });
 
     console.log('🧮 Executing calculation...');
+    console.log('Calculator ID:', currentCalculatorId);
+    console.log('Data to calculate:', data);
+
     // Execute calculation
     const result = CalculatorRegistry.executeCalculation(currentCalculatorId, data);
     console.log('Calculation result:', result);
+    console.log('Result method:', result.method);
+    console.log('Result success:', result.success);
+    console.log('Result output:', result.output);
 
     if (!result.success) {
       console.error('Calculation failed:', result.error);
@@ -361,6 +372,7 @@ const CalculatorUI = (() => {
     }
 
     // Show result
+    console.log('✓ Calculation successful');
     lastResult = result;
     const resultArea = document.querySelector('.result-area');
     console.log('Rendering result to:', resultArea);
