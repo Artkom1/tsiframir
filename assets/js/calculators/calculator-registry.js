@@ -201,9 +201,9 @@ const CalculatorRegistry = (() => {
         },
         patronymic: {
           type: 'text',
-          required: false,
+          required: true,
           label: 'Отчество',
-          placeholder: 'Николаевич (опционально)'
+          placeholder: 'Николаевич'
         }
       },
       formula: {

@@ -47,8 +47,8 @@ const CalculatorValidation = (() => {
     },
 
     patronymic: (value) => {
-      if (!value) return null; // Optional field
-      if (value.trim().length > 0 && value.trim().length < 2) return 'Отчество слишком короткое';
+      if (!value || value.trim() === '') return 'Отчество обязательно';
+      if (value.trim().length < 2) return 'Отчество слишком короткое';
       const cyrillic = /^[А-Яа-яЁё\s-]*$/.test(value);
       if (!cyrillic) return 'Только кириллица (русские буквы)';
       return null;

@@ -61,6 +61,30 @@ const CalculatorUI = (() => {
   };
 
   /**
+   * Parse compact date-name format: "30.07.1982 Петров Иван Иванович"
+   */
+  const parseDateName = (str) => {
+    if (!str) return null;
+    const parts = str.trim().split(/\s+/);
+    if (parts.length < 3) return null;
+
+    const dateParts = parts[0].split('.');
+    if (dateParts.length !== 3) return null;
+
+    const day = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10);
+    const year = parseInt(dateParts[2], 10);
+
+    if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+
+    const surname = parts[1];
+    const name = parts[2];
+    const patronymic = parts[3] || '';
+
+    return { day, month, year, surname, name, patronymic };
+  };
+
+  /**
    * Render dynamic form based on calculator config
    */
   const renderForm = (container, calculatorId) => {
@@ -76,6 +100,67 @@ const CalculatorUI = (() => {
 
     console.log('Calculator inputs:', Object.keys(calculator.inputs));
     let formHTML = '';
+
+    // Special compact form for compatibility calculator
+    if (calculatorId === 'compatibility') {
+      console.log('Using compact form for compatibility calculator');
+      formHTML = `
+        <div class="form-section-group">
+          <h4 style="margin-bottom: 16px; color: var(--text); font-size: 0.95rem; font-weight: 600;">Человек 1</h4>
+          <div class="form-group">
+            <label class="form-label">ФИО и дата рождения</label>
+            <input
+              type="text"
+              class="form-input"
+              name="person1Data"
+              placeholder="30.07.1982 Петров Иван Иванович"
+              required
+            />
+            <span class="form-hint" style="font-size: 0.85rem; color: #999; margin-top: 4px;">Формат: дата (ДД.ММ.ГГГГ) фамилия имя отчество</span>
+            <span class="form-error hidden" data-field="person1Data"></span>
+          </div>
+        </div>
+
+        <div class="form-section-group">
+          <h4 style="margin-bottom: 16px; color: var(--text); font-size: 0.95rem; font-weight: 600;">Человек 2</h4>
+          <div class="form-group">
+            <label class="form-label">ФИО и дата рождения</label>
+            <input
+              type="text"
+              class="form-input"
+              name="person2Data"
+              placeholder="15.03.1985 Иванова Анна Сергеевна"
+              required
+            />
+            <span class="form-hint" style="font-size: 0.85rem; color: #999; margin-top: 4px;">Формат: дата (ДД.ММ.ГГГГ) фамилия имя отчество</span>
+            <span class="form-error hidden" data-field="person2Data"></span>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = formHTML;
+
+      // Add button
+      container.innerHTML += `
+        <div class="button-group">
+          <button type="button" class="btn btn-primary" data-calculator="${calculatorId}">
+            Рассчитать совместимость
+          </button>
+        </div>
+      `;
+
+      const submitBtn = container.querySelector('.btn-primary');
+      if (submitBtn) {
+        console.log('Attaching click handler to submit button (compatibility)');
+        submitBtn.removeEventListener('click', handleFormSubmit);
+        submitBtn.addEventListener('click', handleFormSubmit);
+        submitBtn.addEventListener('click', () => {
+          console.log('✓ Button click is firing');
+        });
+      }
+      return;
+    }
+
     let currentSection = '';
 
     // Render input fields
@@ -190,6 +275,39 @@ const CalculatorUI = (() => {
     });
 
     console.log('Collected data:', data);
+
+    // Special handling for compatibility calculator (parse compact format)
+    if (currentCalculatorId === 'compatibility') {
+      console.log('Parsing compact format for compatibility...');
+      const person1Parsed = parseDateName(data.person1Data);
+      const person2Parsed = parseDateName(data.person2Data);
+
+      if (!person1Parsed) {
+        console.error('Cannot parse person 1 data');
+        showFieldError('person1Data', 'Неправильный формат. Используйте: 30.07.1982 Петров Иван Иванович');
+        return;
+      }
+
+      if (!person2Parsed) {
+        console.error('Cannot parse person 2 data');
+        showFieldError('person2Data', 'Неправильный формат. Используйте: 15.03.1985 Иванова Анна Сергеевна');
+        return;
+      }
+
+      // Convert to registry format
+      data = {
+        person1Name: person1Parsed.surname + ' ' + person1Parsed.name,
+        person1Day: person1Parsed.day,
+        person1Month: person1Parsed.month,
+        person1Year: person1Parsed.year,
+        person2Name: person2Parsed.surname + ' ' + person2Parsed.name,
+        person2Day: person2Parsed.day,
+        person2Month: person2Parsed.month,
+        person2Year: person2Parsed.year
+      };
+
+      console.log('Parsed data:', data);
+    }
 
     // Validate
     const calculator = CalculatorRegistry.getCalculator(currentCalculatorId);
