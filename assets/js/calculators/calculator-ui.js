@@ -476,7 +476,13 @@ const CalculatorUI = (() => {
    * Render compatibility result
    */
   const renderCompatibilityResult = (container, result) => {
+    console.log('🔗 renderCompatibilityResult called');
+    console.log('result.output:', result.output);
+
     const { person1, person2, compatibility } = result.output;
+    console.log('person1:', person1);
+    console.log('person2:', person2);
+    console.log('compatibility:', compatibility);
     const { percent, level, description } = compatibility;
 
     const html = `
@@ -548,17 +554,27 @@ const CalculatorUI = (() => {
    * Render local interpretation with AI button
    */
   const renderLocalInterpretation = (container, result) => {
+    console.log('renderLocalInterpretation called');
+    console.log('result.method type:', typeof result.method);
+    console.log('result.method value:', result.method);
+    console.log('result.method === "compatibility":', result.method === 'compatibility');
+    console.log('result.method === "wordCode":', result.method === 'wordCode');
+
     // Handle compatibility results separately
     if (result.method === 'compatibility') {
+      console.log('🔗 ✅ Rendering compatibility result');
       renderCompatibilityResult(container, result);
       return;
     }
 
     // Handle word code analysis separately
     if (result.method === 'wordCode') {
+      console.log('📝 ✅ Rendering word code result');
       renderWordCodeResult(container, result);
       return;
     }
+
+    console.log('👤 Rendering standard interpretation for method:', result.method);
 
     const num = result.output.secondary;
     const interp = INTERPRETATIONS_DB[num] || {};
