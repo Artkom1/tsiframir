@@ -147,12 +147,18 @@
   padding: 12px 16px;
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  color: var(--text-primary);
-  background: #fafaf8;
-  border: 1px solid var(--border-light);
+  color: #1a1a1a;
+  background: #ffffff;
+  border: 1.5px solid #d4af37;
   border-radius: 6px;
   transition: var(--transition);
   box-sizing: border-box;
+}
+
+.form-input::placeholder,
+.form-input-group input::placeholder {
+  color: #999;
+  opacity: 0.7;
 }
 
 .form-input:focus,
@@ -160,7 +166,8 @@
   outline: none;
   border-color: var(--primary-gold);
   background: white;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  color: #1a1a1a;
 }
 
 .form-input-group {
