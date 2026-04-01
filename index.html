@@ -2227,95 +2227,101 @@
     </div>
   </section>
 
-  <!-- [3] TESTIMONIALS — Отзывы участников -->
-  <section class="testimonials">
+  <!-- [18] RESULTS GALLERY: TESTIMONIALS + CASE STUDIES -->
+  <section class="results-gallery" id="cases">
     <div class="container">
-      <div class="testimonials-header">
-        <div class="section-label reveal">Отзывы участников</div>
-        <h2 class="section-title reveal reveal-delay-1">Что говорят об опыте</h2>
-        <p class="section-subtitle reveal reveal-delay-2">Реальные истории трансформации людей, уже прошедших семинары Сергея Кузнецова</p>
+      <div class="results-header reveal">
+        <div class="section-label">💎 Результаты</div>
+        <h2 class="section-title reveal reveal-delay-1">Результаты и отзывы</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Реальные люди, реальные результаты. От отзывов к трансформации</p>
       </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card reveal">
-          <p class="testimonial-text">Семинар Сергея Николаевича перевернул моё понимание жизни! Благодаря методике ЦифраМир я наконец поняла, почему со мной происходит именно так. Теперь использую знания каждый день. Благодарна за открытие!</p>
-          <div class="testimonial-author">Мария К.</div>
-          <div class="testimonial-role">Москва, школьный психолог</div>
-        </div>
-        <div class="testimonial-card reveal reveal-delay-1">
-          <p class="testimonial-text">Впервые встретила систему, которая реально объясняет числовые совпадения в моей жизни. Это не просто теория — это работающая практика! Методика Кузнецова помогла мне разобраться в отношениях и карьере. Вау!</p>
-          <div class="testimonial-author">Анна Р.</div>
-          <div class="testimonial-role">Екатеринбург, предприниматель</div>
-        </div>
-        <div class="testimonial-card reveal reveal-delay-2">
-          <p class="testimonial-text">Методика ЦифраМир дала мне инструменты, которые работают каждый день. Я нашла свою жизненную миссию благодаря анализу чисел. Рекомендую всем! Сергей Николаевич — настоящий мастер своего дела.</p>
-          <div class="testimonial-author">Ольга П.</div>
-          <div class="testimonial-role">Минск, тренер по йоге</div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- [17] CASE STUDIES — Истории успеха -->
-  <section class="case-studies" id="cases">
-    <div class="container">
-      <div class="case-studies-header">
-        <div class="section-label reveal">Результаты</div>
-        <h2 class="section-title reveal reveal-delay-1">Истории трансформации</h2>
-        <p class="section-subtitle reveal reveal-delay-2">Реальные люди, реальные результаты. Посмотрите, как форум изменил их жизнь</p>
+      <!-- TAB NAVIGATION -->
+      <div class="program-tabs reveal reveal-delay-1">
+        <button class="tab-btn active" onclick="switchTab(this, 'testimonials-content')">🗣️ Отзывы участников</button>
+        <button class="tab-btn" onclick="switchTab(this, 'cases-content')">📊 Истории успеха</button>
       </div>
-      <div class="cases-grid reveal reveal-delay-2">
-        <div class="case-card">
-          <div class="case-avatar">👩</div>
-          <div class="case-name">Мария Иванова</div>
-          <div class="case-role">Москва • Психолог</div>
-          <div class="case-before-after">
-            <div class="case-before">
-              <div class="case-before-label">ДО</div>
-              <div class="case-before-text">Сомнения в своих силах</div>
-            </div>
-            <div class="case-arrow">→</div>
-            <div class="case-after">
-              <div class="case-after-label">ПОСЛЕ</div>
-              <div class="case-after-text">Нашла своё предназначение</div>
-            </div>
+
+      <!-- TAB 1: TESTIMONIALS -->
+      <div class="tab-content active" id="testimonials-content">
+        <div class="testimonials-grid">
+          <div class="testimonial-card reveal">
+            <p class="testimonial-text">Семинар Сергея Николаевича перевернул моё понимание жизни! Благодаря методике ЦифраМир я наконец поняла, почему со мной происходит именно так. Теперь использую знания каждый день. Благодарна за открытие!</p>
+            <div class="testimonial-author">Мария К.</div>
+            <div class="testimonial-role">Москва, школьный психолог</div>
           </div>
-          <div class="case-result">"После форума я поняла, что мне давно нужно было — методику для работы с клиентами. Запустила свой курс. Спасибо, Сергей!"</div>
-        </div>
-        <div class="case-card reveal reveal-delay-1">
-          <div class="case-avatar">👨</div>
-          <div class="case-name">Александр Петров</div>
-          <div class="case-role">Екатеринбург • Предприниматель</div>
-          <div class="case-before-after">
-            <div class="case-before">
-              <div class="case-before-label">ДО</div>
-              <div class="case-before-text">Кризис в бизнесе</div>
-            </div>
-            <div class="case-arrow">→</div>
-            <div class="case-after">
-              <div class="case-after-label">ПОСЛЕ</div>
-              <div class="case-after-text">Выручка выросла в 3 раза</div>
-            </div>
+          <div class="testimonial-card reveal reveal-delay-1">
+            <p class="testimonial-text">Впервые встретила систему, которая реально объясняет числовые совпадения в моей жизни. Это не просто теория — это работающая практика! Методика Кузнецова помогла мне разобраться в отношениях и карьере. Вау!</p>
+            <div class="testimonial-author">Анна Р.</div>
+            <div class="testimonial-role">Екатеринбург, предприниматель</div>
           </div>
-          <div class="case-result">"Числовые циклы помогли мне выбрать правильное время для запуска проекта. Результат превзошёл все ожидания!"</div>
-        </div>
-        <div class="case-card reveal reveal-delay-2">
-          <div class="case-avatar">👩‍🎓</div>
-          <div class="case-name">Олеся Смирнова</div>
-          <div class="case-role">Минск • Учитель</div>
-          <div class="case-before-after">
-            <div class="case-before">
-              <div class="case-before-label">ДО</div>
-              <div class="case-before-text">Депрессия и выгорание</div>
-            </div>
-            <div class="case-arrow">→</div>
-            <div class="case-after">
-              <div class="case-after-label">ПОСЛЕ</div>
-              <div class="case-after-text">Гармония и вдохновение</div>
-            </div>
+          <div class="testimonial-card reveal reveal-delay-2">
+            <p class="testimonial-text">Методика ЦифраМир дала мне инструменты, которые работают каждый день. Я нашла свою жизненную миссию благодаря анализу чисел. Рекомендую всем! Сергей Николаевич — настоящий мастер своего дела.</p>
+            <div class="testimonial-author">Ольга П.</div>
+            <div class="testimonial-role">Минск, тренер по йоге</div>
           </div>
-          <div class="case-result">"Методика ЦифраМир дала мне инструменты для самоисцеления. Я стала совсем другой — живу с радостью!"</div>
         </div>
       </div>
+
+      <!-- TAB 2: CASE STUDIES -->
+      <div class="tab-content" id="cases-content">
+        <div class="cases-grid reveal reveal-delay-2">
+          <div class="case-card">
+            <div class="case-avatar">👩</div>
+            <div class="case-name">Мария Иванова</div>
+            <div class="case-role">Москва • Психолог</div>
+            <div class="case-before-after">
+              <div class="case-before">
+                <div class="case-before-label">ДО</div>
+                <div class="case-before-text">Сомнения в своих силах</div>
+              </div>
+              <div class="case-arrow">→</div>
+              <div class="case-after">
+                <div class="case-after-label">ПОСЛЕ</div>
+                <div class="case-after-text">Нашла своё предназначение</div>
+              </div>
+            </div>
+            <div class="case-result">"После форума я поняла, что мне давно нужно было — методику для работы с клиентами. Запустила свой курс. Спасибо, Сергей!"</div>
+          </div>
+          <div class="case-card reveal reveal-delay-1">
+            <div class="case-avatar">👨</div>
+            <div class="case-name">Александр Петров</div>
+            <div class="case-role">Екатеринбург • Предприниматель</div>
+            <div class="case-before-after">
+              <div class="case-before">
+                <div class="case-before-label">ДО</div>
+                <div class="case-before-text">Кризис в бизнесе</div>
+              </div>
+              <div class="case-arrow">→</div>
+              <div class="case-after">
+                <div class="case-after-label">ПОСЛЕ</div>
+                <div class="case-after-text">Выручка выросла в 3 раза</div>
+              </div>
+            </div>
+            <div class="case-result">"Числовые циклы помогли мне выбрать правильное время для запуска проекта. Результат превзошёл все ожидания!"</div>
+          </div>
+          <div class="case-card reveal reveal-delay-2">
+            <div class="case-avatar">👩‍🎓</div>
+            <div class="case-name">Олеся Смирнова</div>
+            <div class="case-role">Минск • Учитель</div>
+            <div class="case-before-after">
+              <div class="case-before">
+                <div class="case-before-label">ДО</div>
+                <div class="case-before-text">Депрессия и выгорание</div>
+              </div>
+              <div class="case-arrow">→</div>
+              <div class="case-after">
+                <div class="case-after-label">ПОСЛЕ</div>
+                <div class="case-after-text">Гармония и вдохновение</div>
+              </div>
+            </div>
+            <div class="case-result">"Методика ЦифраМир дала мне инструменты для самоисцеления. Я стала совсем другой — живу с радостью!"</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANCHOR ALIAS FOR #testimonials -->
+      <div id="testimonials" style="display:none;"></div>
     </div>
   </section>
 
