@@ -304,7 +304,7 @@ const CalculatorCore = (() => {
 
   /**
    * Calculate compatibility between two people
-   * Based on comparing their personal codes
+   * Extended analysis with multiple numerology factors
    */
   const calculateCompatibility = (person1, person2) => {
     // Calculate both persons' codes
@@ -331,17 +331,41 @@ const CalculatorCore = (() => {
     const code2 = p2Result.output.secondary;
     const codeDiff = Math.abs(code1 - code2);
 
-    // Calculate compatibility percentage
-    // Opposite numbers (1-9 distance): less compatible
-    // Same or close numbers: more compatible
+    // Calculate base compatibility percentage
     let compatibility = Math.max(0, 100 - (codeDiff * 11));
-
-    // Special cases
     if (code1 === code2) {
-      compatibility = 95; // Same number = very high
+      compatibility = 95;
     } else if (codeDiff === 1 || codeDiff === 8) {
-      compatibility = 75; // Adjacent or opposite = good
+      compatibility = 75;
     }
+
+    // ===== EXTENDED NUMEROLOGY ANALYSIS =====
+
+    // 1. Compatibility matrix (4 combinations)
+    const sumCodes = code1 + code2;
+    const sumReduced = sumCodes > 9 ? String(sumCodes).split('').reduce((a, b) => Number(a) + Number(b), 0) : sumCodes;
+
+    const matrixScores = {
+      lifePath: compatibility,
+      union: sumReduced,
+      difference: codeDiff,
+      combined: Math.round((compatibility + (10 - codeDiff) * 10) / 2)
+    };
+
+    // 2. Union type (relationship archetype)
+    const unionType = getUnionType(code1, code2, sumReduced);
+
+    // 3. Energy balance
+    const energyBalance = getEnergyBalance(code1, code2);
+
+    // 4. Favorable months
+    const favorableMonths = getFavorableMonths(sumReduced);
+
+    // 5. Relationship phases
+    const phases = getRelationshipPhases(code1, code2);
+
+    // 6. Karmic lessons
+    const lessons = getKarmicLessons(code1, code2, sumReduced);
 
     const trace = buildCompatibilityTrace(
       person1.name,
@@ -378,6 +402,14 @@ const CalculatorCore = (() => {
           percent: Math.round(compatibility),
           level: getCompatibilityLevel(compatibility),
           description: getCompatibilityDescription(compatibility, code1, code2)
+        },
+        extendedAnalysis: {
+          matrixScores,
+          unionType,
+          energyBalance,
+          favorableMonths,
+          phases,
+          lessons
         }
       },
       trace: trace
@@ -638,6 +670,93 @@ const CalculatorCore = (() => {
     };
 
     return descriptions[totalLives] || `${totalLives}-я жизнь: высокая степень воплощений`;
+  };
+
+  // ===== EXTENDED COMPATIBILITY ANALYSIS =====
+
+  const getUnionType = (code1, code2, sumReduced) => {
+    const types = {
+      'harmony': { name: 'Гармоничный союз', desc: 'Естественное взаимопонимание и поддержка' },
+      'growth': { name: 'Развивающий союз', desc: 'Партнёры помогают друг другу расти и меняться' },
+      'balance': { name: 'Уравновешивающий союз', desc: 'Противоположности притягиваются и дополняют' },
+      'karmic': { name: 'Кармический союз', desc: 'Отношения решают важные кармические задачи' },
+      'intense': { name: 'Интенсивный союз', desc: 'Сильная энергия, требует осознанного управления' }
+    };
+
+    if (code1 === code2) return types.harmony;
+    if (Math.abs(code1 - code2) === 1) return types.growth;
+    if (Math.abs(code1 - code2) === 5) return types.balance;
+    if (sumReduced === 9) return types.karmic;
+    return types.intense;
+  };
+
+  const getEnergyBalance = (code1, code2) => {
+    const diff = code2 - code1;
+    if (diff > 0) {
+      return {
+        person1Role: 'Поддержка и забота',
+        person2Role: 'Инициатива и вдохновение',
+        description: 'Первый создаёт основу, второй вносит динамику'
+      };
+    } else if (diff < 0) {
+      return {
+        person1Role: 'Инициатива и вдохновение',
+        person2Role: 'Поддержка и забота',
+        description: 'Первый ведёт, второй поддерживает и балансирует'
+      };
+    } else {
+      return {
+        person1Role: 'Равный партнёр',
+        person2Role: 'Равный партнёр',
+        description: 'Оба несут одинаковую ответственность и энергию'
+      };
+    }
+  };
+
+  const getFavorableMonths = (sumReduced) => {
+    const monthMap = {
+      1: ['Январь', 'Октябрь'],
+      2: ['Февраль', 'Ноябрь'],
+      3: ['Март', 'Декабрь'],
+      4: ['Апрель', 'Январь'],
+      5: ['Май', 'Февраль'],
+      6: ['Июнь', 'Март'],
+      7: ['Июль', 'Апрель'],
+      8: ['Август', 'Май'],
+      9: ['Сентябрь', 'Июнь']
+    };
+    return monthMap[sumReduced] || ['Июль', 'Август'];
+  };
+
+  const getRelationshipPhases = (code1, code2) => {
+    const sumReduced = code1 + code2 > 9 ? (code1 + code2) % 9 || 9 : code1 + code2;
+    const cyclePhases = ['Рождение', 'Рост', 'Испытания', 'Трансформация', 'Зрелость', 'Мудрость', 'Завершение', 'Возрождение', 'Воссоединение'];
+
+    return {
+      current: cyclePhases[sumReduced % cyclePhases.length],
+      nextMajor: (sumReduced + 1) % 9,
+      description: 'Отношения проходят циклические фазы развития'
+    };
+  };
+
+  const getKarmicLessons = (code1, code2, sumReduced) => {
+    const lessons = {
+      1: 'Научиться лидировать и принимать ответственность',
+      2: 'Развивать чувствительность, интуицию и партнёрство',
+      3: 'Выражать себя и развивать коммуникацию',
+      4: 'Строить стабильность, надёжность и структуру',
+      5: 'Развивать гибкость, адаптивность и свободу',
+      6: 'Воспитывать любовь, ответственность и гармонию',
+      7: 'Развивать духовность, анализ и глубину',
+      8: 'Управлять властью, материальными ресурсами и успехом',
+      9: 'Развивать сострадание, универсальность и отпускание'
+    };
+
+    return {
+      person1: lessons[code1] || 'Глубокая внутренняя трансформация',
+      person2: lessons[code2] || 'Глубокая внутренняя трансформация',
+      union: lessons[sumReduced] || 'Совместная эволюция и духовный рост'
+    };
   };
 
   /**

@@ -491,62 +491,131 @@ const CalculatorUI = (() => {
     console.log('🔗 renderCompatibilityResult called');
     console.log('result.output:', result.output);
 
-    const { person1, person2, compatibility } = result.output;
-    console.log('person1:', person1);
-    console.log('person2:', person2);
-    console.log('compatibility:', compatibility);
+    const { person1, person2, compatibility, extendedAnalysis } = result.output;
     const { percent, level, description } = compatibility;
+    const { matrixScores, unionType, energyBalance, favorableMonths, phases, lessons } = extendedAnalysis || {};
 
     const html = `
       <div class="result-panel">
         <div class="result-header">
-          <h3>💑 Совместимость двух людей</h3>
+          <h3>💑 Анализ совместимости двух людей</h3>
+          <p style="color: #666; font-size: 0.9rem; margin-top: 8px;">Профессиональный нумерологический анализ</p>
         </div>
 
-        <div class="compatibility-display" style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; margin: 30px 0;">
+        <!-- 1. ОСНОВНОЙ ИНДИКАТОР СОВМЕСТИМОСТИ -->
+        <div class="compatibility-display" style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; margin: 30px 0; padding: 24px; background: rgba(184,148,46,0.08); border-radius: 16px;">
           <!-- Человек 1 -->
-          <div style="text-align: center; padding: 20px; background: #f0f0f0; border-radius: 10px;">
-            <h4 style="margin: 0 0 10px 0;">${person1.name}</h4>
-            <div style="font-size: 2.5rem; font-weight: bold; color: var(--gold); margin: 10px 0;">${person1.code}</div>
-            <p style="color: #666; margin: 10px 0 0 0;">${person1.meaning}</p>
+          <div style="text-align: center;">
+            <h4 style="margin: 0 0 12px 0; font-size: 1.1rem; color: var(--blue);">${person1.name}</h4>
+            <div style="font-size: 3rem; font-weight: bold; color: var(--gold); margin: 16px 0; font-family: 'Cinzel', serif;">${person1.code}</div>
+            <p style="color: #666; margin: 0; font-size: 0.9rem;">${person1.meaning}</p>
           </div>
 
           <!-- Результат совместимости -->
-          <div style="text-align: center;">
-            <div style="font-size: 3rem; font-weight: bold; color: var(--gold); margin: 10px 0;">
-              ${percent}%
-            </div>
-            <div style="background: linear-gradient(90deg, #d4b85a 0%, #d4b85a ${percent}%, #e0e0e0 ${percent}%, #e0e0e0 100%); height: 8px; border-radius: 4px; margin: 10px 0; width: 100px;"></div>
-            <p style="color: #666; margin: 10px 0; font-weight: bold;">${level}</p>
+          <div style="text-align: center; padding: 0 24px;">
+            <div style="font-size: 2.8rem; font-weight: bold; color: var(--gold); margin: 0 0 12px 0; font-family: 'Cinzel', serif;">${percent}%</div>
+            <div style="background: linear-gradient(90deg, #d4b85a 0%, #d4b85a ${percent}%, #e0e0e0 ${percent}%, #e0e0e0 100%); height: 10px; border-radius: 50px; margin: 12px 0; width: 120px; box-shadow: 0 2px 8px rgba(212,184,90,0.2);"></div>
+            <p style="color: var(--blue); margin: 12px 0 0 0; font-weight: 700; font-size: 1.05rem;">${level}</p>
+            <p style="color: #666; font-size: 0.8rem; margin-top: 8px;">совместимость</p>
           </div>
 
           <!-- Человек 2 -->
-          <div style="text-align: center; padding: 20px; background: #f0f0f0; border-radius: 10px;">
-            <h4 style="margin: 0 0 10px 0;">${person2.name}</h4>
-            <div style="font-size: 2.5rem; font-weight: bold; color: var(--gold); margin: 10px 0;">${person2.code}</div>
-            <p style="color: #666; margin: 10px 0 0 0;">${person2.meaning}</p>
+          <div style="text-align: center;">
+            <h4 style="margin: 0 0 12px 0; font-size: 1.1rem; color: var(--blue);">${person2.name}</h4>
+            <div style="font-size: 3rem; font-weight: bold; color: var(--gold); margin: 16px 0; font-family: 'Cinzel', serif;">${person2.code}</div>
+            <p style="color: #666; margin: 0; font-size: 0.9rem;">${person2.meaning}</p>
           </div>
         </div>
 
-        <!-- Описание совместимости -->
-        <div class="interpretation-sections" style="margin-top: 30px;">
-          <section class="interp-section">
-            <h4>📊 Анализ совместимости</h4>
-            <p>${description}</p>
-          </section>
+        <!-- 2. ТИП СОЮЗА -->
+        ${unionType ? `
+        <section class="interp-section" style="margin-top: 24px;">
+          <h4>💫 Тип союза</h4>
+          <div style="background: linear-gradient(135deg, rgba(232,240,248,0.5), rgba(240,239,248,0.3)); padding: 16px; border-radius: 12px; border-left: 4px solid var(--gold);">
+            <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--blue); font-size: 1.05rem;">${unionType.name}</p>
+            <p style="margin: 0; color: #666; line-height: 1.6;">${unionType.desc}</p>
+          </div>
+        </section>
+        ` : ''}
 
-          <!-- РАСШИРЕННЫЙ АНАЛИЗ -->
-          <section class="interp-section ai-button-section">
-            <button class="btn btn-ai" data-number="${result.calculation.person1Code}" data-type="${result.method}">
-              ✨ Получить расширенный анализ
-            </button>
-            <p style="font-size: 0.9rem; color: #999; margin-top: 12px; text-align: center;">
-              Более подробный анализ с практическими рекомендациями
-            </p>
-          </section>
-        </div>
+        <!-- 3. ЭНЕРГЕТИЧЕСКИЙ БАЛАНС -->
+        ${energyBalance ? `
+        <section class="interp-section" style="margin-top: 24px;">
+          <h4>⚡ Энергетический баланс</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div style="background: #f8f4ec; padding: 16px; border-radius: 12px;">
+              <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--blue); font-size: 0.95rem;">${person1.name}</p>
+              <p style="margin: 0; color: #666; font-size: 0.9rem;">${energyBalance.person1Role}</p>
+            </div>
+            <div style="background: #f8f4ec; padding: 16px; border-radius: 12px;">
+              <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--blue); font-size: 0.95rem;">${person2.name}</p>
+              <p style="margin: 0; color: #666; font-size: 0.9rem;">${energyBalance.person2Role}</p>
+            </div>
+          </div>
+          <p style="margin-top: 12px; color: #666; font-size: 0.9rem; font-style: italic;">💭 ${energyBalance.description}</p>
+        </section>
+        ` : ''}
 
-        <!-- РАСЧЁТНЫЙ ШАГ ЗА ШАГОМ -->
+        <!-- 4. БЛАГОПРИЯТНЫЕ ПЕРИОДЫ -->
+        ${favorableMonths && favorableMonths.length > 0 ? `
+        <section class="interp-section" style="margin-top: 24px;">
+          <h4>🌟 Благоприятные месяцы</h4>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            ${favorableMonths.map(month => `<div style="padding: 8px 16px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: white; border-radius: 20px; font-size: 0.9rem; font-weight: 500;">${month}</div>`).join('')}
+          </div>
+          <p style="margin-top: 12px; color: #666; font-size: 0.85rem;">В эти месяцы рекомендуется активная работа над отношениями</p>
+        </section>
+        ` : ''}
+
+        <!-- 5. ФАЗЫ ОТНОШЕНИЙ -->
+        ${phases ? `
+        <section class="interp-section" style="margin-top: 24px;">
+          <h4>🔄 Фазы отношений</h4>
+          <div style="background: rgba(232,240,248,0.5); padding: 16px; border-radius: 12px;">
+            <p style="margin: 0 0 12px 0;"><strong>Текущая фаза:</strong> <span style="color: var(--gold); font-weight: 600;">${phases.current}</span></p>
+            <p style="margin: 0; color: #666; font-size: 0.9rem;">Отношения проходят циклические фазы развития. Понимание текущей фазы помогает лучше ориентироваться в событиях.</p>
+          </div>
+        </section>
+        ` : ''}
+
+        <!-- 6. КАРМИЧЕСКИЕ УРОКИ -->
+        ${lessons ? `
+        <section class="interp-section" style="margin-top: 24px;">
+          <h4>📖 Кармические уроки</h4>
+          <div style="display: grid; gap: 12px;">
+            <div style="background: #f0f0f0; padding: 14px; border-radius: 10px; border-left: 3px solid var(--gold);">
+              <p style="margin: 0 0 6px 0; font-weight: 600; color: var(--text); font-size: 0.9rem;">Для ${person1.name}:</p>
+              <p style="margin: 0; color: #666; font-size: 0.88rem;">${lessons.person1}</p>
+            </div>
+            <div style="background: #f0f0f0; padding: 14px; border-radius: 10px; border-left: 3px solid var(--gold);">
+              <p style="margin: 0 0 6px 0; font-weight: 600; color: var(--text); font-size: 0.9rem;">Для ${person2.name}:</p>
+              <p style="margin: 0; color: #666; font-size: 0.88rem;">${lessons.person2}</p>
+            </div>
+            <div style="background: rgba(184,148,46,0.08); padding: 14px; border-radius: 10px; border-left: 3px solid var(--gold);">
+              <p style="margin: 0 0 6px 0; font-weight: 600; color: var(--blue); font-size: 0.9rem;">Общий кармический урок:</p>
+              <p style="margin: 0; color: #666; font-size: 0.88rem;">${lessons.union}</p>
+            </div>
+          </div>
+        </section>
+        ` : ''}
+
+        <!-- 7. ОСНОВНОЙ АНАЛИЗ -->
+        <section class="interp-section" style="margin-top: 24px;">
+          <h4>📊 Анализ совместимости</h4>
+          <p>${description}</p>
+        </section>
+
+        <!-- 8. КНОПКА AI АНАЛИЗА -->
+        <section class="interp-section ai-button-section" style="margin-top: 24px;">
+          <button class="btn btn-ai" data-number="${result.calculation.person1Code}" data-type="${result.method}">
+            ✨ Получить AI-анализ с рекомендациями
+          </button>
+          <p style="font-size: 0.9rem; color: #999; margin-top: 12px; text-align: center;">
+            ChatGPT даст практические советы по гармонизации отношений
+          </p>
+        </section>
+
+        <!-- 9. РАСЧЁТНЫЙ ШАГ ЗА ШАГОМ -->
         <div class="calculation-trace">
           <details>
             <summary>📐 Как мы считали</summary>
