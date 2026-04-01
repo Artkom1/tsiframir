@@ -1156,6 +1156,95 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    /* ===== ENHANCEMENT: CTA Button Hierarchy (Primary/Secondary/Tertiary) ===== */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
+      color: white !important;
+      font-weight: 600;
+      border: none !important;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(184,148,46,0.35) !important;
+    }
+    .btn-primary:focus {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.1) !important;
+      color: var(--text-dark) !important;
+      border: 2px solid var(--border-light) !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background: rgba(184,148,46,0.08) !important;
+      border-color: var(--gold-light) !important;
+      transform: translateY(-1px);
+    }
+
+    .btn-tertiary {
+      background: transparent !important;
+      color: var(--text-dark) !important;
+      border: none !important;
+      text-decoration: underline;
+      transition: all 0.2s ease;
+    }
+    .btn-tertiary:hover {
+      color: var(--gold) !important;
+    }
+
+    /* ===== ENHANCEMENT: Smooth Scroll Behavior ===== */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* ===== ENHANCEMENT: Card Hover Effects ===== */
+    .book-card,
+    .pricing-card,
+    .testimonial-card,
+    .case-card,
+    .media-card,
+    .speaker-card,
+    .achievement-card {
+      transition: all 0.3s ease;
+    }
+
+    .book-card:hover,
+    .pricing-card:hover,
+    .testimonial-card:hover,
+    .media-card:hover,
+    .speaker-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12) !important;
+    }
+
+    /* ===== ENHANCEMENT: Focus States for Accessibility ===== */
+    button:focus,
+    a:focus {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    /* ===== ENHANCEMENT: Improved Section Spacing ===== */
+    @media (max-width: 768px) {
+      section {
+        padding: var(--section-pad) 20px !important;
+      }
+      .container {
+        padding: 0 16px !important;
+      }
+    }
+
+    /* ===== ENHANCEMENT: Scroll Progress Bar Color ===== */
+    #scroll-progress {
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)) !important;
+    }
+
   </style>
 
   <!-- Numerology Calculator Styles -->
@@ -2252,7 +2341,7 @@
     <div class="container">
       <div class="organizer-content">
         <div class="organizer-avatar reveal">
-          <img src="img/organizer.jpg" alt="Сергей Николаевич Кузнецов" style="width: 280px; height: 280px; border-radius: 50%; object-fit: cover; object-position: center 20%; box-shadow: 0 20px 60px rgba(184,148,46,0.25), 0 8px 20px rgba(0,0,0,0.1);">
+          <img src="img/organizer.jpg" alt="Сергей Николаевич Кузнецов" loading="lazy" style="width: 280px; height: 280px; border-radius: 50%; object-fit: cover; object-position: center 20%; box-shadow: 0 20px 60px rgba(184,148,46,0.25), 0 8px 20px rgba(0,0,0,0.1);">
         </div>
         <div class="organizer-info reveal reveal-delay-1">
           <h2>Сергей Николаевич Кузнецов</h2>
@@ -2639,7 +2728,7 @@
         <!-- Column 1: About -->
         <div class="footer-col">
           <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-            <img src="img/logotip.jpg" alt="ЦифраМир логотип" style="width: 56px; height: 56px; border-radius: 10px; object-fit: contain; background: rgba(255,255,255,0.1); padding: 6px;">
+            <img src="img/logotip.jpg" alt="ЦифраМир логотип" loading="lazy" style="width: 56px; height: 56px; border-radius: 10px; object-fit: contain; background: rgba(255,255,255,0.1); padding: 6px;">
             <h4 style="margin: 0;">ЦифраМир</h4>
           </div>
           <p style="font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.6;">I Международный нумерологический форум. Школа Сергея Кузнецова объединяет экспертов из 15+ стран для вашей трансформации.</p>
