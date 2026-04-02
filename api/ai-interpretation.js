@@ -4,11 +4,11 @@
  * Fallback to local database if API unavailable
  */
 
-import { getFromCache, saveToCache } from './utils/cache.js';
-import { getAIAnalysisOpenAI } from './utils/openai-client.js';
-import { getPrompt } from './utils/prompts.js';
+const { getFromCache, saveToCache } = require('./utils/cache.js');
+const { getAIAnalysisOpenAI } = require('./utils/openai-client.js');
+const { getPrompt } = require('./utils/prompts.js');
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -139,3 +139,5 @@ function createCacheKey(number, calculatorType, person1Name, person2Name) {
   }
   return `analysis_${number}_${calculatorType}`;
 }
+
+module.exports = handler;

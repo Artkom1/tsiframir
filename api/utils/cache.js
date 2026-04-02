@@ -9,7 +9,7 @@ const cache = new Map();
 /**
  * Get value from cache if not expired
  */
-export function getFromCache(key) {
+function getFromCache(key) {
   if (!cache.has(key)) {
     return null;
   }
@@ -30,7 +30,7 @@ export function getFromCache(key) {
 /**
  * Save value to cache with TTL
  */
-export function saveToCache(key, data, ttlSeconds = 2592000) {
+function saveToCache(key, data, ttlSeconds = 2592000) {
   // Default TTL = 30 days (2592000 seconds)
   cache.set(key, {
     data,
@@ -44,7 +44,7 @@ export function saveToCache(key, data, ttlSeconds = 2592000) {
 /**
  * Clear cache
  */
-export function clearCache() {
+function clearCache() {
   cache.clear();
   console.log('🗑️  Cache cleared');
 }
@@ -52,7 +52,7 @@ export function clearCache() {
 /**
  * Get cache stats
  */
-export function getCacheStats() {
+function getCacheStats() {
   let validCount = 0;
   let expiredCount = 0;
 
@@ -70,3 +70,10 @@ export function getCacheStats() {
     expired: expiredCount
   };
 }
+
+module.exports = {
+  getFromCache,
+  saveToCache,
+  clearCache,
+  getCacheStats
+};

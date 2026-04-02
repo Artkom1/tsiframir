@@ -3,7 +3,7 @@
  * Creates optimized prompts for different calculator types
  */
 
-export function getPrompt(number, calculatorType, userData, person1Name, person2Name) {
+function getPrompt(number, calculatorType, userData, person1Name, person2Name) {
   const basePrompt = `
 Дай подробный и профессиональный нумерологический анализ числа ${number}.
 
@@ -104,3 +104,7 @@ export function getPrompt(number, calculatorType, userData, person1Name, person2
 
   return basePrompt;
 }
+
+module.exports = {
+  getPrompt
+};

@@ -3,7 +3,7 @@
  * Handles communication with OpenAI (Chat GPT) API
  */
 
-export async function getAIAnalysisOpenAI(apiKey, prompt, calculatorType) {
+async function getAIAnalysisOpenAI(apiKey, prompt, calculatorType) {
   try {
     console.log('🚀 Calling OpenAI API...');
 
@@ -70,3 +70,7 @@ export async function getAIAnalysisOpenAI(apiKey, prompt, calculatorType) {
     throw error;
   }
 }
+
+module.exports = {
+  getAIAnalysisOpenAI
+};
