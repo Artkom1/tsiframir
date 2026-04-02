@@ -486,6 +486,8 @@ const CalculatorUI = (() => {
    * Render personal matrix result (birth date + full name combined)
    */
   const renderPersonalMatrixResult = (container, result) => {
+    // Store for AI analysis
+    lastCalculationResult = result;
     const { destiny, personality, expression } = result.output;
     const { day, month, year, surname, name, patronymic } = result.inputs;
 
@@ -568,6 +570,9 @@ const CalculatorUI = (() => {
    * Render word code analysis result
    */
   const renderWordCodeResult = (container, result) => {
+    // Store for AI analysis
+    lastCalculationResult = result;
+
     const { primary, secondary, meaning } = result.output;
     const interp = INTERPRETATIONS_DB[secondary] || {};
 
@@ -633,6 +638,9 @@ const CalculatorUI = (() => {
    * Render compatibility result
    */
   const renderCompatibilityResult = (container, result) => {
+    // Store for AI analysis
+    lastCalculationResult = result;
+
     console.log('🔗 renderCompatibilityResult called');
     console.log('result.output:', result.output);
 
@@ -917,6 +925,9 @@ const CalculatorUI = (() => {
     }
   };
 
+  // Store last calculation result for AI analysis
+  let lastCalculationResult = null;
+
   /**
    * Attach AI button handlers
    */
@@ -984,6 +995,12 @@ const CalculatorUI = (() => {
         number: parseInt(number),
         calculatorType: calculatorType || 'birthDate'
       };
+
+      // Add calculation trace for word code and other calculators
+      if (lastCalculationResult && lastCalculationResult.trace) {
+        payload.calculationTrace = lastCalculationResult.trace.join('\n');
+        console.log('✅ Added calculation trace:', payload.calculationTrace.substring(0, 100));
+      }
 
       // For compatibility, add person names from stored data
       if (calculatorType === 'compatibility') {

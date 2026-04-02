@@ -3,7 +3,7 @@
  * Creates optimized prompts for different calculator types
  */
 
-function getPrompt(number, calculatorType, userData, person1Name, person2Name) {
+function getPrompt(number, calculatorType, userData, person1Name, person2Name, calculationTrace) {
   const basePrompt = `
 Дай подробный и профессиональный нумерологический анализ числа ${number}.
 
@@ -12,6 +12,13 @@ function getPrompt(number, calculatorType, userData, person1Name, person2Name) {
 - Книги "2х-цифровая трансформация личности" Сергея Кузнецова
 - Лучших мировых практик нумерологии и психологии
 - Глубокого понимания архетипов и жизненных путей
+
+${calculationTrace ? `
+ВАЖНО: Это число было вычислено следующим образом:
+${calculationTrace}
+
+Включи в своей анализ информацию о том как это число было рассчитано, чтобы подчеркнуть источник его энергии.
+` : ''}
 
 СТРУКТУРА ОТВЕТА (используй markdown):
 

@@ -25,7 +25,7 @@ async function handler(req, res) {
   }
 
   try {
-    const { number, calculatorType, userData, person1Name, person2Name } = req.body;
+    const { number, calculatorType, userData, person1Name, person2Name, calculationTrace } = req.body;
 
     // Валидация входных данных
     if (!number) {
@@ -50,7 +50,7 @@ async function handler(req, res) {
     }
 
     // Создать уникальный ключ кэша
-    const cacheKey = createCacheKey(number, calculatorType, person1Name, person2Name);
+    const cacheKey = createCacheKey(number, calculatorType, person1Name, person2Name, calculationTrace);
     console.log(`🔍 Cache key: ${cacheKey}`);
 
     // Проверить кэш
@@ -73,7 +73,8 @@ async function handler(req, res) {
       calculatorType,
       userData,
       person1Name,
-      person2Name
+      person2Name,
+      calculationTrace
     );
 
     // Отправить в OpenAI API
@@ -131,11 +132,18 @@ async function handler(req, res) {
 /**
  * Создать уникальный ключ для кэша
  */
-function createCacheKey(number, calculatorType, person1Name, person2Name) {
+function createCacheKey(number, calculatorType, person1Name, person2Name, calculationTrace) {
   if (calculatorType === 'compatibility' && person1Name && person2Name) {
     // Для совместимости используем сортированные имена
     const names = [person1Name, person2Name].sort().join('_');
     return `analysis_compat_${names}`;
+  }
+  // Для word code добавляем сам текст в ключ
+  if (calculatorType === 'wordCode' && calculationTrace) {
+    const wordMatch = calculationTrace.match(/^Слово: (.+?)$/m);
+    if (wordMatch) {
+      return `analysis_word_${wordMatch[1].toLowerCase().replace(/\s+/g, '_')}`;
+    }
   }
   return `analysis_${number}_${calculatorType}`;
 }
