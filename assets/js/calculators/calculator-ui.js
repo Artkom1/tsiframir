@@ -937,6 +937,21 @@ const CalculatorUI = (() => {
   };
 
   /**
+   * Get current calculator data from form
+   */
+  const getCurrentCalculatorData = () => {
+    const formContainer = document.querySelector('.calculator-form');
+    if (!formContainer) return {};
+
+    const data = {};
+    const inputs = formContainer.querySelectorAll('input');
+    inputs.forEach(input => {
+      data[input.name] = input.value;
+    });
+    return data;
+  };
+
+  /**
    * Request AI analysis
    */
   const requestAIAnalysis = async (number, calculatorType) => {
@@ -964,15 +979,26 @@ const CalculatorUI = (() => {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 30000);
 
+      // Build request payload
+      const payload = {
+        number: parseInt(number),
+        calculatorType: calculatorType || 'birthDate'
+      };
+
+      // For compatibility, add person names from stored data
+      if (calculatorType === 'compatibility') {
+        const data = getCurrentCalculatorData();
+        if (data.person1Name) payload.person1Name = data.person1Name;
+        if (data.person2Name) payload.person2Name = data.person2Name;
+        console.log('✅ Compatibility request with names:', payload);
+      }
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          number: parseInt(number),
-          calculatorType: calculatorType || 'birthDate'
-        }),
+        body: JSON.stringify(payload),
         signal: controller.signal
       });
 
