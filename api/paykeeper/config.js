@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
       return;
     }
 
-    const serverUrl = process.env.PAYKEEPER_SERVER_URL;
+    const serverUrl = (process.env.PAYKEEPER_SERVER_URL || '').replace(/[\r\n\t]/g, '').trim();
 
     if (!serverUrl) {
       res.status(503).json({

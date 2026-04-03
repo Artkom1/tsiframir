@@ -69,7 +69,7 @@ module.exports = async function handler(req, res) {
     return res.status(405).send('Method Not Allowed');
   }
 
-  const secret = process.env.PAYKEEPER_SECRET;
+  const secret = (process.env.PAYKEEPER_SECRET || '').replace(/[\r\n\t]/g, '').trim();
   if (!secret || secret === 'your_secret_word_here') {
     console.error('[PayKeeper] PAYKEEPER_SECRET not configured');
     return res.status(500).send('Configuration error');
