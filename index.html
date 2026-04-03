@@ -1467,6 +1467,40 @@
       .pk-modal-amount { font-size: 2rem; }
     }
 
+    /* ===== PAYMENT TRUST LOGOS ===== */
+    .pk-pay-trust { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .pk-pay-trust-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; color: var(--text-light); }
+    .pk-pay-logos { display: flex; align-items: center; justify-content: center; }
+    .pk-pay-logos-img { max-height: 32px; width: auto; display: block; object-fit: contain; }
+    .pk-pay-logos-fallback { display: none; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: center; }
+    .pk-badge { display: inline-flex; align-items: center; justify-content: center; height: 22px; padding: 0 8px; border-radius: 3px; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; }
+    .pk-badge-visa { background: #1a1f71; color: #fff; font-style: italic; font-size: 0.65rem; letter-spacing: 1px; }
+    .pk-badge-mc { background: transparent; padding: 0; width: 34px; height: 22px; position: relative; }
+    .pk-badge-mc span { position: absolute; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; border-radius: 50%; display: block; }
+    .pk-badge-mc span:first-child { left: 0; background: #eb001b; }
+    .pk-badge-mc span:last-child { right: 0; background: #f79e1b; }
+    .pk-badge-mir { background: #4db45e; color: #fff; }
+    .pk-badge-sbp { background: var(--white); color: #1d2d50; border: 1px solid rgba(0,0,0,0.12); }
+    .pk-badge-pk { background: #0b6bb5; color: #fff; }
+    /* Footer variant: image inverted for dark background */
+    .footer .pk-pay-logos-img { filter: brightness(0) invert(1); opacity: 0.7; }
+    .footer .pk-pay-trust-label { color: rgba(255,255,255,0.55); }
+    .footer .pk-badge-sbp { background: rgba(255,255,255,0.9); }
+    .footer .pk-badge-pk { opacity: 0.9; }
+    /* Pricing section variant */
+    .pricing .pk-pay-trust { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-light); }
+    .pricing .pk-pay-trust-label { color: var(--text-muted); }
+    /* Modal trust block */
+    .pk-modal-trust { margin-top: 14px; text-align: center; }
+    .pk-modal-trust .pk-pay-trust { gap: 6px; }
+    .pk-modal-trust .pk-pay-logos-img { max-height: 26px; }
+    .pk-legal-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+    .pk-legal-links a { font-size: 0.72rem; color: var(--text-muted); text-decoration: underline; transition: color 0.2s; }
+    .pk-legal-links a:hover { color: var(--gold-dark); }
+    @media (max-width: 480px) {
+      .pk-pay-logos-img { max-height: 26px; }
+    }
+
   </style>
 
   <!-- Numerology Calculator Styles -->
@@ -1898,6 +1932,22 @@
         <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light); font-size: 0.85rem;">
           🔒 Оплачивая участие, вы принимаете условия <a href="offer.html" style="color: var(--gold-dark); font-weight: 600; text-decoration: underline;">Публичной оферты</a> и <a href="privacy.html" style="color: var(--gold-dark); font-weight: 600; text-decoration: underline;">Политики конфиденциальности</a>. Оплата осуществляется через защищённый шлюз <strong style="color:var(--gold-dark)">Альфа-Банк / PayKeeper</strong>.
         </p>
+        <div class="pk-pay-trust" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-light);">
+          <p class="pk-pay-trust-label">Принимаем оплату картами Visa, Mastercard, МИР и через СБП</p>
+          <div class="pk-pay-logos">
+            <img src="img/HorizontalLogos.png"
+                 alt="Visa, Mastercard, МИР, СБП, PayKeeper"
+                 class="pk-pay-logos-img"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="pk-pay-logos-fallback">
+              <span class="pk-badge pk-badge-visa">VISA</span>
+              <span class="pk-badge pk-badge-mc"><span></span><span></span></span>
+              <span class="pk-badge pk-badge-mir">МИР</span>
+              <span class="pk-badge pk-badge-sbp">СБП</span>
+              <span class="pk-badge pk-badge-pk">PayKeeper</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- [4] SEATS COUNTER -->
@@ -2434,9 +2484,9 @@
             </tr>
             <tr style="background: linear-gradient(90deg, rgba(184,148,46,0.12), rgba(184,148,46,0.12));">
               <td style="padding: 24px 20px;"></td>
-              <td style="text-align: center; padding: 24px 20px;"><a href="#register" class="comparison-cta">Выбрать</a></td>
-              <td style="text-align: center; padding: 24px 20px;"><a href="#register" class="comparison-cta" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark));">Выбрать VIP</a></td>
-              <td style="text-align: center; padding: 24px 20px;"><a href="#register" class="comparison-cta">Выбрать</a></td>
+              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('STD')" class="comparison-cta">Выбрать</button></td>
+              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('VIP')" class="comparison-cta" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark));">Выбрать VIP</button></td>
+              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('EXC')" class="comparison-cta">Выбрать</button></td>
             </tr>
           </tbody>
         </table>
@@ -3016,6 +3066,22 @@
           Оплата на сайте осуществляется через защищённый шлюз <strong style="color: var(--gold-light);">PayKeeper / Альфа-Банк</strong>.
           <a href="requisites.html" class="requisites-link">Подробные реквизиты и информация об оплате →</a>
         </div>
+        <div class="pk-pay-trust" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+          <p class="pk-pay-trust-label">Безопасная онлайн-оплата</p>
+          <div class="pk-pay-logos">
+            <img src="img/HorizontalLogos.png"
+                 alt="Visa, Mastercard, МИР, СБП, PayKeeper"
+                 class="pk-pay-logos-img"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="pk-pay-logos-fallback">
+              <span class="pk-badge pk-badge-visa">VISA</span>
+              <span class="pk-badge pk-badge-mc"><span></span><span></span></span>
+              <span class="pk-badge pk-badge-mir">МИР</span>
+              <span class="pk-badge pk-badge-sbp">СБП</span>
+              <span class="pk-badge pk-badge-pk">PayKeeper</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="footer-divider"></div>
@@ -3057,7 +3123,29 @@
         <button type="submit" class="pk-submit-btn" id="pkSubmitBtn">
           &#128274;&nbsp; Перейти к оплате
         </button>
-        <p class="pk-secure-note">Защищённый шлюз Альфа-Банк / PayKeeper &bull; Данные карты продавцу не передаются</p>
+        <div class="pk-modal-trust">
+          <div class="pk-pay-trust">
+            <div class="pk-pay-logos">
+              <img src="img/HorizontalLogos.png"
+                   alt="Visa, Mastercard, МИР, СБП, PayKeeper"
+                   class="pk-pay-logos-img"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="pk-pay-logos-fallback">
+                <span class="pk-badge pk-badge-visa">VISA</span>
+                <span class="pk-badge pk-badge-mc"><span></span><span></span></span>
+                <span class="pk-badge pk-badge-mir">МИР</span>
+                <span class="pk-badge pk-badge-sbp">СБП</span>
+                <span class="pk-badge pk-badge-pk">PayKeeper</span>
+              </div>
+            </div>
+          </div>
+          <p class="pk-secure-note">&#128274; Защищённый шлюз Альфа-Банк / PayKeeper &bull; Данные карты продавцу не передаются</p>
+          <div class="pk-legal-links">
+            <a href="offer.html" target="_blank">Публичная оферта</a>
+            <a href="privacy.html" target="_blank">Конфиденциальность</a>
+            <a href="requisites.html" target="_blank">Реквизиты</a>
+          </div>
+        </div>
       </form>
     </div>
   </div>
