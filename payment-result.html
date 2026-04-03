@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Результат оплаты — ЦифраМир</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231e3a5f'/><text x='32' y='46' font-family='serif' font-size='40' font-weight='bold' fill='%23d4b85a' text-anchor='middle'>Ц</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold: #b8942e; --gold-light: #d4b85a; --gold-dark: #8a6d1e;
+      --blue: #1e3a5f; --blue-light: #2d5a8e;
+      --cream: #fdfbf7; --white: #ffffff;
+      --text: #2c2c2c; --text-light: #6b7280; --text-muted: #9ca3af;
+      --border-light: rgba(0,0,0,0.06);
+      --success: #16a34a; --success-bg: #f0fdf4; --success-border: #bbf7d0;
+      --fail: #dc2626; --fail-bg: #fef2f2; --fail-border: #fecaca;
+    }
+    body {
+      font-family: 'Inter', sans-serif; color: var(--text);
+      background: var(--cream); min-height: 100vh;
+      display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    .navbar { background: var(--blue); padding: 16px 0; }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+    .container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+    .nav-logo { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: 1px; }
+    .nav-logo span { color: var(--gold-light); }
+    .main-content {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 60px 0;
+    }
+    .result-card {
+      background: var(--white); border-radius: 24px; padding: 52px 48px;
+      text-align: center; box-shadow: 0 16px 60px rgba(0,0,0,0.08);
+      border: 1px solid var(--border-light); width: 100%;
+    }
+    .result-icon { font-size: 5rem; margin-bottom: 24px; display: block; line-height: 1; }
+    .result-title {
+      font-family: 'Cinzel', serif; font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700; margin-bottom: 16px;
+    }
+    .result-title.success { color: var(--success); }
+    .result-title.fail { color: var(--fail); }
+    .result-subtitle { font-size: 1rem; color: var(--text-light); line-height: 1.7; margin-bottom: 8px; }
+    .notice-box {
+      border-radius: 12px; padding: 16px 20px; margin: 24px 0; text-align: left;
+      font-size: 0.88rem; line-height: 1.65;
+    }
+    .notice-box.success { background: var(--success-bg); border: 1px solid var(--success-border); color: #15803d; }
+    .notice-box.fail { background: var(--fail-bg); border: 1px solid var(--fail-border); color: #b91c1c; }
+    .notice-box.info { background: rgba(184,148,46,0.06); border: 1px solid rgba(184,148,46,0.2); color: var(--text-light); }
+    .notice-box strong { display: block; margin-bottom: 4px; font-weight: 600; }
+    .payment-ref { font-family: 'Courier New', monospace; background: rgba(0,0,0,0.04); border-radius: 6px; padding: 2px 8px; font-size: 0.85rem; color: var(--text); }
+    .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--white); padding: 14px 28px; border-radius: 50px;
+      font-weight: 600; font-size: 0.95rem; text-decoration: none;
+      transition: all 0.3s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { box-shadow: 0 8px 24px rgba(184,148,46,0.3); transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--blue-light);
+      border: 1.5px solid rgba(45,90,142,0.3); padding: 13px 24px;
+      border-radius: 50px; font-weight: 500; font-size: 0.9rem;
+      text-decoration: none; transition: all 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--blue-light); background: rgba(45,90,142,0.04); }
+    .footer { background: var(--blue); padding: 24px 0; text-align: center; margin-top: auto; }
+    .footer p { color: rgba(255,255,255,0.5); font-size: 0.82rem; }
+    .footer a { color: var(--gold-light); text-decoration: none; }
+    .footer a:hover { color: var(--white); }
+    #details-block { display: none; }
+    @media (max-width: 540px) {
+      .result-card { padding: 36px 24px; }
+      .btn-group { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container" style="max-width:1200px">
+    <a href="index.html" class="nav-logo">Цифра<span>Мир</span></a>
+  </div>
+</nav>
+
+<main class="main-content">
+  <div class="container">
+    <div class="result-card">
+
+      <!-- SUCCESS STATE -->
+      <div id="state-success" style="display:none">
+        <span class="result-icon">✅</span>
+        <h1 class="result-title success">Платёж принят!</h1>
+        <p class="result-subtitle">Ваш платёж отправлен на обработку в банк.</p>
+
+        <div class="notice-box success">
+          <strong>Что происходит сейчас</strong>
+          Платёж проходит финальное подтверждение через платёжную систему Альфа-Банк / PayKeeper. Обычно это занимает от нескольких секунд до нескольких минут.
+        </div>
+
+        <div class="notice-box info">
+          <strong>⚠️ Важно</strong>
+          Перенаправление на эту страницу не является окончательным подтверждением оплаты.
+          Подтверждение придёт на ваш email после того, как платёж будет окончательно верифицирован.
+          Если письмо не пришло в течение 10–15 минут, напишите нам: <a href="mailto:kisl506@mail.ru">kisl506@mail.ru</a>
+        </div>
+
+        <p id="payment-ref-block" style="font-size:0.85rem; color:var(--text-muted); margin-top:8px; display:none">
+          Номер платежа: <span class="payment-ref" id="payment-id-display"></span>
+        </p>
+
+        <div class="btn-group">
+          <a href="index.html" class="btn-primary">На главную</a>
+          <a href="mailto:kisl506@mail.ru" class="btn-secondary">Написать организаторам</a>
+        </div>
+      </div>
+
+      <!-- FAIL STATE -->
+      <div id="state-fail" style="display:none">
+        <span class="result-icon">❌</span>
+        <h1 class="result-title fail">Платёж не завершён</h1>
+        <p class="result-subtitle">К сожалению, платёж не был завершён или был отклонён банком.</p>
+
+        <div class="notice-box fail">
+          <strong>Возможные причины</strong>
+          Недостаточно средств на карте, ограничения на онлайн-платежи, истёк срок действия карты,
+          или платёж был отменён вами.
+        </div>
+
+        <div class="notice-box info">
+          <strong>Что делать</strong>
+          Вы можете попробовать оплатить снова, используя другую карту. Если проблема повторяется — свяжитесь с нами:
+          <a href="mailto:kisl506@mail.ru">kisl506@mail.ru</a> или <a href="tel:+79657717999">+7 965 771-79-99</a>
+        </div>
+
+        <div class="btn-group">
+          <a href="index.html#pricing" class="btn-primary">Попробовать снова</a>
+          <a href="mailto:kisl506@mail.ru" class="btn-secondary">Написать нам</a>
+        </div>
+      </div>
+
+      <!-- UNKNOWN / DIRECT ACCESS STATE -->
+      <div id="state-unknown">
+        <span class="result-icon">🔄</span>
+        <h1 class="result-title" style="color:var(--blue)">Обработка платежа</h1>
+        <p class="result-subtitle">Статус вашего платежа уточняется. Пожалуйста, подождите или обратитесь к организаторам.</p>
+        <div class="btn-group">
+          <a href="index.html" class="btn-primary">На главную</a>
+          <a href="mailto:kisl506@mail.ru" class="btn-secondary">Написать нам</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container" style="max-width:1200px">
+    <p>
+      &copy; 2026 Школа ЦифраМир Сергея Кузнецова &nbsp;|&nbsp;
+      <a href="offer.html">Публичная оферта</a> &nbsp;|&nbsp;
+      <a href="privacy.html">Политика конфиденциальности</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var result = params.get('result');
+    var paymentId = params.get('payment_id');
+
+    var stateSuccess = document.getElementById('state-success');
+    var stateFail = document.getElementById('state-fail');
+    var stateUnknown = document.getElementById('state-unknown');
+
+    if (result === 'success') {
+      stateSuccess.style.display = 'block';
+      stateUnknown.style.display = 'none';
+      if (paymentId) {
+        document.getElementById('payment-id-display').textContent = paymentId;
+        document.getElementById('payment-ref-block').style.display = 'block';
+      }
+    } else if (result === 'fail') {
+      stateFail.style.display = 'block';
+      stateUnknown.style.display = 'none';
+    }
+  })();
+</script>
+
+</body>
+</html>
