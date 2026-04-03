@@ -4,26 +4,40 @@
  * The server URL is NOT a secret — it is just an address.
  * Secret word (PAYKEEPER_SECRET) lives only in the callback handler.
  */
-module.exports = function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.SITE_URL || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Cache-Control', 'public, max-age=300');
+module.exports = async function handler(req, res) {
+  try {
+    res.setHeader('Access-Control-Allow-Origin', process.env.SITE_URL || '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+    if (req.method === 'OPTIONS') {
+      res.status(200).end();
+      return;
+    }
 
-  const serverUrl = process.env.PAYKEEPER_SERVER_URL;
+    if (req.method !== 'GET') {
+      res.status(405).json({ error: 'Method not allowed' });
+      return;
+    }
 
-  if (!serverUrl) {
-    return res.status(503).json({
-      ok: false,
-      error: 'PAYKEEPER_SERVER_URL не задан. Настройте переменную окружения в Vercel.'
+    const serverUrl = process.env.PAYKEEPER_SERVER_URL;
+
+    if (!serverUrl) {
+      res.status(503).json({
+        ok: false,
+        error: 'PAYKEEPER_SERVER_URL не задан. Настройте переменную окружения в Vercel.'
+      });
+      return;
+    }
+
+    res.status(200).json({
+      ok: true,
+      serverUrl: serverUrl,
+      testMode: process.env.NODE_ENV !== 'production'
     });
+  } catch (err) {
+    console.error('[PayKeeper/config] handler error:', err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Internal server error', message: err.message });
+    }
   }
-
-  return res.status(200).json({
-    ok: true,
-    serverUrl: serverUrl,
-    testMode: process.env.NODE_ENV !== 'production'
-  });
 };
