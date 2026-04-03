@@ -24,6 +24,6 @@ module.exports = function handler(req, res) {
   return res.status(200).json({
     ok: true,
     serverUrl: serverUrl,
-    testMode: serverUrl.includes('demo') || process.env.NODE_ENV !== 'production'
+    testMode: process.env.NODE_ENV !== 'production'
   });
 };
