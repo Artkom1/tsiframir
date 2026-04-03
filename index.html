@@ -542,6 +542,21 @@
     .floating-cta-tooltip { position: absolute; right: calc(100% + 12px); top: 50%; transform: translateY(-50%); background: var(--white); color: var(--text); font-size: 0.8rem; font-weight: 600; padding: 8px 14px; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none; font-family: 'Inter', sans-serif; }
     .floating-cta:hover .floating-cta-tooltip { opacity: 1; }
 
+    /* ===== AFTER PROGRAM CTA ===== */
+    .after-program-cta { background: linear-gradient(135deg, var(--blue), var(--blue-light)); padding: 48px 0; }
+    .after-program-cta-inner { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; text-align: center; }
+    .after-program-cta-inner p { color: rgba(255,255,255,0.9); font-size: 1.1rem; font-weight: 500; margin: 0; max-width: 480px; }
+    .btn-apc { display: inline-flex !important; align-items: center !important; gap: 8px !important; padding: 14px 36px !important; border-radius: 50px !important; font-size: 1rem !important; }
+    .btn-apc-secondary { color: rgba(255,255,255,0.85); border: 1.5px solid rgba(255,255,255,0.4); background: transparent; padding: 14px 36px; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.3s; font-family: 'Inter', sans-serif; }
+    .btn-apc-secondary:hover { border-color: var(--gold-light); color: var(--gold-light); }
+    @media (max-width: 600px) { .after-program-cta-inner { flex-direction: column; padding: 0 16px; } }
+
+    /* ===== STICKY MOBILE CTA ===== */
+    .sticky-mobile-cta { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 998; background: var(--white); padding: 12px 16px 16px; box-shadow: 0 -4px 20px rgba(0,0,0,0.12); border-top: 1px solid var(--border-light); }
+    .sticky-mobile-cta-btn { width: 100%; padding: 16px; border-radius: 50px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--white); font-weight: 700; font-size: 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; box-shadow: 0 4px 16px rgba(184,148,46,0.25); transition: transform 0.2s, box-shadow 0.2s; }
+    .sticky-mobile-cta-btn:active { transform: scale(0.98); }
+    @media (max-width: 768px) { .sticky-mobile-cta { display: block; } body { padding-bottom: 72px; } }
+
     /* ===== FOOTER ===== */
     .footer { background: var(--cream-warm); padding: 48px 0 32px; border-top: 1px solid var(--border-light); }
     .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
@@ -1540,7 +1555,8 @@
         <li><a href="#venue">Место</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contacts">Контакты</a></li>
-        <li><a href="#register" class="nav-cta">Регистрация</a></li>
+        <li><a href="#register">Регистрация</a></li>
+        <li><button onclick="openPaymentModal('STD')" class="nav-cta" style="border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.88rem;">Оплатить</button></li>
       </ul>
       <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -1588,8 +1604,8 @@
         </button>
       </div>
       <div class="hero-buttons reveal reveal-delay-3">
-        <a href="#register" class="btn-primary">Зарегистрироваться</a>
-        <a href="#program" class="btn-secondary">Программа форума</a>
+        <a href="#pricing" class="btn-primary" onclick="event.preventDefault(); openPaymentModal('STD')">&#128274;&nbsp;Оплатить участие</a>
+        <a href="#pricing" class="btn-secondary">Выбрать тариф</a>
       </div>
     </div>
     <div class="hero-banner-wrap reveal reveal-delay-4" id="heroBanner">
@@ -1774,6 +1790,17 @@
       <div id="why" style="display:none;"></div>
     </div>
   </section>
+
+  <!-- AFTER PROGRAM CTA -->
+  <div class="after-program-cta">
+    <div class="container">
+      <div class="after-program-cta-inner reveal">
+        <p>Готовы к трансформации? Забронируйте место прямо сейчас</p>
+        <a href="#pricing" class="btn-primary btn-apc" onclick="event.preventDefault(); openPaymentModal('STD')">&#128274;&nbsp;Забронировать и оплатить</a>
+        <a href="#pricing" class="btn-apc-secondary">Посмотреть тарифы</a>
+      </div>
+    </div>
+  </div>
 
   <!-- [6] TIMELINE -->
   <section class="timeline-section sacred-bg" id="schedule">
@@ -3172,10 +3199,15 @@
   </div>
 
   <!-- Floating CTA -->
-  <a href="#register" class="floating-cta" id="floatingCta" aria-label="Регистрация">
-    &#9998;
-    <span class="floating-cta-tooltip">Регистрация</span>
-  </a>
+  <button onclick="openPaymentModal('STD')" class="floating-cta" id="floatingCta" aria-label="Оплатить участие">
+    &#128274;
+    <span class="floating-cta-tooltip">Оплатить участие</span>
+  </button>
+
+  <!-- STICKY MOBILE CTA -->
+  <div class="sticky-mobile-cta" id="stickyMobileCta">
+    <button class="sticky-mobile-cta-btn" onclick="openPaymentModal('STD')">&#128274;&nbsp;Оплатить участие</button>
+  </div>
 
   <script>
     // Navbar + floating CTA
