@@ -6,7 +6,8 @@
  */
 module.exports = async function handler(req, res) {
   try {
-    res.setHeader('Access-Control-Allow-Origin', process.env.SITE_URL || '*');
+    const origin = (process.env.SITE_URL || '').replace(/[\r\n\t]/g, '').trim() || '*';
+    res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
     if (req.method === 'OPTIONS') {
