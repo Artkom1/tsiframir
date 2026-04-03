@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Публичная оферта — ЦифраМир</title>
+  <meta name="description" content="Публичная оферта о заключении договора возмездного оказания информационно-организационных услуг по участию в мероприятиях. ИП Кузнецов Сергей Николаевич.">
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231e3a5f'/><text x='32' y='46' font-family='serif' font-size='40' font-weight='bold' fill='%23d4b85a' text-anchor='middle'>Ц</text></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #b8942e;
+      --gold-light: #d4b85a;
+      --gold-lighter: #f0e4c3;
+      --gold-dark: #8a6d1e;
+      --blue: #1e3a5f;
+      --blue-light: #2d5a8e;
+      --blue-pale: #e8f0f8;
+      --cream: #fdfbf7;
+      --cream-warm: #f8f4ec;
+      --white: #ffffff;
+      --bg-section: #f5f2eb;
+      --text: #2c2c2c;
+      --text-light: #6b7280;
+      --text-muted: #9ca3af;
+      --border-light: rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+    }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+    /* Navbar */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000; padding: 16px 0;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+    }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo {
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.4rem;
+      color: var(--text); text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .nav-logo-img {
+      width: 56px; height: 56px; border-radius: 12px;
+      object-fit: contain; background: rgba(184,148,46,0.15);
+      padding: 6px; box-shadow: 0 6px 16px rgba(184,148,46,0.2);
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--white); border-radius: 50px; text-decoration: none;
+      font-weight: 600; font-size: 0.9rem; transition: all 0.3s;
+    }
+    .nav-back:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(184,148,46,0.3); }
+
+    /* Page Content */
+    .offer-page {
+      min-height: 100vh;
+      background: var(--cream);
+      padding-top: 120px;
+    }
+    .offer-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* Header */
+    .offer-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      line-height: 1.25;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .offer-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-light);
+      max-width: 700px;
+      line-height: 1.7;
+      margin: 0 auto 24px;
+    }
+    .golden-line {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 2px;
+      margin: 24px auto;
+    }
+    .offer-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 24px;
+    }
+    .offer-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .offer-meta-item strong {
+      color: var(--text);
+    }
+
+    /* Table of Contents */
+    .toc-section {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .toc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--blue);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--gold-lighter);
+    }
+    .toc-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      list-style: none;
+    }
+    .toc-list li a {
+      display: block;
+      padding: 10px 16px;
+      color: var(--text-light);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s;
+      font-size: 0.95rem;
+    }
+    .toc-list li a:hover {
+      background: var(--cream-warm);
+      color: var(--gold-dark);
+      transform: translateX(4px);
+    }
+
+    /* Content Section */
+    .content-section {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .content-section h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      color: var(--blue);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--gold-lighter);
+      scroll-margin-top: 100px;
+    }
+    .content-section h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+      margin: 28px 0 16px;
+      font-weight: 600;
+    }
+    .content-section p {
+      margin-bottom: 16px;
+      line-height: 1.8;
+      color: var(--text-light);
+    }
+    .content-section ul,
+    .content-section ol {
+      margin: 16px 0 16px 24px;
+      color: var(--text-light);
+    }
+    .content-section li {
+      margin-bottom: 8px;
+      line-height: 1.7;
+    }
+    .content-section strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Intro Block */
+    .intro-block {
+      background: linear-gradient(135deg, rgba(184,148,46,0.08), rgba(232,240,248,0.1));
+      border: 2px solid var(--gold-lighter);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 32px;
+      line-height: 1.8;
+      color: var(--text-light);
+    }
+    .intro-block p {
+      margin-bottom: 12px;
+    }
+    .intro-block strong {
+      color: var(--text);
+    }
+
+    /* Requisites Block */
+    .requisites-block {
+      background: var(--blue-pale);
+      border-left: 4px solid var(--blue);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .requisites-block h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: var(--blue);
+      margin-bottom: 16px;
+    }
+    .requisites-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .req-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 12px;
+      font-size: 0.95rem;
+    }
+    .req-label {
+      font-weight: 600;
+      color: var(--text-light);
+    }
+    .req-value {
+      color: var(--text);
+    }
+
+    /* Important Notice */
+    .important-notice {
+      background: rgba(184,148,46,0.08);
+      border: 2px solid var(--gold-light);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .important-notice strong {
+      color: var(--gold-dark);
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+    .important-notice p {
+      color: var(--text-light);
+      margin: 0;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--blue);
+      color: var(--white);
+      padding: 48px 0 32px;
+      margin-top: 60px;
+      border-top: 1px solid var(--border-light);
+    }
+    .footer-content {
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .footer-logo span { color: var(--gold-light); }
+    .footer-text {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 16px;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover {
+      color: var(--gold-light);
+    }
+
+    @media (max-width: 768px) {
+      .toc-list {
+        grid-template-columns: 1fr;
+      }
+      .content-section {
+        padding: 28px 20px;
+      }
+      .req-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+      .nav-logo {
+        font-size: 1.1rem;
+      }
+      .nav-logo-img {
+        width: 48px;
+        height: 48px;
+      }
+      .nav-back {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
+      .offer-meta {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">
+        <img src="img/logotip.jpg" alt="ЦифраМир" class="nav-logo-img">
+        Цифра<span>Мир</span>
+      </a>
+      <a href="index.html" class="nav-back">← На главную</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="offer-page">
+    <div class="offer-container">
+      
+      <!-- Header -->
+      <div class="offer-header">
+        <div class="section-label">Юридический документ</div>
+        <h1 class="section-title">Публичная оферта</h1>
+        <p class="offer-subtitle">
+          О заключении договора возмездного оказания информационно-организационных услуг по участию в мероприятиях
+        </p>
+        <div class="golden-line"></div>
+        <div class="offer-meta">
+          <div class="offer-meta-item">
+            <span>📅</span>
+            <span><strong>Редакция от:</strong> 3 апреля 2026 г.</span>
+          </div>
+          <div class="offer-meta-item">
+            <span>✅</span>
+            <span><strong>Дата вступления в силу:</strong> 3 апреля 2026 г.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intro -->
+      <div class="intro-block">
+        <p><strong>Индивидуальный предприниматель Кузнецов Сергей Николаевич</strong>,<br>
+        ОГРНИП 304212835200062, ИНН 212800982947,<br>
+        именуемый в дальнейшем <strong>«Исполнитель»</strong>,</p>
+        <p>настоящим предлагает любому дееспособному физическому лицу, именуемому в дальнейшем <strong>«Заказчик»</strong>, заключить договор возмездного оказания услуг на условиях настоящей публичной оферты.</p>
+      </div>
+
+      <!-- Table of Contents -->
+      <div class="toc-section">
+        <h2 class="toc-title">Содержание</h2>
+        <ol class="toc-list">
+          <li><a href="#section-1">1. Общие положения</a></li>
+          <li><a href="#section-2">2. Термины</a></li>
+          <li><a href="#section-3">3. Предмет договора</a></li>
+          <li><a href="#section-4">4. Характер услуг</a></li>
+          <li><a href="#section-5">5. Порядок оформления заказа и акцепта</a></li>
+          <li><a href="#section-6">6. Стоимость услуг и порядок оплаты</a></li>
+          <li><a href="#section-7">7. Права и обязанности Исполнителя</a></li>
+          <li><a href="#section-8">8. Права и обязанности Заказчика</a></li>
+          <li><a href="#section-9">9. Изменение даты, места, программы и отмена Мероприятия</a></li>
+          <li><a href="#section-10">10. Отказ от договора, возврат денежных средств</a></li>
+          <li><a href="#section-11">11. Особые условия для выездной программы / экскурсии</a></li>
+          <li><a href="#section-12">12. Интеллектуальная собственность</a></li>
+          <li><a href="#section-13">13. Персональные данные</a></li>
+          <li><a href="#section-14">14. Ответственность сторон</a></li>
+          <li><a href="#section-15">15. Форс-мажор</a></li>
+          <li><a href="#section-16">16. Порядок разрешения споров</a></li>
+          <li><a href="#section-17">17. Реквизиты Исполнителя</a></li>
+          <li><a href="#section-18">18. Заключительные положения</a></li>
+        </ol>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="content-section">
+        <h2 id="section-1">1. ОБЩИЕ ПОЛОЖЕНИЯ</h2>
+        
+        <p><strong>1.1.</strong> Настоящий документ является публичной офертой о заключении договора возмездного оказания услуг.</p>
+        
+        <p><strong>1.2.</strong> Полным и безоговорочным акцептом настоящей оферты считается совершение Заказчиком одного или нескольких действий:</p>
+        <ul>
+          <li>оформление заявки на сайте <a href="https://tsiframir.ru" style="color: var(--blue-light); font-weight: 600;">tsiframir.ru</a>;</li>
+          <li>выбор тарифа / билета / формата участия;</li>
+          <li>оплата услуги полностью или частично, если частичная оплата предусмотрена на сайте;</li>
+          <li>нажатие кнопки, подтверждающей согласие с условиями оферты, если такая кнопка используется на сайте.</li>
+        </ul>
+        
+        <p><strong>1.3.</strong> С момента акцепта Заказчиком настоящей оферты договор между Исполнителем и Заказчиком считается заключённым.</p>
+        
+        <p><strong>1.4.</strong> Актуальная версия оферты всегда размещается на сайте по адресу: <a href="https://tsiframir.ru/offer.html" style="color: var(--blue-light); font-weight: 600;">tsiframir.ru/offer.html</a>.</p>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="content-section">
+        <h2 id="section-2">2. ТЕРМИНЫ</h2>
+        
+        <p><strong>2.1.</strong> <strong>Сайт</strong> — интернет-сайт Исполнителя, расположенный по адресу: <a href="https://tsiframir.ru" style="color: var(--blue-light); font-weight: 600;">tsiframir.ru</a>.</p>
+        
+        <p><strong>2.2.</strong> <strong>Мероприятие</strong> — организуемый Исполнителем семинар, форум, лекция, практическая встреча, выездная программа, экскурсия по местам силы или иной формат участия, описание которого размещено на сайте.</p>
+        
+        <p><strong>2.3.</strong> <strong>Услуги</strong> — информационно-организационные услуги Исполнителя по предоставлению Заказчику возможности участия в соответствующем Мероприятии на условиях, указанных на сайте и в настоящей оферте.</p>
+        
+        <p><strong>2.4.</strong> <strong>Тариф</strong> — выбранный Заказчиком вариант участия в Мероприятии, включая стоимость, состав услуг, дату, время, место проведения и иные условия, указанные на сайте.</p>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="content-section">
+        <h2 id="section-3">3. ПРЕДМЕТ ДОГОВОРА</h2>
+        
+        <p><strong>3.1.</strong> Исполнитель обязуется оказать Заказчику информационно-организационные услуги по участию в Мероприятии, выбранном Заказчиком на сайте, а Заказчик обязуется принять и оплатить такие услуги.</p>
+        
+        <p><strong>3.2.</strong> В рамках настоящей оферты Исполнитель может оказывать, в том числе, следующие виды услуг:</p>
+        <ul>
+          <li>участие в однодневном семинаре / форуме по теме цифровологии, нумерологии, цифрового анализа, личных кодов и смежных тематик;</li>
+          <li>участие в выездной программе / экскурсии / поездке по местам силы;</li>
+          <li>участие в комбинированной программе «семинар + выездная программа»;</li>
+          <li>иные форматы участия, прямо указанные на сайте.</li>
+        </ul>
+        
+        <p><strong>3.3.</strong> Конкретный состав услуг, дата, время, место проведения, длительность, формат участия, стоимость, программа и иные существенные условия указываются на соответствующей странице Мероприятия на сайте и являются неотъемлемой частью настоящей оферты.</p>
+        
+        <p><strong>3.4.</strong> Если иное прямо не указано на сайте, в стоимость не входят:</p>
+        <ul>
+          <li>проезд до места проведения и обратно;</li>
+          <li>проживание;</li>
+          <li>питание;</li>
+          <li>личные расходы Заказчика;</li>
+          <li>услуги третьих лиц, не указанные прямо в описании тарифа.</li>
+        </ul>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="content-section">
+        <h2 id="section-4">4. ХАРАКТЕР УСЛУГ</h2>
+        
+        <p><strong>4.1.</strong> Услуги Исполнителя носят информационно-просветительский, культурно-досуговый и организационный характер.</p>
+        
+        <p><strong>4.2.</strong> Услуги не являются медицинской, психотерапевтической, образовательной услугой в смысле выдачи документа государственного образца, а также не гарантируют Заказчику достижение конкретного личного, профессионального, финансового, психологического или иного результата.</p>
+        
+        <p><strong>4.3.</strong> Восприятие информации, участие в практиках, обсуждениях, выездной программе и последующее использование полученных материалов осуществляется Заказчиком самостоятельно и на свой риск.</p>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="content-section">
+        <h2 id="section-5">5. ПОРЯДОК ОФОРМЛЕНИЯ ЗАКАЗА И АКЦЕПТА</h2>
+        
+        <p><strong>5.1.</strong> Для оформления участия Заказчик:</p>
+        <ul>
+          <li>выбирает интересующее Мероприятие;</li>
+          <li>знакомится с программой, тарифами и условиями участия;</li>
+          <li>заполняет форму заявки;</li>
+          <li>указывает необходимые контактные данные;</li>
+          <li>подтверждает согласие с настоящей офертой и иными обязательными документами;</li>
+          <li>производит оплату выбранного тарифа через доступный на сайте способ оплаты.</li>
+        </ul>
+        
+        <p><strong>5.2.</strong> После оформления заявки и оплаты Заказчику может направляться подтверждение на указанный им адрес электронной почты, номер телефона или через иной указанный на сайте канал связи.</p>
+        
+        <p><strong>5.3.</strong> Заказчик обязан указывать достоверные и актуальные сведения. Исполнитель не несёт ответственности за невозможность оказания услуг, вызванную ошибочными или неполными данными, предоставленными Заказчиком.</p>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="content-section">
+        <h2 id="section-6">6. СТОИМОСТЬ УСЛУГ И ПОРЯДОК ОПЛАТЫ</h2>
+        
+        <p><strong>6.1.</strong> Стоимость услуг определяется в соответствии с тарифами, размещёнными на сайте на странице соответствующего Мероприятия.</p>
+        
+        <p><strong>6.2.</strong> Цена услуги указывается в рублях Российской Федерации.</p>
+        
+        <p><strong>6.3.</strong> Оплата производится в безналичной форме, в том числе с использованием платёжного сервиса ЮKassa и иных способов оплаты, доступных на сайте.</p>
+        
+        <p><strong>6.4.</strong> Обязанность Заказчика по оплате считается исполненной с момента подтверждения успешного платежа платёжным сервисом и/или поступления денежных средств Исполнителю.</p>
+        
+        <p><strong>6.5.</strong> Если на сайте предусмотрена частичная оплата, рассрочка, бронирование места по предоплате или иная особая схема расчётов, соответствующие условия указываются на странице конкретного Мероприятия.</p>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="content-section">
+        <h2 id="section-7">7. ПРАВА И ОБЯЗАННОСТИ ИСПОЛНИТЕЛЯ</h2>
+        
+        <p><strong>7.1.</strong> Исполнитель обязуется:</p>
+        <ul>
+          <li>предоставить Заказчику достоверную информацию о Мероприятии, тарифах и условиях участия;</li>
+          <li>оказать услуги в объёме, соответствующем выбранному Заказчиком тарифу;</li>
+          <li>своевременно информировать Заказчика о существенных изменениях, если такие изменения возникнут;</li>
+          <li>соблюдать требования законодательства Российской Федерации о защите прав потребителей и персональных данных.</li>
+        </ul>
+        
+        <p><strong>7.2.</strong> Исполнитель вправе:</p>
+        <ul>
+          <li>привлекать третьих лиц для организации и проведения отдельных частей Мероприятия;</li>
+          <li>изменять расписание, последовательность блоков программы, состав спикеров, место проведения в пределах того же населённого пункта или близлежащей локации, если такие изменения не меняют существенно характер Мероприятия;</li>
+          <li>отказать в участии лицу, нарушающему порядок проведения Мероприятия, правила безопасности, нормы общественного поведения или создающему угрозу для других участников.</li>
+        </ul>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="content-section">
+        <h2 id="section-8">8. ПРАВА И ОБЯЗАННОСТИ ЗАКАЗЧИКА</h2>
+        
+        <p><strong>8.1.</strong> Заказчик обязуется:</p>
+        <ul>
+          <li>до оплаты внимательно ознакомиться с описанием Мероприятия, составом тарифа и условиями настоящей оферты;</li>
+          <li>предоставить достоверные данные при оформлении заявки;</li>
+          <li>своевременно прибыть к месту проведения Мероприятия либо своевременно подключиться к дистанционному формату, если он предусмотрен;</li>
+          <li>соблюдать правила участия, технику безопасности, организационные указания Исполнителя и/или его представителей;</li>
+          <li>уважительно вести себя по отношению к Исполнителю, спикерам, организаторам и другим участникам.</li>
+        </ul>
+        
+        <p><strong>8.2.</strong> Заказчик вправе:</p>
+        <ul>
+          <li>получать информацию о Мероприятии и составе оплаченных услуг;</li>
+          <li>отказаться от договора в порядке, предусмотренном настоящей офертой и законодательством Российской Федерации;</li>
+          <li>требовать оказания услуг надлежащего качества в пределах выбранного тарифа.</li>
+        </ul>
+      </div>
+
+      <!-- Section 9 -->
+      <div class="content-section">
+        <h2 id="section-9">9. ИЗМЕНЕНИЕ ДАТЫ, МЕСТА, ПРОГРАММЫ И ОТМЕНА МЕРОПРИЯТИЯ</h2>
+        
+        <p><strong>9.1.</strong> В случае необходимости Исполнитель вправе изменить дату, время, место проведения, состав ведущих, отдельные элементы программы или формат проведения Мероприятия, если это вызвано организационными причинами, требованиями безопасности, болезнью спикера, форс-мажором, ограничениями со стороны площадки или иными обстоятельствами, не зависящими от Исполнителя.</p>
+        
+        <p><strong>9.2.</strong> При существенном изменении условий участия Исполнитель уведомляет Заказчика по указанным контактным данным и предлагает одно из решений:</p>
+        <ul>
+          <li>участие в Мероприятии в изменённые сроки/формате;</li>
+          <li>перенос оплаты на иное Мероприятие Исполнителя;</li>
+          <li>возврат денежных средств в порядке, предусмотренном разделом 10 настоящей оферты.</li>
+        </ul>
+      </div>
+
+      <!-- Section 10 -->
+      <div class="content-section">
+        <h2 id="section-10">10. ОТКАЗ ОТ ДОГОВОРА, ВОЗВРАТ ДЕНЕЖНЫХ СРЕДСТВ</h2>
+        
+        <p><strong>10.1.</strong> Заказчик вправе отказаться от исполнения договора в любое время до полного оказания услуг.</p>
+        
+        <p><strong>10.2.</strong> При отказе Заказчика от договора Исполнитель возвращает Заказчику уплаченные денежные средства за вычетом:</p>
+        <ul>
+          <li>стоимости фактически оказанных к моменту отказа услуг;</li>
+          <li>фактически понесённых Исполнителем расходов, связанных с исполнением обязательств по договору в отношении конкретного Заказчика.</li>
+        </ul>
+        
+        <p><strong>10.3.</strong> К фактически понесённым расходам, в зависимости от состава конкретного Мероприятия, могут относиться документально подтверждённые расходы, в том числе:</p>
+        <ul>
+          <li>комиссии платёжных систем и банков, не возвращаемые Исполнителю;</li>
+          <li>расходы на бронирование площадки, мест, транспорта, оборудования, питания, организационных пакетов, пропусков, билетов или иных ресурсов, если такие расходы понесены под конкретного Заказчика;</li>
+          <li>расходы на подрядчиков и третьих лиц, привлечённых для исполнения обязательств по конкретному Мероприятию;</li>
+          <li>иные документально подтверждённые расходы, прямо связанные с исполнением договора.</li>
+        </ul>
+        
+        <p><strong>10.4.</strong> Если Заказчик отказался от участия после начала Мероприятия, Исполнитель вправе удержать стоимость фактически оказанной части услуг и фактически понесённые расходы.</p>
+        
+        <p><strong>10.5.</strong> Если Заказчик не явился на Мероприятие без предварительного уведомления, вопрос о возврате денежных средств решается исходя из объёма фактически оказанных услуг и фактически понесённых расходов Исполнителя.</p>
+        
+        <p><strong>10.6.</strong> В случае отмены Мероприятия по инициативе Исполнителя и при отсутствии согласия Заказчика на перенос участия на другую дату или другое Мероприятие, Заказчику возвращается оплаченная сумма за вычетом уже фактически оказанных услуг, если таковые имели место.</p>
+        
+        <p><strong>10.7.</strong> Для оформления возврата Заказчик направляет заявление на электронную почту: <a href="mailto:kisl506@mail.ru" style="color: var(--blue-light); font-weight: 600;">kisl506@mail.ru</a>, с указанием:</p>
+        <ul>
+          <li>ФИО;</li>
+          <li>контактного телефона;</li>
+          <li>адреса электронной почты;</li>
+          <li>названия Мероприятия;</li>
+          <li>даты оплаты;</li>
+          <li>суммы оплаты;</li>
+          <li>причины обращения;</li>
+          <li>реквизитов для возврата, если это необходимо.</li>
+        </ul>
+        
+        <p><strong>10.8.</strong> Срок и порядок возврата определяются применимым законодательством, правилами платёжного сервиса и фактическими обстоятельствами исполнения договора.</p>
+      </div>
+
+      <!-- Section 11 -->
+      <div class="content-section">
+        <h2 id="section-11">11. ОСОБЫЕ УСЛОВИЯ ДЛЯ ВЫЕЗДНОЙ ПРОГРАММЫ / ЭКСКУРСИИ</h2>
+        
+        <p><strong>11.1.</strong> Если выбранный тариф включает участие во втором дне программы — выездной встрече, экскурсии или поездке по местам силы, Заказчик принимает участие добровольно.</p>
+        
+        <p><strong>11.2.</strong> Заказчик обязан самостоятельно оценить состояние своего здоровья, физическую готовность и иные индивидуальные особенности, позволяющие участвовать в соответствующей программе.</p>
+        
+        <p><strong>11.3.</strong> Заказчик обязуется соблюдать правила поведения в общественных местах, на территории проведения программы, в транспорте и на объектах посещения, а также выполнять законные указания организаторов.</p>
+        
+        <p><strong>11.4.</strong> Если иное прямо не указано на сайте, Исполнитель не предоставляет медицинские услуги, страхование, сопровождение, проживание, личное питание и иные дополнительные услуги, не входящие в тариф.</p>
+      </div>
+
+      <!-- Section 12 -->
+      <div class="content-section">
+        <h2 id="section-12">12. ИНТЕЛЛЕКТУАЛЬНАЯ СОБСТВЕННОСТЬ</h2>
+        
+        <p><strong>12.1.</strong> Все материалы, предоставляемые в рамках Мероприятия, включая тексты, презентации, схемы, методические материалы, фото, видео, аудио и иные объекты, принадлежат Исполнителю либо используются им на законных основаниях.</p>
+        
+        <p><strong>12.2.</strong> Заказчик вправе использовать полученные материалы только для личного некоммерческого использования, если иное прямо не согласовано с Исполнителем.</p>
+        
+        <p><strong>12.3.</strong> Запрещаются без письменного согласия Исполнителя:</p>
+        <ul>
+          <li>копирование и распространение материалов;</li>
+          <li>размещение материалов в открытом доступе;</li>
+          <li>коммерческое использование материалов;</li>
+          <li>запись и распространение Мероприятия, если это отдельно не разрешено Исполнителем.</li>
+        </ul>
+      </div>
+
+      <!-- Section 13 -->
+      <div class="content-section">
+        <h2 id="section-13">13. ПЕРСОНАЛЬНЫЕ ДАННЫЕ</h2>
+        
+        <p><strong>13.1.</strong> Оформляя заявку на сайте, Заказчик предоставляет Исполнителю персональные данные, необходимые для оформления участия, обратной связи, проведения оплаты, исполнения договора и соблюдения требований законодательства.</p>
+        
+        <p><strong>13.2.</strong> Обработка персональных данных осуществляется в соответствии с Политикой обработки персональных данных, размещённой на сайте по адресу: <a href="privacy.html" style="color: var(--blue-light); font-weight: 600;">tsiframir.ru/privacy.html</a>.</p>
+        
+        <div class="important-notice">
+          <strong>⚠️ Важно:</strong>
+          <p>Документ «Политика конфиденциальности» находится в разработке. До его публикации обработка персональных данных осуществляется в соответствии с требованиями Федерального закона № 152-ФЗ «О персональных данных». Для получения подробной информации свяжитесь с нами.</p>
+        </div>
+        
+        <p><strong>13.3.</strong> Согласие на обработку персональных данных оформляется отдельно в порядке, предусмотренном сайтом и законодательством Российской Федерации.</p>
+      </div>
+
+      <!-- Section 14 -->
+      <div class="content-section">
+        <h2 id="section-14">14. ОТВЕТСТВЕННОСТЬ СТОРОН</h2>
+        
+        <p><strong>14.1.</strong> Стороны несут ответственность в соответствии с законодательством Российской Федерации.</p>
+        
+        <p><strong>14.2.</strong> Исполнитель не несёт ответственности за:</p>
+        <ul>
+          <li>невозможность участия Заказчика по причинам, не зависящим от Исполнителя;</li>
+          <li>перебои в работе операторов связи, интернет-провайдеров, платёжных систем и иных третьих лиц;</li>
+          <li>субъективную оценку Заказчиком содержания Мероприятия;</li>
+          <li>несоответствие ожиданий Заказчика его личным представлениям, если услуги оказаны в соответствии с описанием на сайте и условиями тарифа.</li>
+        </ul>
+        
+        <p><strong>14.3.</strong> Ничто в настоящей оферте не ограничивает права Заказчика как потребителя в объёме, предусмотренном законодательством Российской Федерации.</p>
+      </div>
+
+      <!-- Section 15 -->
+      <div class="content-section">
+        <h2 id="section-15">15. ФОРС-МАЖОР</h2>
+        
+        <p><strong>15.1.</strong> Стороны освобождаются от ответственности за частичное или полное неисполнение обязательств вследствие обстоятельств непреодолимой силы, которые стороны не могли предвидеть и предотвратить разумными мерами, включая, но не ограничиваясь:</p>
+        <ul>
+          <li>стихийными бедствиями;</li>
+          <li>пожарами;</li>
+          <li>эпидемиями;</li>
+          <li>актами органов власти;</li>
+          <li>ограничениями на проведение мероприятий;</li>
+          <li>чрезвычайными ситуациями;</li>
+          <li>военными действиями;</li>
+          <li>техническими и инфраструктурными сбоями, повлиявшими на проведение Мероприятия.</li>
+        </ul>
+      </div>
+
+      <!-- Section 16 -->
+      <div class="content-section">
+        <h2 id="section-16">16. ПОРЯДОК РАЗРЕШЕНИЯ СПОРОВ</h2>
+        
+        <p><strong>16.1.</strong> Все споры и разногласия стороны стремятся урегулировать путём переговоров и обмена письменными обращениями.</p>
+        
+        <p><strong>16.2.</strong> Претензии направляются по электронному адресу: <a href="mailto:kisl506@mail.ru" style="color: var(--blue-light); font-weight: 600;">kisl506@mail.ru</a> и/или по почтовому адресу Исполнителя (указан в разделе 17).</p>
+        
+        <p><strong>16.3.</strong> При недостижении соглашения спор подлежит рассмотрению в порядке, установленном законодательством Российской Федерации.</p>
+      </div>
+
+      <!-- Section 17 -->
+      <div class="content-section">
+        <h2 id="section-17">17. РЕКВИЗИТЫ ИСПОЛНИТЕЛЯ</h2>
+        
+        <div class="requisites-block">
+          <h3>Индивидуальный предприниматель Кузнецов Сергей Николаевич</h3>
+          <div class="requisites-grid">
+            <div class="req-row">
+              <div class="req-label">ИНН:</div>
+              <div class="req-value">212800982947</div>
+            </div>
+            <div class="req-row">
+              <div class="req-label">ОГРНИП:</div>
+              <div class="req-value">304212835200062</div>
+            </div>
+            <div class="req-row">
+              <div class="req-label">Дата регистрации:</div>
+              <div class="req-value">25 декабря 1998 г.</div>
+            </div>
+            <div class="req-row">
+              <div class="req-label">Адрес для корреспонденции:</div>
+              <div class="req-value"><em style="color: var(--text-muted);">[будет добавлен]</em></div>
+            </div>
+            <div class="req-row">
+              <div class="req-label">Телефон:</div>
+              <div class="req-value"><a href="tel:+79657717999" style="color: var(--blue-light); font-weight: 600;">+7 965 771-79-99</a></div>
+            </div>
+            <div class="req-row">
+              <div class="req-label">Электронная почта:</div>
+              <div class="req-value"><a href="mailto:kisl506@mail.ru" style="color: var(--blue-light); font-weight: 600;">kisl506@mail.ru</a></div>
+            </div>
+            <div class="req-row">
+              <div class="req-label">Сайт:</div>
+              <div class="req-value"><a href="https://tsiframir.ru" style="color: var(--blue-light); font-weight: 600;">tsiframir.ru</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 18 -->
+      <div class="content-section">
+        <h2 id="section-18">18. ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</h2>
+        
+        <p><strong>18.1.</strong> Заказчик подтверждает, что до акцепта оферты получил всю необходимую и достоверную информацию об услугах, их стоимости, программе, порядке оплаты и условиях участия.</p>
+        
+        <p><strong>18.2.</strong> Недействительность одного из положений настоящей оферты не влечёт недействительность остальных положений.</p>
+        
+        <p><strong>18.3.</strong> Во всём, что не урегулировано настоящей офертой, стороны руководствуются законодательством Российской Федерации.</p>
+      </div>
+
+      <!-- Return to Main -->
+      <div style="text-align: center; margin-top: 48px;">
+        <a href="index.html" class="nav-back" style="display: inline-flex;">← Вернуться на главную страницу</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">Цифра<span>Мир</span></div>
+        <div class="footer-links">
+          <a href="index.html">Главная</a>
+          <a href="requisites.html">Реквизиты</a>
+          <a href="offer.html">Публичная оферта</a>
+          <a href="privacy.html">Политика конфиденциальности</a>
+        </div>
+        <p class="footer-text">
+          &copy; 2026 ИП Кузнецов Сергей Николаевич. I Международный нумерологический форум.<br>
+          Все права защищены.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
