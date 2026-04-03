@@ -1516,6 +1516,70 @@
       .pk-pay-logos-img { max-height: 26px; }
     }
 
+    /* ===== PAYMENT SELECTOR VIEW ===== */
+    .pk-modal-wide { max-width: 600px !important; }
+    .pk-selector-header { margin-bottom: 20px; }
+    .pk-selector-header .pk-modal-tariff { margin-bottom: 4px; }
+    .pk-selector-subtitle { font-size: 0.82rem; color: var(--text-light); line-height: 1.5; }
+    .pk-selector-groups {
+      display: flex; flex-direction: column; gap: 18px;
+      max-height: 62vh; overflow-y: auto;
+      padding-right: 6px; margin-right: -6px;
+      scrollbar-width: thin; scrollbar-color: var(--gold-light) transparent;
+    }
+    .pk-selector-groups::-webkit-scrollbar { width: 4px; }
+    .pk-selector-groups::-webkit-scrollbar-thumb { background: var(--gold-light); border-radius: 2px; }
+    .pk-selector-group-title {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 9px;
+    }
+    .pk-option-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .pk-option-card {
+      padding: 13px 14px; border: 1.5px solid var(--border-light);
+      border-radius: 13px; cursor: pointer; transition: all 0.18s;
+      display: flex; flex-direction: column; gap: 3px;
+      background: var(--cream); position: relative; overflow: hidden;
+    }
+    .pk-option-card:hover { border-color: var(--gold-light); background: rgba(184,148,46,0.04); transform: translateY(-1px); }
+    .pk-option-card.selected {
+      border-color: var(--gold); background: rgba(184,148,46,0.07);
+      box-shadow: 0 0 0 3px rgba(184,148,46,0.13);
+    }
+    .pk-option-card.selected::after {
+      content: '✓'; position: absolute; top: 8px; right: 10px;
+      color: var(--gold); font-weight: 800; font-size: 0.9rem;
+    }
+    .pk-option-badge {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; color: var(--gold-dark); margin-bottom: 2px;
+    }
+    .pk-option-name { font-size: 0.88rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .pk-option-price { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 800; color: var(--gold-dark); margin-top: 2px; }
+    .pk-option-card.selected .pk-option-name { color: var(--gold-dark); }
+    .pk-selector-continue { margin-top: 18px; }
+    .pk-selector-continue-btn {
+      display: block; width: 100%; padding: 15px;
+      border-radius: 50px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--white); font-weight: 700; font-size: 0.97rem;
+      cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+      transition: all 0.3s; letter-spacing: 0.3px;
+    }
+    .pk-selector-continue-btn:not(:disabled):hover { box-shadow: 0 8px 24px rgba(184,148,46,0.35); transform: translateY(-2px); }
+    .pk-selector-continue-btn:disabled { opacity: 0.38; cursor: not-allowed; }
+    .pk-back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-light); font-size: 0.82rem;
+      margin-bottom: 14px; padding: 0; font-family: 'Inter', sans-serif;
+      transition: color 0.2s;
+    }
+    .pk-back-btn:hover { color: var(--gold-dark); }
+    @media (max-width: 540px) {
+      .pk-option-cards { grid-template-columns: 1fr; }
+      .pk-modal-wide { padding: 28px 20px !important; }
+      .pk-selector-groups { max-height: 58vh; }
+    }
+
   </style>
 
   <!-- Numerology Calculator Styles -->
@@ -1556,7 +1620,7 @@
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contacts">Контакты</a></li>
         <li><a href="#register">Регистрация</a></li>
-        <li><button onclick="openPaymentModal('STD')" class="nav-cta" style="border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.88rem;">Оплатить</button></li>
+        <li><button onclick="openPaymentSelector()" class="nav-cta" style="border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.88rem;">Оплатить</button></li>
       </ul>
       <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -1604,7 +1668,7 @@
         </button>
       </div>
       <div class="hero-buttons reveal reveal-delay-3">
-        <a href="#pricing" class="btn-primary" onclick="event.preventDefault(); openPaymentModal('STD')">&#128274;&nbsp;Оплатить участие</a>
+        <a href="#pricing" class="btn-primary" onclick="event.preventDefault(); openPaymentSelector()">&#128274;&nbsp;Оплатить участие</a>
         <a href="#pricing" class="btn-secondary">Выбрать тариф</a>
       </div>
     </div>
@@ -1796,7 +1860,7 @@
     <div class="container">
       <div class="after-program-cta-inner reveal">
         <p>Готовы к трансформации? Забронируйте место прямо сейчас</p>
-        <a href="#pricing" class="btn-primary btn-apc" onclick="event.preventDefault(); openPaymentModal('STD')">&#128274;&nbsp;Забронировать и оплатить</a>
+        <a href="#pricing" class="btn-primary btn-apc" onclick="event.preventDefault(); openPaymentSelector()">&#128274;&nbsp;Забронировать и оплатить</a>
         <a href="#pricing" class="btn-apc-secondary">Посмотреть тарифы</a>
       </div>
     </div>
@@ -1949,13 +2013,78 @@
         <p class="section-subtitle reveal reveal-delay-2">Специальные цены при оплате до 30 мая 2026 года</p>
       </div>
       <div class="pricing-grid">
-        <div class="price-card reveal"><div class="price-icon">&#127915;</div><div class="price-name">Стандарт</div><div class="price-desc">Входной билет на форум</div><div class="price-amount">1 800 <span>&#8381;</span></div><ul class="price-features"><li>Доступ ко всем лекциям</li><li>Мастер-классы</li><li>Нетворкинг-зона</li><li>Кофе-брейки</li></ul><button onclick="openPaymentModal('STD')" class="price-btn price-btn-outline">Оплатить</button></div>
-        <div class="price-card featured reveal reveal-delay-1"><div class="price-icon">&#128081;</div><div class="price-name">VIP</div><div class="price-desc">Максимум возможностей</div><div class="price-amount">5 000 <span>&#8381;</span></div><ul class="price-features"><li>Всё из &laquo;Стандарт&raquo;</li><li>Диплом от ЦифраМира</li><li>Подпись Сергея Кузнецова</li><li>Приоритетные места</li></ul><button onclick="openPaymentModal('VIP')" class="price-btn price-btn-gold">Оплатить VIP</button></div>
-        <div class="price-card reveal reveal-delay-2"><div class="price-icon">&#127963;</div><div class="price-name">Места силы</div><div class="price-desc">Экскурсия + диагностика</div><div class="price-amount">5 000 <span>&#8381;</span></div><ul class="price-features"><li>Авторская экскурсия</li><li>Диагностика от Кузнецова</li><li>Анализ до и после</li><li>Прогноз изменений</li></ul><button onclick="openPaymentModal('EXC')" class="price-btn price-btn-outline">Оплатить</button></div>
+        <div class="price-card reveal"><div class="price-icon">&#127915;</div><div class="price-name">Стандарт</div><div class="price-desc">Входной билет на форум</div><div class="price-amount">1 800 <span>&#8381;</span></div><ul class="price-features"><li>Доступ ко всем лекциям</li><li>Мастер-классы</li><li>Нетворкинг-зона</li><li>Кофе-брейки</li></ul><button onclick="openPaymentModal('STANDARD_SEMINAR')" class="price-btn price-btn-outline">Оплатить</button></div>
+        <div class="price-card featured reveal reveal-delay-1"><div class="price-icon">&#128081;</div><div class="price-name">VIP</div><div class="price-desc">Максимум возможностей</div><div class="price-amount">5 000 <span>&#8381;</span></div><ul class="price-features"><li>Всё из &laquo;Стандарт&raquo;</li><li>Диплом от ЦифраМира</li><li>Подпись Сергея Кузнецова</li><li>Приоритетные места</li></ul><button onclick="openPaymentModal('VIP_SEMINAR')" class="price-btn price-btn-gold">Оплатить VIP</button></div>
+        <div class="price-card reveal reveal-delay-2"><div class="price-icon">&#127963;</div><div class="price-name">Места силы</div><div class="price-desc">Экскурсия + диагностика</div><div class="price-amount">5 000 <span>&#8381;</span></div><ul class="price-features"><li>Авторская экскурсия</li><li>Диагностика от Кузнецова</li><li>Анализ до и после</li><li>Прогноз изменений</li></ul><button onclick="openPaymentModal('POWER_PLACES')" class="price-btn price-btn-outline">Оплатить</button></div>
       </div>
+      <!-- PACKAGES 2 DAYS -->
+      <div style="margin-top: 40px;" class="reveal reveal-delay-1">
+        <div style="text-align:center; margin-bottom: 20px;">
+          <div class="section-label">Пакеты 2 дня</div>
+          <p style="font-size:0.95rem; color:var(--text-light);">Оба дня — максимальное погружение со скидкой</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; max-width:680px; margin:0 auto;">
+          <div class="price-card" style="border-color:var(--gold-light);">
+            <div class="price-icon">&#128230;</div>
+            <div class="price-name" style="font-size:1.1rem;">Стандарт + Места силы</div>
+            <div class="price-desc">День 1 (стандарт) + День 2 (экскурсия)</div>
+            <div class="price-amount">6 800 <span>&#8381;</span></div>
+            <ul class="price-features">
+              <li>Все лекции и мастер-классы</li>
+              <li>Экскурсия по местам силы</li>
+              <li>Диагностика от Кузнецова</li>
+            </ul>
+            <button onclick="openPaymentModal('PACKAGE_STD_PLUS_POWER')" class="price-btn price-btn-outline">Оплатить пакет</button>
+          </div>
+          <div class="price-card" style="background:linear-gradient(135deg,rgba(184,148,46,0.06),rgba(184,148,46,0.02)); border-color:var(--gold);">
+            <div class="price-icon">&#11088;</div>
+            <div class="price-name" style="font-size:1.1rem;">VIP + Места силы</div>
+            <div class="price-desc">День 1 (VIP) + День 2 (экскурсия)</div>
+            <div class="price-amount">10 000 <span>&#8381;</span></div>
+            <ul class="price-features">
+              <li>VIP-место + диплом</li>
+              <li>Подпись Сергея Кузнецова</li>
+              <li>Экскурсия по местам силы</li>
+              <li>Диагностика до и после</li>
+            </ul>
+            <button onclick="openPaymentModal('PACKAGE_VIP_PLUS_POWER')" class="price-btn price-btn-gold">Оплатить пакет VIP</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPEAKER SECTION -->
+      <div style="margin-top: 48px; padding: 40px; background: linear-gradient(135deg, rgba(30,58,95,0.04), rgba(232,240,248,0.3)); border-radius: 20px; border: 1px solid var(--border-light);" class="reveal reveal-delay-2">
+        <div style="text-align:center; margin-bottom: 28px;">
+          <div class="section-label">&#127908; Для спикеров</div>
+          <h3 style="font-family:'Cinzel',serif; font-size:1.4rem; color:var(--blue); margin-bottom:8px;">Выступите на форуме</h3>
+          <p style="font-size:0.92rem; color:var(--text-light); max-width:520px; margin:0 auto; line-height:1.6;">Заявки на выступление до <strong>13 мая 2026</strong>. Пришлите тему, фото и информацию о себе на <a href="mailto:kisl506@mail.ru" style="color:var(--gold-dark); font-weight:600;">kisl506@mail.ru</a></p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; max-width:860px; margin:0 auto;">
+          <button onclick="openPaymentModal('SPEAKER_10')" style="padding:18px 14px; background:var(--white); border:1.5px solid var(--border-light); border-radius:14px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.25s; text-align:left;" onmouseover="this.style.borderColor='var(--gold)';this.style.boxShadow='0 4px 16px rgba(184,148,46,0.12)'" onmouseout="this.style.borderColor='var(--border-light)';this.style.boxShadow='none'">
+            <div style="font-size:0.7rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:5px;">10 минут</div>
+            <div style="font-size:0.93rem; font-weight:600; color:var(--text); margin-bottom:6px;">Выступление спикера</div>
+            <div style="font-family:'Cinzel',serif; font-size:1.15rem; font-weight:800; color:var(--gold-dark);">5 000 &#8381;</div>
+          </button>
+          <button onclick="openPaymentModal('SPEAKER_15')" style="padding:18px 14px; background:var(--white); border:1.5px solid var(--border-light); border-radius:14px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.25s; text-align:left;" onmouseover="this.style.borderColor='var(--gold)';this.style.boxShadow='0 4px 16px rgba(184,148,46,0.12)'" onmouseout="this.style.borderColor='var(--border-light)';this.style.boxShadow='none'">
+            <div style="font-size:0.7rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:5px;">15 минут</div>
+            <div style="font-size:0.93rem; font-weight:600; color:var(--text); margin-bottom:6px;">Выступление спикера</div>
+            <div style="font-family:'Cinzel',serif; font-size:1.15rem; font-weight:800; color:var(--gold-dark);">7 000 &#8381;</div>
+          </button>
+          <button onclick="openPaymentModal('SPEAKER_20')" style="padding:18px 14px; background:var(--white); border:1.5px solid var(--border-light); border-radius:14px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.25s; text-align:left;" onmouseover="this.style.borderColor='var(--gold)';this.style.boxShadow='0 4px 16px rgba(184,148,46,0.12)'" onmouseout="this.style.borderColor='var(--border-light)';this.style.boxShadow='none'">
+            <div style="font-size:0.7rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:5px;">20 минут</div>
+            <div style="font-size:0.93rem; font-weight:600; color:var(--text); margin-bottom:6px;">Выступление спикера</div>
+            <div style="font-family:'Cinzel',serif; font-size:1.15rem; font-weight:800; color:var(--gold-dark);">10 000 &#8381;</div>
+          </button>
+          <button onclick="openPaymentModal('SPEAKER_30')" style="padding:18px 14px; background:var(--white); border:1.5px solid var(--border-light); border-radius:14px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.25s; text-align:left;" onmouseover="this.style.borderColor='var(--gold)';this.style.boxShadow='0 4px 16px rgba(184,148,46,0.12)'" onmouseout="this.style.borderColor='var(--border-light)';this.style.boxShadow='none'">
+            <div style="font-size:0.7rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:5px;">30 минут</div>
+            <div style="font-size:0.93rem; font-weight:600; color:var(--text); margin-bottom:6px;">Выступление спикера</div>
+            <div style="font-family:'Cinzel',serif; font-size:1.15rem; font-weight:800; color:var(--gold-dark);">13 000 &#8381;</div>
+          </button>
+        </div>
+      </div>
+
       <div class="pricing-note reveal">
-        <p><strong>Для спикеров:</strong> 10 мин — 5 000 &#8381; &bull; 15 мин — 7 000 &#8381; &bull; 20 мин — 10 000 &#8381; &bull; 30 мин — 13 000 &#8381;</p>
-        <p style="margin-top: 8px;">Стол для продаж — 3 500 &#8381; &bull; Цены действуют при оплате до 13.04.2026</p>
+        <p style="margin-top: 0;">Стол для продаж — 3 500 &#8381; &bull; Цены действуют при оплате до 30.05.2026</p>
         <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light); font-size: 0.85rem;">
           🔒 Оплачивая участие, вы принимаете условия <a href="offer.html" style="color: var(--gold-dark); font-weight: 600; text-decoration: underline;">Публичной оферты</a> и <a href="privacy.html" style="color: var(--gold-dark); font-weight: 600; text-decoration: underline;">Политики конфиденциальности</a>. Оплата осуществляется через защищённый шлюз <strong style="color:var(--gold-dark)">Альфа-Банк / PayKeeper</strong>.
         </p>
@@ -2511,9 +2640,9 @@
             </tr>
             <tr style="background: linear-gradient(90deg, rgba(184,148,46,0.12), rgba(184,148,46,0.12));">
               <td style="padding: 24px 20px;"></td>
-              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('STD')" class="comparison-cta">Выбрать</button></td>
-              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('VIP')" class="comparison-cta" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark));">Выбрать VIP</button></td>
-              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('EXC')" class="comparison-cta">Выбрать</button></td>
+              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('STANDARD_SEMINAR')" class="comparison-cta">Выбрать</button></td>
+              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('VIP_SEMINAR')" class="comparison-cta" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark));">Выбрать VIP</button></td>
+              <td style="text-align: center; padding: 24px 20px;"><button onclick="openPaymentModal('POWER_PLACES')" class="comparison-cta">Выбрать</button></td>
             </tr>
           </tbody>
         </table>
@@ -3122,58 +3251,150 @@
 
   <!-- PAYKEEPER PAYMENT MODAL -->
   <div class="pk-modal-overlay" id="pkModalOverlay">
-    <div class="pk-modal" role="dialog" aria-modal="true" aria-labelledby="pkModalTitle">
+    <div class="pk-modal" id="pkModalBox" role="dialog" aria-modal="true" aria-label="Оплата участия">
       <button class="pk-modal-close" onclick="closePKModal()" aria-label="Закрыть">&#10005;</button>
-      <div class="pk-modal-tariff" id="pkModalTariff">Оплата участия</div>
-      <h2 class="pk-modal-title" id="pkModalTitle">Оформление билета</h2>
-      <div class="pk-modal-amount" id="pkModalAmount">0 <span>&#8381;</span></div>
 
-      <div class="pk-error-msg" id="pkErrorMsg"></div>
+      <!-- ===== VIEW 1: FORMAT SELECTOR ===== -->
+      <div id="pkSelectorView" style="display:none;">
+        <div class="pk-selector-header">
+          <div class="pk-modal-tariff">Оплата участия</div>
+          <h2 class="pk-modal-title" id="pkModalTitle">Выберите формат участия</h2>
+          <p class="pk-selector-subtitle">Выберите вариант, затем введите данные для оплаты</p>
+        </div>
+        <div class="pk-selector-groups">
 
-      <form id="pkPayForm" onsubmit="submitPKPayment(event)" novalidate>
-        <div class="pk-form-group">
-          <label for="pkName">Ваше имя *</label>
-          <input type="text" id="pkName" placeholder="Иван Иванов" required maxlength="100" autocomplete="name">
-        </div>
-        <div class="pk-form-group">
-          <label for="pkEmail">Email для подтверждения *</label>
-          <input type="email" id="pkEmail" placeholder="ivan@example.com" required maxlength="200" autocomplete="email">
-        </div>
-        <div class="pk-form-group">
-          <label for="pkPhone">Телефон</label>
-          <input type="tel" id="pkPhone" placeholder="+7 900 000-00-00" maxlength="20" autocomplete="tel">
-        </div>
-        <div class="pk-consent">
-          <input type="checkbox" id="pkConsent" required>
-          <label for="pkConsent">Оплачивая, я принимаю условия <a href="offer.html" target="_blank">Публичной оферты</a> и <a href="privacy.html" target="_blank">Политики конфиденциальности</a>, даю согласие на обработку персональных данных</label>
-        </div>
-        <button type="submit" class="pk-submit-btn" id="pkSubmitBtn">
-          &#128274;&nbsp; Перейти к оплате
-        </button>
-        <div class="pk-modal-trust">
-          <div class="pk-pay-trust">
-            <div class="pk-pay-logos">
-              <img src="img/HorizontalLogos.png"
-                   alt="Visa, Mastercard, МИР, СБП, PayKeeper"
-                   class="pk-pay-logos-img"
-                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="pk-pay-logos-fallback">
-                <span class="pk-badge pk-badge-visa">VISA</span>
-                <span class="pk-badge pk-badge-mc"><span></span><span></span></span>
-                <span class="pk-badge pk-badge-mir">МИР</span>
-                <span class="pk-badge pk-badge-sbp">СБП</span>
-                <span class="pk-badge pk-badge-pk">PayKeeper</span>
+          <!-- Группа 1: Семинар -->
+          <div>
+            <div class="pk-selector-group-title">&#127891; Семинар &mdash; День 1 (13 июня)</div>
+            <div class="pk-option-cards">
+              <div class="pk-option-card" data-code="STANDARD_SEMINAR" onclick="selectPKOption('STANDARD_SEMINAR')">
+                <div class="pk-option-name">Стандартный билет</div>
+                <div class="pk-option-price">1&nbsp;800 &#8381;</div>
+              </div>
+              <div class="pk-option-card" data-code="VIP_SEMINAR" onclick="selectPKOption('VIP_SEMINAR')">
+                <div class="pk-option-badge">&#11088; VIP</div>
+                <div class="pk-option-name">VIP-билет</div>
+                <div class="pk-option-price">5&nbsp;000 &#8381;</div>
               </div>
             </div>
           </div>
-          <p class="pk-secure-note">&#128274; Защищённый шлюз Альфа-Банк / PayKeeper &bull; Данные карты продавцу не передаются</p>
-          <div class="pk-legal-links">
-            <a href="offer.html" target="_blank">Публичная оферта</a>
-            <a href="privacy.html" target="_blank">Конфиденциальность</a>
-            <a href="requisites.html" target="_blank">Реквизиты</a>
+
+          <!-- Группа 2: День 2 -->
+          <div>
+            <div class="pk-selector-group-title">&#127963; День 2 &mdash; Места силы (14 июня)</div>
+            <div class="pk-option-cards">
+              <div class="pk-option-card" data-code="POWER_PLACES" onclick="selectPKOption('POWER_PLACES')">
+                <div class="pk-option-name">Экскурсия по местам силы</div>
+                <div class="pk-option-price">5&nbsp;000 &#8381;</div>
+              </div>
+            </div>
           </div>
+
+          <!-- Группа 3: Пакеты 2 дня -->
+          <div>
+            <div class="pk-selector-group-title">&#128230; Пакеты &mdash; 2 дня</div>
+            <div class="pk-option-cards">
+              <div class="pk-option-card" data-code="PACKAGE_STD_PLUS_POWER" onclick="selectPKOption('PACKAGE_STD_PLUS_POWER')">
+                <div class="pk-option-badge">&#128200; Выгода</div>
+                <div class="pk-option-name">Стандарт + Места силы</div>
+                <div class="pk-option-price">6&nbsp;800 &#8381;</div>
+              </div>
+              <div class="pk-option-card" data-code="PACKAGE_VIP_PLUS_POWER" onclick="selectPKOption('PACKAGE_VIP_PLUS_POWER')">
+                <div class="pk-option-badge">&#11088; VIP + Места силы</div>
+                <div class="pk-option-name">VIP + Места силы</div>
+                <div class="pk-option-price">10&nbsp;000 &#8381;</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Группа 4: Для спикеров -->
+          <div>
+            <div class="pk-selector-group-title">&#127908; Для спикеров</div>
+            <div class="pk-option-cards">
+              <div class="pk-option-card" data-code="SPEAKER_10" onclick="selectPKOption('SPEAKER_10')">
+                <div class="pk-option-name">Выступление 10 мин</div>
+                <div class="pk-option-price">5&nbsp;000 &#8381;</div>
+              </div>
+              <div class="pk-option-card" data-code="SPEAKER_15" onclick="selectPKOption('SPEAKER_15')">
+                <div class="pk-option-name">Выступление 15 мин</div>
+                <div class="pk-option-price">7&nbsp;000 &#8381;</div>
+              </div>
+              <div class="pk-option-card" data-code="SPEAKER_20" onclick="selectPKOption('SPEAKER_20')">
+                <div class="pk-option-name">Выступление 20 мин</div>
+                <div class="pk-option-price">10&nbsp;000 &#8381;</div>
+              </div>
+              <div class="pk-option-card" data-code="SPEAKER_30" onclick="selectPKOption('SPEAKER_30')">
+                <div class="pk-option-name">Выступление 30 мин</div>
+                <div class="pk-option-price">13&nbsp;000 &#8381;</div>
+              </div>
+            </div>
+          </div>
+
         </div>
-      </form>
+        <div class="pk-selector-continue">
+          <button class="pk-selector-continue-btn" id="pkSelectorContinueBtn" onclick="confirmPKSelection()" disabled>
+            Продолжить к оплате &#8594;
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== VIEW 2: PAYMENT FORM ===== -->
+      <div id="pkFormView">
+        <button class="pk-back-btn" id="pkBackBtn" onclick="backToPKSelector()" style="display:none;">
+          &#8592; Назад к выбору формата
+        </button>
+        <div class="pk-modal-tariff" id="pkModalTariff">Оплата участия</div>
+        <h2 class="pk-modal-title" id="pkModalFormTitle">Оформление билета</h2>
+        <div class="pk-modal-amount" id="pkModalAmount">0 <span>&#8381;</span></div>
+
+        <div class="pk-error-msg" id="pkErrorMsg"></div>
+
+        <form id="pkPayForm" onsubmit="submitPKPayment(event)" novalidate>
+          <div class="pk-form-group">
+            <label for="pkName">Ваше имя *</label>
+            <input type="text" id="pkName" placeholder="Иван Иванов" required maxlength="100" autocomplete="name">
+          </div>
+          <div class="pk-form-group">
+            <label for="pkEmail">Email для подтверждения *</label>
+            <input type="email" id="pkEmail" placeholder="ivan@example.com" required maxlength="200" autocomplete="email">
+          </div>
+          <div class="pk-form-group">
+            <label for="pkPhone">Телефон</label>
+            <input type="tel" id="pkPhone" placeholder="+7 900 000-00-00" maxlength="20" autocomplete="tel">
+          </div>
+          <div class="pk-consent">
+            <input type="checkbox" id="pkConsent" required>
+            <label for="pkConsent">Оплачивая, я принимаю условия <a href="offer.html" target="_blank">Публичной оферты</a> и <a href="privacy.html" target="_blank">Политики конфиденциальности</a>, даю согласие на обработку персональных данных</label>
+          </div>
+          <button type="submit" class="pk-submit-btn" id="pkSubmitBtn">
+            &#128274;&nbsp; Перейти к оплате
+          </button>
+          <div class="pk-modal-trust">
+            <div class="pk-pay-trust">
+              <div class="pk-pay-logos">
+                <img src="img/HorizontalLogos.png"
+                     alt="Visa, Mastercard, МИР, СБП, PayKeeper"
+                     class="pk-pay-logos-img"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="pk-pay-logos-fallback">
+                  <span class="pk-badge pk-badge-visa">VISA</span>
+                  <span class="pk-badge pk-badge-mc"><span></span><span></span></span>
+                  <span class="pk-badge pk-badge-mir">МИР</span>
+                  <span class="pk-badge pk-badge-sbp">СБП</span>
+                  <span class="pk-badge pk-badge-pk">PayKeeper</span>
+                </div>
+              </div>
+            </div>
+            <p class="pk-secure-note">&#128274; Защищённый шлюз Альфа-Банк / PayKeeper &bull; Данные карты продавцу не передаются</p>
+            <div class="pk-legal-links">
+              <a href="offer.html" target="_blank">Публичная оферта</a>
+              <a href="privacy.html" target="_blank">Конфиденциальность</a>
+              <a href="requisites.html" target="_blank">Реквизиты</a>
+            </div>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
 
@@ -3199,14 +3420,14 @@
   </div>
 
   <!-- Floating CTA -->
-  <button onclick="openPaymentModal('STD')" class="floating-cta" id="floatingCta" aria-label="Оплатить участие">
+  <button onclick="openPaymentSelector()" class="floating-cta" id="floatingCta" aria-label="Оплатить участие">
     &#128274;
     <span class="floating-cta-tooltip">Оплатить участие</span>
   </button>
 
   <!-- STICKY MOBILE CTA -->
   <div class="sticky-mobile-cta" id="stickyMobileCta">
-    <button class="sticky-mobile-cta-btn" onclick="openPaymentModal('STD')">&#128274;&nbsp;Оплатить участие</button>
+    <button class="sticky-mobile-cta-btn" onclick="openPaymentSelector()">&#128274;&nbsp;Оплатить участие</button>
   </div>
 
   <script>
@@ -3482,34 +3703,83 @@
   (function () {
     'use strict';
 
-    /* ---------- TARIFF REGISTRY ----------
-     * Encodes expected amount per tariff code.
+    /* ---------- PRODUCT REGISTRY ----------
      * orderid format: TSIFRAMIR-{CODE}-{YYYYMMDD}-{RANDOM6HEX}
-     * This allows callback to validate sum without a database.
+     * Callback validates sum from TARIFF_AMOUNTS in api/paykeeper/callback.js
      */
     var TARIFFS = {
-      STD: {
-        code: 'STD',
-        label: 'Стандарт — День 1 (Семинар)',
+      /* ── core tickets ── */
+      STANDARD_SEMINAR: {
+        code: 'STANDARD_SEMINAR',
+        label: 'Стандартный билет — День 1',
         amount: 1800,
         serviceName: 'Участие в семинаре, день 1 — Форум ЦифраМир 2026',
-        cartName: 'Участие в семинаре, день 1'
+        cartName: 'Участие в семинаре, день 1 — стандарт'
       },
-      VIP: {
-        code: 'VIP',
-        label: 'VIP — Максимум возможностей',
+      VIP_SEMINAR: {
+        code: 'VIP_SEMINAR',
+        label: 'VIP-билет — День 1',
         amount: 5000,
         serviceName: 'VIP-участие в форуме ЦифраМир 2026',
-        cartName: 'VIP-участие в форуме ЦифраМир'
+        cartName: 'Участие в семинаре, день 1 — VIP'
       },
-      EXC: {
-        code: 'EXC',
-        label: 'Места силы — День 2 (Выездная программа)',
+      POWER_PLACES: {
+        code: 'POWER_PLACES',
+        label: 'Места силы — День 2',
         amount: 5000,
         serviceName: 'Участие в выездной программе, день 2 — Форум ЦифраМир 2026',
-        cartName: 'Участие в выездной программе, день 2'
-      }
+        cartName: 'Участие в выездной программе / местах силы'
+      },
+      /* ── 2-day packages ── */
+      PACKAGE_STD_PLUS_POWER: {
+        code: 'PACKAGE_STD_PLUS_POWER',
+        label: '2 дня — Стандарт + Места силы',
+        amount: 6800,
+        serviceName: 'Пакет 2 дня: Стандарт + Места силы — Форум ЦифраМир 2026',
+        cartName: 'Пакет участия 2 дня — стандарт + места силы'
+      },
+      PACKAGE_VIP_PLUS_POWER: {
+        code: 'PACKAGE_VIP_PLUS_POWER',
+        label: '2 дня — VIP + Места силы',
+        amount: 10000,
+        serviceName: 'Пакет 2 дня: VIP + Места силы — Форум ЦифраМир 2026',
+        cartName: 'Пакет участия 2 дня — VIP + места силы'
+      },
+      /* ── speakers ── */
+      SPEAKER_10: {
+        code: 'SPEAKER_10',
+        label: 'Выступление спикера — 10 минут',
+        amount: 5000,
+        serviceName: 'Выступление спикера 10 минут — Форум ЦифраМир 2026',
+        cartName: 'Выступление спикера — 10 минут'
+      },
+      SPEAKER_15: {
+        code: 'SPEAKER_15',
+        label: 'Выступление спикера — 15 минут',
+        amount: 7000,
+        serviceName: 'Выступление спикера 15 минут — Форум ЦифраМир 2026',
+        cartName: 'Выступление спикера — 15 минут'
+      },
+      SPEAKER_20: {
+        code: 'SPEAKER_20',
+        label: 'Выступление спикера — 20 минут',
+        amount: 10000,
+        serviceName: 'Выступление спикера 20 минут — Форум ЦифраМир 2026',
+        cartName: 'Выступление спикера — 20 минут'
+      },
+      SPEAKER_30: {
+        code: 'SPEAKER_30',
+        label: 'Выступление спикера — 30 минут',
+        amount: 13000,
+        serviceName: 'Выступление спикера 30 минут — Форум ЦифраМир 2026',
+        cartName: 'Выступление спикера — 30 минут'
+      },
+      /* ── backward-compat aliases ── */
+      STD: null, VIP: null, EXC: null
     };
+    TARIFFS.STD = TARIFFS.STANDARD_SEMINAR;
+    TARIFFS.VIP = TARIFFS.VIP_SEMINAR;
+    TARIFFS.EXC = TARIFFS.POWER_PLACES;
 
     var _currentTariff = null;
     var _pkServerUrl = null;
@@ -3522,15 +3792,10 @@
       fetch('/api/paykeeper/config')
         .then(function (r) { return r.json(); })
         .then(function (d) {
-          if (d.ok && d.serverUrl) {
-            _pkServerUrl = d.serverUrl;
-          } else {
-            console.warn('[PayKeeper] Config error:', d.error || 'unknown');
-          }
+          if (d.ok && d.serverUrl) { _pkServerUrl = d.serverUrl; }
+          else { console.warn('[PayKeeper] Config error:', d.error || 'unknown'); }
         })
-        .catch(function (e) {
-          console.warn('[PayKeeper] Failed to load config:', e);
-        });
+        .catch(function (e) { console.warn('[PayKeeper] Failed to load config:', e); });
     }
 
     /* ---------- ORDER ID GENERATOR ---------- */
@@ -3539,36 +3804,80 @@
       var dt = String(d.getFullYear()) +
         String(d.getMonth() + 1).padStart(2, '0') +
         String(d.getDate()).padStart(2, '0');
-      var rnd = Math.floor(Math.random() * 0xFFFFFF)
-        .toString(16).padStart(6, '0');
+      var rnd = Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
       return 'TSIFRAMIR-' + code + '-' + dt + '-' + rnd;
     }
 
-    /* ---------- MODAL OPEN ---------- */
-    window.openPaymentModal = function (tariffCode) {
-      var tariff = TARIFFS[tariffCode];
-      if (!tariff) { console.error('[PayKeeper] Unknown tariff:', tariffCode); return; }
-      _currentTariff = tariff;
+    /* ---------- openPaymentSelector() — universal choice ---------- */
+    window.openPaymentSelector = function () {
+      _currentTariff = null;
+      document.querySelectorAll('.pk-option-card').forEach(function (c) {
+        c.classList.remove('selected');
+      });
+      document.getElementById('pkSelectorContinueBtn').disabled = true;
+      document.getElementById('pkSelectorView').style.display = 'block';
+      document.getElementById('pkFormView').style.display = 'none';
+      document.getElementById('pkModalBox').classList.add('pk-modal-wide');
+      document.getElementById('pkModalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      loadConfig();
+    };
 
-      document.getElementById('pkModalTariff').textContent = 'Оплата — ' + tariff.label;
-      document.getElementById('pkModalTitle').textContent = 'Оформление билета';
+    /* ---------- selectPKOption() — tap a card in selector ---------- */
+    window.selectPKOption = function (code) {
+      var tariff = TARIFFS[code];
+      if (!tariff) return;
+      document.querySelectorAll('.pk-option-card').forEach(function (c) {
+        c.classList.remove('selected');
+      });
+      var card = document.querySelector('.pk-option-card[data-code="' + code + '"]');
+      if (card) card.classList.add('selected');
+      _currentTariff = tariff;
+      document.getElementById('pkSelectorContinueBtn').disabled = false;
+    };
+
+    /* ---------- confirmPKSelection() — selector → form ---------- */
+    window.confirmPKSelection = function () {
+      if (!_currentTariff) return;
+      _showPKFormView(true);
+    };
+
+    /* ---------- backToPKSelector() — form → selector ---------- */
+    window.backToPKSelector = function () {
+      document.getElementById('pkSelectorView').style.display = 'block';
+      document.getElementById('pkFormView').style.display = 'none';
+      document.getElementById('pkModalBox').classList.add('pk-modal-wide');
+    };
+
+    /* ---------- _showPKFormView() — internal helper ---------- */
+    function _showPKFormView(fromSelector) {
+      var tariff = _currentTariff;
+      if (!tariff) return;
+      document.getElementById('pkModalTariff').textContent = tariff.label;
+      document.getElementById('pkModalFormTitle').textContent = 'Оформление билета';
       document.getElementById('pkModalAmount').innerHTML =
         tariff.amount.toLocaleString('ru-RU') + ' <span>&#8381;</span>';
-
       var errEl = document.getElementById('pkErrorMsg');
-      errEl.style.display = 'none';
-      errEl.textContent = '';
-
+      errEl.style.display = 'none'; errEl.textContent = '';
       document.getElementById('pkPayForm').reset();
       var btn = document.getElementById('pkSubmitBtn');
       btn.disabled = false;
       btn.innerHTML = '&#128274;&nbsp; Перейти к оплате';
+      document.getElementById('pkBackBtn').style.display = fromSelector ? 'inline-flex' : 'none';
+      document.getElementById('pkSelectorView').style.display = 'none';
+      document.getElementById('pkFormView').style.display = 'block';
+      document.getElementById('pkModalBox').classList.remove('pk-modal-wide');
+      setTimeout(function () { document.getElementById('pkName').focus(); }, 60);
+    }
 
-      var overlay = document.getElementById('pkModalOverlay');
-      overlay.classList.add('active');
+    /* ---------- openPaymentModal() — direct to form, skip selector ---------- */
+    window.openPaymentModal = function (tariffCode) {
+      var tariff = TARIFFS[tariffCode];
+      if (!tariff) { console.error('[PayKeeper] Unknown tariff:', tariffCode); return; }
+      _currentTariff = tariff;
+      document.getElementById('pkModalOverlay').classList.add('active');
       document.body.style.overflow = 'hidden';
-      document.getElementById('pkName').focus();
-
+      _showPKFormView(false);
       loadConfig();
     };
 
@@ -3578,12 +3887,9 @@
       document.body.style.overflow = '';
     };
 
-    /* close on overlay click */
     document.getElementById('pkModalOverlay').addEventListener('click', function (e) {
       if (e.target === this) window.closePKModal();
     });
-
-    /* close on ESC */
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') window.closePKModal();
     });
@@ -3591,48 +3897,40 @@
     /* ---------- FORM SUBMIT ---------- */
     window.submitPKPayment = function (e) {
       e.preventDefault();
-
       var tariff = _currentTariff;
       if (!tariff) return;
 
       var errEl = document.getElementById('pkErrorMsg');
       errEl.style.display = 'none';
 
-      var name  = document.getElementById('pkName').value.trim();
-      var email = document.getElementById('pkEmail').value.trim();
-      var phone = document.getElementById('pkPhone').value.trim();
+      var name    = document.getElementById('pkName').value.trim();
+      var email   = document.getElementById('pkEmail').value.trim();
+      var phone   = document.getElementById('pkPhone').value.trim();
       var consent = document.getElementById('pkConsent').checked;
 
-      if (!name) { showPKError('Пожалуйста, введите ваше имя.'); return; }
+      if (!name) { _showPKError('Пожалуйста, введите ваше имя.'); return; }
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showPKError('Пожалуйста, введите корректный email.'); return;
+        _showPKError('Пожалуйста, введите корректный email.'); return;
       }
-      if (!consent) { showPKError('Необходимо принять условия оферты и политику конфиденциальности.'); return; }
-
+      if (!consent) { _showPKError('Необходимо принять условия оферты и политику конфиденциальности.'); return; }
       if (!_pkServerUrl) {
-        showPKError('Не удалось загрузить конфигурацию платёжной системы. ' +
-          'Пожалуйста, обновите страницу и попробуйте снова. ' +
-          'Если ошибка повторяется — напишите нам: kisl506@mail.ru');
+        _showPKError('Не удалось загрузить конфигурацию платёжной системы. ' +
+          'Обновите страницу и попробуйте снова. Если ошибка повторяется — напишите: kisl506@mail.ru');
         return;
       }
 
-      var orderId = generateOrderId(tariff.code);
+      var orderId   = generateOrderId(tariff.code);
       var resultUrl = window.location.origin + '/payment-result.html';
 
       /* 54-FZ cart JSON */
       var cart = JSON.stringify([{
-        name: tariff.cartName,
-        price: tariff.amount,
-        quantity: 1,
-        sum: tariff.amount,
-        tax: 'none'
+        name: tariff.cartName, price: tariff.amount,
+        quantity: 1, sum: tariff.amount, tax: 'none'
       }]);
 
       var btn = document.getElementById('pkSubmitBtn');
-      btn.disabled = true;
-      btn.textContent = 'Перенаправление...';
+      btn.disabled = true; btn.textContent = 'Перенаправление...';
 
-      /* Build and auto-submit hidden POST form to PayKeeper */
       var form = document.createElement('form');
       form.method = 'POST';
       form.action = 'https://' + _pkServerUrl + '/create/';
@@ -3640,36 +3938,25 @@
       form.style.display = 'none';
 
       var fields = {
-        sum: tariff.amount,
-        clientid: email,
-        orderid: orderId,
-        service_name: tariff.serviceName,
-        client_email: email,
-        client_phone: phone,
-        user_result_callback: resultUrl,
-        cart: cart
+        sum: tariff.amount, clientid: email, orderid: orderId,
+        service_name: tariff.serviceName, client_email: email,
+        client_phone: phone, user_result_callback: resultUrl, cart: cart
       };
-
       Object.keys(fields).forEach(function (key) {
         var inp = document.createElement('input');
-        inp.type = 'hidden';
-        inp.name = key;
-        inp.value = fields[key];
+        inp.type = 'hidden'; inp.name = key; inp.value = fields[key];
         form.appendChild(inp);
       });
-
       document.body.appendChild(form);
       form.submit();
     };
 
-    function showPKError(msg) {
+    function _showPKError(msg) {
       var el = document.getElementById('pkErrorMsg');
-      el.textContent = msg;
-      el.style.display = 'block';
+      el.textContent = msg; el.style.display = 'block';
       el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    /* Load config eagerly on page load so it's ready when user clicks */
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', loadConfig);
     } else {

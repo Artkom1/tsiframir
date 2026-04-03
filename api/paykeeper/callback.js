@@ -18,12 +18,26 @@
 const crypto = require('crypto');
 
 const TARIFF_AMOUNTS = {
+  /* ── core tickets ── */
+  STANDARD_SEMINAR:       1800,
+  VIP_SEMINAR:            5000,
+  POWER_PLACES:           5000,
+  /* ── 2-day packages ── */
+  PACKAGE_STD_PLUS_POWER: 6800,
+  PACKAGE_VIP_PLUS_POWER: 10000,
+  /* ── speakers ── */
+  SPEAKER_10:             5000,
+  SPEAKER_15:             7000,
+  SPEAKER_20:             10000,
+  SPEAKER_30:             13000,
+  /* ── backward-compat aliases (old orders may still use these) ── */
   STD: 1800,
   VIP: 5000,
   EXC: 5000
 };
 
-const ORDER_ID_RE = /^TSIFRAMIR-(STD|VIP|EXC)-\d{8}-[0-9a-f]{6}$/i;
+/* Accepts any UPPERCASE_ALPHANUMERIC_UNDERSCORE code */
+const ORDER_ID_RE = /^TSIFRAMIR-([A-Z0-9_]+)-\d{8}-[0-9a-f]{6}$/i;
 
 const processedPayments = new Set();
 
