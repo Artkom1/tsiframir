@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Реквизиты и оплата — ЦифраМир</title>
+  <meta name="description" content="Реквизиты продавца, информация об оплате через ЮKassa. ИП Кузнецов Сергей Николаевич.">
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231e3a5f'/><text x='32' y='46' font-family='serif' font-size='40' font-weight='bold' fill='%23d4b85a' text-anchor='middle'>Ц</text></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #b8942e;
+      --gold-light: #d4b85a;
+      --gold-lighter: #f0e4c3;
+      --gold-dark: #8a6d1e;
+      --blue: #1e3a5f;
+      --blue-light: #2d5a8e;
+      --blue-pale: #e8f0f8;
+      --cream: #fdfbf7;
+      --cream-warm: #f8f4ec;
+      --white: #ffffff;
+      --bg-section: #f5f2eb;
+      --text: #2c2c2c;
+      --text-light: #6b7280;
+      --text-muted: #9ca3af;
+      --border-light: rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Navbar */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000; padding: 16px 0;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+    }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo {
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.4rem;
+      color: var(--text); text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .nav-logo-img {
+      width: 56px; height: 56px; border-radius: 12px;
+      object-fit: contain; background: rgba(184,148,46,0.15);
+      padding: 6px; box-shadow: 0 6px 16px rgba(184,148,46,0.2);
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--white); border-radius: 50px; text-decoration: none;
+      font-weight: 600; font-size: 0.9rem; transition: all 0.3s;
+    }
+    .nav-back:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(184,148,46,0.3); }
+
+    /* Page Content */
+    .requisites-page {
+      min-height: 100vh;
+      background: var(--cream);
+      padding-top: 120px;
+    }
+    .requisites-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+    .requisites-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.25;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      max-width: 640px;
+      line-height: 1.7;
+      margin: 0 auto;
+    }
+    .golden-line {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 2px;
+      margin: 24px auto;
+    }
+
+    .requisites-section {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .requisites-section h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: var(--blue);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--gold-lighter);
+    }
+    .requisites-table {
+      display: grid;
+      gap: 16px;
+    }
+    .requisites-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .requisites-row:last-child {
+      border-bottom: none;
+    }
+    .requisites-row-label {
+      font-weight: 600;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+    .requisites-row-value {
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .requisites-row-value a {
+      color: var(--blue-light);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .requisites-row-value a:hover {
+      color: var(--gold-dark);
+    }
+
+    .payment-info-box {
+      background: linear-gradient(135deg, rgba(184,148,46,0.08), rgba(232,240,248,0.1));
+      border: 2px solid var(--gold-lighter);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 24px;
+    }
+    .payment-info-box p {
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+    .payment-info-box p:last-child {
+      margin-bottom: 0;
+    }
+    .payment-info-box strong {
+      color: var(--text);
+    }
+    .payment-info-box .highlight {
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+
+    .requisites-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .requisites-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: 50px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .requisites-links a:hover {
+      border-color: var(--gold);
+      color: var(--gold-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(184,148,46,0.15);
+    }
+
+    .info-note {
+      background: rgba(30,58,95,0.04);
+      border-left: 4px solid var(--blue);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    .info-note strong {
+      color: var(--text);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--blue);
+      color: var(--white);
+      padding: 48px 0 32px;
+      margin-top: 60px;
+      border-top: 1px solid var(--border-light);
+    }
+    .footer-content {
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .footer-logo span { color: var(--gold-light); }
+    .footer-text {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .requisites-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .requisites-section {
+        padding: 28px 20px;
+      }
+      .nav-logo {
+        font-size: 1.1rem;
+      }
+      .nav-logo-img {
+        width: 48px;
+        height: 48px;
+      }
+      .nav-back {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">
+        <img src="img/logotip.jpg" alt="ЦифраМир" class="nav-logo-img">
+        Цифра<span>Мир</span>
+      </a>
+      <a href="index.html" class="nav-back">← На главную</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="requisites-page">
+    <div class="requisites-container">
+      
+      <!-- Header -->
+      <div class="requisites-header">
+        <div class="section-label">Юридическая информация</div>
+        <h1 class="section-title">Реквизиты и информация об оплате</h1>
+        <div class="golden-line"></div>
+        <p class="section-subtitle">
+          Полная информация о продавце, контактные данные и условия оплаты через ЮKassa
+        </p>
+      </div>
+
+      <!-- Seller Requisites -->
+      <div class="requisites-section">
+        <h3>Реквизиты продавца</h3>
+        <div class="requisites-table">
+          <div class="requisites-row">
+            <div class="requisites-row-label">Наименование</div>
+            <div class="requisites-row-value">Индивидуальный предприниматель Кузнецов Сергей Николаевич</div>
+          </div>
+          <div class="requisites-row">
+            <div class="requisites-row-label">ИНН</div>
+            <div class="requisites-row-value">212800982947</div>
+          </div>
+          <div class="requisites-row">
+            <div class="requisites-row-label">ОГРНИП</div>
+            <div class="requisites-row-value">304212835200062</div>
+          </div>
+          <div class="requisites-row">
+            <div class="requisites-row-label">Вид деятельности</div>
+            <div class="requisites-row-value">Индивидуальный предприниматель</div>
+          </div>
+          <div class="requisites-row">
+            <div class="requisites-row-label">Дата регистрации</div>
+            <div class="requisites-row-value">25 декабря 1998 г.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="requisites-section">
+        <h3>Контактная информация</h3>
+        <div class="requisites-table">
+          <div class="requisites-row">
+            <div class="requisites-row-label">Телефон</div>
+            <div class="requisites-row-value">
+              <a href="tel:+79657717999">+7 965 771-79-99</a> (Санкт-Петербург, Светлана)
+            </div>
+          </div>
+          <div class="requisites-row">
+            <div class="requisites-row-label">Email</div>
+            <div class="requisites-row-value">
+              <a href="mailto:kisl506@mail.ru">kisl506@mail.ru</a>
+            </div>
+          </div>
+          <div class="requisites-row">
+            <div class="requisites-row-label">Веб-сайт</div>
+            <div class="requisites-row-value">
+              <a href="https://SergeiKuznecov.ru" target="_blank" rel="noopener">SergeiKuznecov.ru</a>
+            </div>
+          </div>
+          <div class="requisites-row">
+            <div class="requisites-row-label">Социальные сети</div>
+            <div class="requisites-row-value">
+              <a href="https://vk.ru/cipramil7" target="_blank" rel="noopener">ВКонтакте</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Information -->
+      <div class="requisites-section">
+        <h3>Информация об оплате</h3>
+        
+        <div class="payment-info-box">
+          <p>
+            <strong>Прием платежей осуществляется через защищенный платежный сервис <span class="highlight">ЮKassa</span></strong> (ООО «НКО ЮМани», лицензия Банка России № 3510-К).
+          </p>
+          <p>
+            ЮKassa обеспечивает безопасность всех платежных операций в соответствии с международными стандартами PCI DSS. Все данные банковских карт передаются в зашифрованном виде и не хранятся на нашем сервере.
+          </p>
+          <p>
+            <strong>Доступные способы оплаты:</strong>
+          </p>
+          <ul style="margin-left: 20px; margin-top: 8px;">
+            <li>Банковские карты (Visa, Mastercard, МИР)</li>
+            <li>Электронные кошельки (ЮMoney, QIWI)</li>
+            <li>Системы быстрых платежей (СБП)</li>
+            <li>Интернет-банкинг</li>
+          </ul>
+        </div>
+
+        <div class="info-note">
+          <strong>Важно:</strong> После успешной оплаты вы получите электронный чек на указанный email и подтверждение регистрации на форум. Если у вас возникли вопросы по оплате, свяжитесь с нами по телефону или email.
+        </div>
+      </div>
+
+      <!-- Legal Documents -->
+      <div class="requisites-section">
+        <h3>Юридические документы</h3>
+        <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 20px;">
+          Приобретая билет на форум, вы соглашаетесь с условиями предоставления услуг. Ознакомьтесь с документами:
+        </p>
+        
+        <div class="requisites-links">
+          <a href="#offer">📄 Публичная оферта</a>
+          <a href="#privacy">🔒 Политика конфиденциальности</a>
+          <a href="index.html#pricing">💳 Тарифы и услуги</a>
+          <a href="index.html#register">✍️ Регистрация на форум</a>
+        </div>
+
+        <div class="info-note" style="margin-top: 24px;">
+          <strong>Обратите внимание:</strong> Документы «Публичная оферта» и «Политика конфиденциальности» находятся в разработке и будут опубликованы в ближайшее время. До их публикации все вопросы по условиям оказания услуг и обработке персональных данных решаются в индивидуальном порядке. Свяжитесь с нами для получения подробной информации.
+        </div>
+      </div>
+
+      <!-- Return to Main -->
+      <div style="text-align: center; margin-top: 48px;">
+        <a href="index.html" class="nav-back" style="display: inline-flex;">← Вернуться на главную страницу</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">Цифра<span>Мир</span></div>
+        <p class="footer-text">
+          &copy; 2026 ИП Кузнецов Сергей Николаевич. I Международный нумерологический форум.<br>
+          Все права защищены.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

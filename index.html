@@ -1060,6 +1060,168 @@
     .email-bonus-form button { padding: 14px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--white); border: none; border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
     .email-bonus-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(184,148,46,0.3); }
 
+    /* ===== REQUISITES BLOCK ===== */
+    .footer-requisites {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+    .requisites-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .requisites-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px 24px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .req-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .req-label {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .req-value {
+      color: rgba(255,255,255,0.9);
+      font-weight: 500;
+    }
+    .requisites-payment-note {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+    }
+    .requisites-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--gold-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .requisites-link:hover {
+      color: var(--gold);
+    }
+
+    /* Requisites Page Styles */
+    .requisites-page {
+      min-height: 100vh;
+      background: var(--cream);
+      padding-top: 120px;
+    }
+    .requisites-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+    .requisites-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .requisites-section {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .requisites-section h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: var(--blue);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--gold-lighter);
+    }
+    .requisites-table {
+      display: grid;
+      gap: 16px;
+    }
+    .requisites-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .requisites-row:last-child {
+      border-bottom: none;
+    }
+    .requisites-row-label {
+      font-weight: 600;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+    .requisites-row-value {
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .payment-info-box {
+      background: linear-gradient(135deg, rgba(184,148,46,0.08), rgba(232,240,248,0.1));
+      border: 2px solid var(--gold-lighter);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 24px;
+    }
+    .payment-info-box p {
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .payment-info-box strong {
+      color: var(--text);
+    }
+    .requisites-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .requisites-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: 50px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .requisites-links a:hover {
+      border-color: var(--gold);
+      color: var(--gold-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(184,148,46,0.15);
+    }
+
+    @media (max-width: 968px) {
+      .requisites-grid { grid-template-columns: 1fr; gap: 12px; }
+      .requisites-row { grid-template-columns: 1fr; gap: 8px; }
+      .requisites-section { padding: 28px 20px; }
+    }
+
     @media (max-width: 968px) {
       .media-grid { grid-template-columns: repeat(2, 1fr); }
       .cases-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2746,6 +2908,7 @@
             <li><a href="#register">Регистрация</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contacts">Контакты</a></li>
+            <li><a href="requisites.html">Реквизиты и оплата</a></li>
           </ul>
         </div>
 
@@ -2764,6 +2927,41 @@
             <a href="https://vk.ru/cipramil7" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">ВКонтакте</a>
             <a href="https://SergeiKuznecov.ru" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">Веб-сайт</a>
           </div>
+        </div>
+      </div>
+
+      <!-- Requisites Block -->
+      <div class="footer-requisites">
+        <div class="requisites-title">Реквизиты продавца</div>
+        <div class="requisites-grid">
+          <div class="req-item">
+            <div class="req-label">Наименование</div>
+            <div class="req-value">ИП Кузнецов Сергей Николаевич</div>
+          </div>
+          <div class="req-item">
+            <div class="req-label">ИНН</div>
+            <div class="req-value">212800982947</div>
+          </div>
+          <div class="req-item">
+            <div class="req-label">ОГРНИП</div>
+            <div class="req-value">304212835200062</div>
+          </div>
+          <div class="req-item">
+            <div class="req-label">Дата регистрации</div>
+            <div class="req-value">25 декабря 1998 г.</div>
+          </div>
+          <div class="req-item">
+            <div class="req-label">Телефон</div>
+            <div class="req-value"><a href="tel:+79657717999" style="color: rgba(255,255,255,0.9); text-decoration: none;">+7 965 771-79-99</a></div>
+          </div>
+          <div class="req-item">
+            <div class="req-label">Email</div>
+            <div class="req-value"><a href="mailto:kisl506@mail.ru" style="color: rgba(255,255,255,0.9); text-decoration: none;">kisl506@mail.ru</a></div>
+          </div>
+        </div>
+        <div class="requisites-payment-note">
+          Оплата на сайте осуществляется через защищенный платежный сервис <strong style="color: var(--gold-light);">ЮKassa</strong>.
+          <a href="requisites.html" class="requisites-link">Подробные реквизиты и информация об оплате →</a>
         </div>
       </div>
 
