@@ -25,6 +25,60 @@
   <!-- Яндекс.Формы — автоматический ресайз iframe -->
   <script src="https://forms.yandex.ru/_static/embed.js"></script>
 
+  <!-- JSON-LD: Event with performers (forum speakers) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Форум «Цифровая трансформация человека»",
+    "startDate": "2026-06-13",
+    "endDate": "2026-06-14",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "url": "https://tsiframir.ru/#experts",
+    "image": [
+      "https://tsiframir.ru/img/speakers/zakharevich.jpg",
+      "https://tsiframir.ru/img/speakers/baykovsky.jpg",
+      "https://tsiframir.ru/img/speakers/yurieva.jpg"
+    ],
+    "location": {
+      "@type": "Place",
+      "name": "Гостиница «Нептун»",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "наб. Обводного канала, 93А",
+        "addressLocality": "Санкт-Петербург",
+        "addressCountry": "RU"
+      }
+    },
+    "organizer": {
+      "@type": "Organization",
+      "name": "Школа «ЦифраМир» Сергея Кузнецова",
+      "url": "https://tsiframir.ru"
+    },
+    "performer": [
+      {
+        "@type": "Person",
+        "name": "Захаревич Андрей Станиславович",
+        "jobTitle": "Доктор психологических наук, профессор",
+        "image": "https://tsiframir.ru/img/speakers/zakharevich.jpg"
+      },
+      {
+        "@type": "Person",
+        "name": "Василий Васильевич Байковский",
+        "jobTitle": "Государственный деятель, эксперт, визионер",
+        "image": "https://tsiframir.ru/img/speakers/baykovsky.jpg"
+      },
+      {
+        "@type": "Person",
+        "name": "Елена Юрьевна Юрьева",
+        "jobTitle": "Международный эксперт по нетворкингу, кандидат психологических наук",
+        "image": "https://tsiframir.ru/img/speakers/yurieva.jpg"
+      }
+    ]
+  }
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -1602,9 +1656,12 @@
       transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
     }
     .expert-card:hover {
-      transform: translateY(-6px);
       box-shadow: 0 18px 44px rgba(184,148,46,0.14), 0 8px 20px rgba(0,0,0,0.06);
       border-color: var(--gold-light);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .expert-card:hover { transform: translateY(-6px); }
+      .expert-card:hover .expert-photo-wrap img { transform: scale(1.04); }
     }
     .expert-photo-wrap {
       position: relative;
@@ -1621,7 +1678,6 @@
       display: block;
       transition: transform 0.6s ease;
     }
-    .expert-card:hover .expert-photo-wrap img { transform: scale(1.04); }
     .expert-badge {
       position: absolute;
       left: 14px;
@@ -2129,7 +2185,10 @@
         <article class="expert-card reveal" itemscope itemtype="https://schema.org/Person">
           <div class="expert-photo-wrap">
             <span class="expert-badge">Председатель оргкомитета</span>
-            <img src="img/speakers/zakharevich.jpg" alt="Захаревич Андрей Станиславович — доктор психологических наук, профессор" loading="lazy" decoding="async" itemprop="image">
+            <picture>
+              <source srcset="img/speakers/zakharevich.webp" type="image/webp">
+              <img src="img/speakers/zakharevich.jpg" alt="Захаревич Андрей Станиславович — доктор психологических наук, профессор" loading="lazy" decoding="async" itemprop="image">
+            </picture>
           </div>
           <div class="expert-body">
             <h3 class="expert-name" itemprop="name">Захаревич Андрей Станиславович</h3>
@@ -2157,7 +2216,10 @@
         <!-- Speaker 2: Байковский -->
         <article class="expert-card reveal reveal-delay-1" itemscope itemtype="https://schema.org/Person">
           <div class="expert-photo-wrap">
-            <img src="img/speakers/baykovsky.jpg" alt="Василий Васильевич Байковский — государственный и политический деятель, эксперт, спикер" loading="lazy" decoding="async" itemprop="image">
+            <picture>
+              <source srcset="img/speakers/baykovsky.webp" type="image/webp">
+              <img src="img/speakers/baykovsky.jpg" alt="Василий Васильевич Байковский — государственный и политический деятель, эксперт, спикер" loading="lazy" decoding="async" itemprop="image">
+            </picture>
           </div>
           <div class="expert-body">
             <h3 class="expert-name" itemprop="name">Василий Васильевич Байковский</h3>
@@ -2183,7 +2245,10 @@
         <!-- Speaker 3: Юрьева -->
         <article class="expert-card reveal reveal-delay-2" itemscope itemtype="https://schema.org/Person">
           <div class="expert-photo-wrap">
-            <img src="img/speakers/yurieva.jpg" alt="Елена Юрьевна Юрьева — международный эксперт по нетворкингу, кандидат психологических наук" loading="lazy" decoding="async" itemprop="image">
+            <picture>
+              <source srcset="img/speakers/yurieva.webp" type="image/webp">
+              <img src="img/speakers/yurieva.jpg" alt="Елена Юрьевна Юрьева — международный эксперт по нетворкингу, кандидат психологических наук" loading="lazy" decoding="async" itemprop="image">
+            </picture>
           </div>
           <div class="expert-body">
             <h3 class="expert-name" itemprop="name">Елена Юрьевна Юрьева</h3>
