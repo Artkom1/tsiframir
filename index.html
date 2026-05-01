@@ -1950,9 +1950,10 @@
 
     /* ===== COMPACT GRID + MODAL (enabled via JS only) ===== */
     .experts-grid.experts-grid--compact {
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 18px;
       max-width: 1200px;
+      justify-content: center;
     }
     .experts-grid--compact .expert-card { cursor: pointer; }
     .experts-grid--compact .expert-card:focus-visible {
