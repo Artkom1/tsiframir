@@ -1903,6 +1903,83 @@
       .expert-name { font-size: 1.05rem; }
     }
 
+    /* ===== TIER STRUCTURE (headliners / experts / students) ===== */
+    .speaker-tier { margin-bottom: 64px; }
+    .speaker-tier:last-of-type { margin-bottom: 0; }
+    .speaker-tier-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text);
+      margin: 0 0 8px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      position: relative;
+      padding-top: 22px;
+    }
+    .speaker-tier-title::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 2px;
+      background: var(--gold);
+    }
+    .speaker-tier-subtitle {
+      text-align: center;
+      font-size: 0.92rem;
+      color: var(--text-light);
+      max-width: 680px;
+      margin: 0 auto 32px;
+      line-height: 1.55;
+    }
+    @media (max-width: 768px) {
+      .speaker-tier { margin-bottom: 48px; }
+      .speaker-tier-title { font-size: 1.18rem; letter-spacing: 1px; }
+      .speaker-tier-subtitle { font-size: 0.86rem; margin-bottom: 24px; }
+    }
+
+    /* Headliners — larger tiles, full bio visible, modal on click */
+    .experts-grid.experts-grid--headliners {
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      max-width: 1100px;
+      gap: 28px;
+    }
+    .experts-grid--headliners .expert-card { cursor: pointer; }
+    .experts-grid--headliners .expert-card:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+    .experts-grid--headliners .expert-details { display: none; }
+    .experts-grid--headliners .expert-card::after {
+      content: 'Подробнее →';
+      display: block;
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--gold-dark);
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      padding: 0 0 18px;
+    }
+
+    /* Students — compact tiles with subtle warm accent */
+    .experts-grid.experts-grid--students {
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      max-width: 920px;
+      gap: 16px;
+    }
+    .experts-grid--students .expert-card {
+      border-color: rgba(184, 148, 46, 0.28);
+      background: linear-gradient(180deg, #fcfaf3 0%, var(--white) 65%);
+    }
+    @media (max-width: 540px) {
+      .experts-grid.experts-grid--students { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+
     /* ===== COMPACT GRID + MODAL (enabled via JS only) ===== */
     .experts-grid.experts-grid--compact {
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -2561,7 +2638,137 @@
         <h2 class="section-title reveal reveal-delay-1">Эксперты и выступающие форума</h2>
         <p class="section-subtitle reveal reveal-delay-2">Практики, исследователи и эксперты, которые поделятся авторскими подходами к цифровой трансформации человека, числам, символам и личной системе развития.</p>
       </div>
-      <div class="experts-grid">
+      <div class="speaker-tier">
+        <h3 class="speaker-tier-title">Хедлайнеры форума</h3>
+        <p class="speaker-tier-subtitle">Имена, известные в России и за её пределами — академики, медиа-фигуры и эксперты с международным признанием</p>
+        <div class="experts-grid experts-grid--headliners">
+
+        <!-- Speaker 6: Виногродский -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/vinogrodsky.webp" type="image/webp">
+              <img src="img/speakers/vinogrodsky.jpg" alt="Бронислав Виногродский — ведущий китаевед, писатель, переводчик древнекитайских трактатов" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Бронислав Виногродский</h3>
+            <div class="expert-role" itemprop="jobTitle">Ведущий китаевед, писатель, переводчик</div>
+            <ul class="expert-bio">
+              <li>40 лет изучения традиционной китайской культуры и древних когнитивных моделей</li>
+              <li>Постоянный консультант и наставник руководителей крупнейших российских бизнесов</li>
+              <li>Перевёл с древнекитайского более 40 философских трактатов</li>
+            </ul>
+            <details class="expert-details">
+              <summary>Подробнее</summary>
+              <div class="expert-extra" itemprop="description">
+                <ul>
+                  <li>Переводы: «Дао дэ цзин», «Книга Перемен», «Чжуан-цзы», «Лунь Юй», «Трактат Жёлтого императора о внутреннем», «Конфуций: Рассуждения в изречениях»</li>
+                  <li>Известен в России, Китае, Западной Европе и США интерпретациями древнекитайских философских текстов</li>
+                  <li>Лекции в МГИМО, МГУ, ВШЭ, РЭУ им. Плеханова и на евразийских форумах</li>
+                  <li>Частные консультации для участников списка Forbes</li>
+                  <li>Возглавлял Экспертный совет Российско-китайского комитета дружбы, мира и развития</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        <!-- Speaker 4: Крылов -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/krylov.webp" type="image/webp">
+              <img src="img/speakers/krylov.jpg" alt="Сергей Львович Крылов — российский певец, шоумен, актёр" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Сергей Львович Крылов</h3>
+            <div class="expert-role" itemprop="jobTitle">Российский певец, шоумен, актёр</div>
+            <ul class="expert-bio">
+              <li>Артист эстрады, автор хитов «Чёрное море», «Короче, я звоню из Сочи»</li>
+              <li>Сыграл роль Остапа Бендера в фильме «Мечты идиота» (1992)</li>
+              <li>Член всесоюзной студии «Рекорд» (Москва) с 1986 года</li>
+            </ul>
+            <details class="expert-details">
+              <summary>Подробнее</summary>
+              <div class="expert-extra" itemprop="description">
+                <ul>
+                  <li>Сольный альбом «Иллюзия жизни» (1987), дебют на ТВ — «Утренняя почта», 1987</li>
+                  <li>Альбом «Порт-Саид» (1994) — «золотой» по итогам продаж</li>
+                  <li>Альбом «Мсье Высоцкий, вернитесь к нам» (1997) к 60-летию В. С. Высоцкого</li>
+                  <li>Сольный концерт в Manhattan Center Studio, Нью-Йорк (1995)</li>
+                  <li>Участник телепроектов «Последний герой», «Ты суперстар!», ведущий «Ночного канала Сно-Видение»</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        <!-- Speaker 8: Бут -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/but.webp" type="image/webp">
+              <img src="img/speakers/but.jpg" alt="Бут Вениамин Евгеньевич — серебряный призёр Олимпиады 1988, заслуженный мастер спорта СССР" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Бут Вениамин Евгеньевич</h3>
+            <div class="expert-role" itemprop="jobTitle">Заслуженный мастер спорта СССР, серебряный призёр Олимпиады-1988</div>
+            <ul class="expert-bio">
+              <li>Серебро Олимпиады в Сеуле (1988) в академической гребле, восьмёрка сборной СССР</li>
+              <li>Чемпион мира 1985 г. в составе сборной СССР (восьмёрка)</li>
+              <li>Президент Федерации гребного спорта России (2012–2016)</li>
+            </ul>
+            <details class="expert-details">
+              <summary>Подробнее</summary>
+              <div class="expert-extra" itemprop="description">
+                <ul>
+                  <li>В академической гребле с 1976 г., Ленинград; тренеры — В. А. Поточкин, Э. Лин</li>
+                  <li>Дважды серебряный призёр чемпионатов мира (1986, 1987) в составе сборной СССР</li>
+                  <li>8-кратный чемпион СССР (1984–1992)</li>
+                  <li>Образование: НГУ физической культуры, спорта и здоровья им. П. Ф. Лесгафта; курсы MBA международной программы администрирования (2006)</li>
+                  <li>1998–2007 — ведущий специалист по работе с управляющим персоналом ЗАО «Джек-Пот», Москва</li>
+                  <li>С 2008 г. — генеральный директор ООО «Город молодого поколения», Москва</li>
+                  <li>Награды: медаль «За трудовую доблесть» (1988), медаль «В память 300-летия Санкт-Петербурга»</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        <!-- Speaker 18: Сидик Афган -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/sidik-afgan.webp" type="image/webp">
+              <img src="img/speakers/sidik-afgan.jpg" alt="Мохаммед Сидик Афган — математик, автор методики «философской математики»" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Мохаммед Сидик Афган</h3>
+            <div class="expert-role" itemprop="jobTitle">Математик, автор методики «философской математики»</div>
+            <ul class="expert-bio">
+              <li>Автор авторской методики «философской математики» — прогнозирования событий через числовые закономерности</li>
+              <li>Основатель Всемирного философского математического научного центра</li>
+              <li>Образование: Кабульский политехнический институт; продолжил учёбу в СССР (Липецк, Ленинград)</li>
+            </ul>
+            <details class="expert-details">
+              <summary>Подробнее</summary>
+              <div class="expert-extra" itemprop="description">
+                <ul>
+                  <li>Родился 20 марта 1958 г. в Кабуле, Афганистан</li>
+                  <li>По собственным заявлениям — магистр математики и доктор наук</li>
+                  <li>Известен публичными прогнозами по геополитическим и общественным событиям</li>
+                  <li>Постоянный гость российских телепрограмм («Пусть говорят», «Малахов», «Прямой эфир»)</li>
+                  <li>Выпустил авторский курс по математическому предсказанию событий</li>
+                  <li>Проживает в Турции</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </article>
 
         <!-- Speaker 1: Захаревич -->
         <article class="expert-card reveal" itemscope itemtype="https://schema.org/Person">
@@ -2588,6 +2795,50 @@
                   <li>40-летняя практика консультирования в области энергетики и здоровья</li>
                   <li>Автор 150+ научных публикаций, 8 книг и 2 патентов</li>
                   <li>Сертифицированный целитель, мастер спорта по морскому многоборью</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        </div>
+      </div>
+
+      <div class="speaker-tier">
+        <h3 class="speaker-tier-title">Эксперты форума</h3>
+        <p class="speaker-tier-subtitle">Практики, врачи и исследователи в своих направлениях — от медицины и психологии до китайской философии и духовно-нравственного воспитания</p>
+        <div class="experts-grid experts-grid--practitioners">
+
+        <!-- Speaker 7: Чечёткин -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/chechetkin.webp" type="image/webp">
+              <img src="img/speakers/chechetkin.jpg" alt="Чечёткин Игорь Владимирович — мастер боевых искусств РФ, эксперт по геральдике, вице-президент Всемирного Альянса Цигун" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Чечёткин Игорь Владимирович</h3>
+            <div class="expert-role" itemprop="jobTitle">Мастер боевых искусств РФ, эксперт по геральдике, вице-президент Всемирного Альянса Цигун</div>
+            <ul class="expert-bio">
+              <li>Член Высшего совета Российского Союза боевых искусств</li>
+              <li>Вице-президент Всемирного Альянса Цигун (штаб-квартира — Пекин, КНР); полномочия по РФ и СНГ с 2004 г.</li>
+              <li>Чемпион мира 2025 г. по открытому ледяному плаванию (Казахстан)</li>
+            </ul>
+            <details class="expert-details">
+              <summary>Подробнее</summary>
+              <div class="expert-extra" itemprop="description">
+                <ul>
+                  <li>Звание «Мастер боевых искусств Российской Федерации» (2006), «Мастер боевых искусств Казахстана» (2008)</li>
+                  <li>Выпускник МГУ СиТ России — тренер-преподаватель физической культуры и спорта</li>
+                  <li>Член военной группы Геральдического Совета при Президенте РФ с 1993 г.; основоположник геральдического обеспечения ФСО РФ, герольдмейстер ФСО РФ</li>
+                  <li>Эксперт в сфере геральдики и символики (РГСУ, первый набор кафедры)</li>
+                  <li>Член Попечительского совета Всероссийской федерации зимнего плавания</li>
+                  <li>Сопредседатель Всемирного Союза Сообществ Саморегуляции и Регенерации (совместно с Б. Б. Виногродским)</li>
+                  <li>Член международного Союза НПО «Ассамблея народов мира»</li>
+                  <li>Руководитель Совета стратегического развития КС НСБ РФ; руководитель департамента по контролю в негосударственных сферах безопасности (Комиссия по борьбе с коррупцией)</li>
+                  <li>Ветеран морской пехоты России и ФСО РФ</li>
+                  <li>Руководитель фонда «Тонино Гуэрра»</li>
                 </ul>
               </div>
             </details>
@@ -2623,29 +2874,61 @@
           </div>
         </article>
 
-        <!-- Speaker 3: Юрьева -->
-        <article class="expert-card reveal reveal-delay-2" itemscope itemtype="https://schema.org/Person">
+        <!-- Speaker 12: Кобзев -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
           <div class="expert-photo-wrap">
             <picture>
-              <source srcset="img/speakers/yurieva.webp" type="image/webp">
-              <img src="img/speakers/yurieva.jpg" alt="Елена Юрьевна Юрьева — международный эксперт по нетворкингу, кандидат психологических наук" loading="lazy" decoding="async" itemprop="image">
+              <source srcset="img/speakers/kobzev.webp" type="image/webp">
+              <img src="img/speakers/kobzev.jpg" alt="Сергей Васильевич Кобзев — скульптор, член Союза художников России, директор музея «Путь русской славы»" loading="lazy" decoding="async" itemprop="image">
             </picture>
           </div>
           <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Елена Юрьевна Юрьева</h3>
-            <div class="expert-role" itemprop="jobTitle">Международный эксперт по нетворкингу, к.пс.н.</div>
+            <h3 class="expert-name" itemprop="name">Сергей Васильевич Кобзев</h3>
+            <div class="expert-role" itemprop="jobTitle">Скульптор, член Союза художников России, директор музея «Путь русской славы»</div>
             <ul class="expert-bio">
-              <li>Автор книги о нетворкинге и бизнес-коммуникациях</li>
-              <li>Кандидат психологических наук</li>
-              <li>Основатель сообщества «Свои люди»</li>
+              <li>Автор масштабных культурных проектов; 30 лет работы с детьми, семьями и молодёжью</li>
+              <li>Монументальный скульптор; концепция «От Рюрика до Петра Великого» (Старая Ладога), серия «Крепости России»</li>
+              <li>Создатель культурно-просветительского центра «Крепость Духа» (Ленинградская область, 10 га)</li>
+            </ul>
+            <details class="expert-details">
+              <summary>Подробнее</summary>
+              <div class="expert-extra" itemprop="description">
+                <p style="margin-bottom: 12px;"><strong>Тема выступления:</strong> «Числа, образы и корни: как культурный код нации защищает от деструктивных влияний»</p>
+                <ul>
+                  <li>Высшее художественное образование, специальность «монументальная скульптура»</li>
+                  <li>Авторские программы духовно-нравственного воспитания для детей и подростков</li>
+                  <li>Участие в экспертных комиссиях и общественных советах, сотрудничество с педагогами и учёными</li>
+                  <li>Музей исторической памяти, творческие студии, этнокультурные площадки, парк монументальной скульптуры в составе «Крепости Духа»</li>
+                  <li>Три уровня внутренней защиты: число как личный код, образ как визуальный якорь души, корень рода как энергия, удерживающая структуру</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        <!-- Speaker 15: Вайсман -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/vaysman.webp" type="image/webp">
+              <img src="img/speakers/vaysman.jpg" alt="Сергей Вайсман — заслуженный врач РФ, кандидат медицинских наук, доктор остеопатии, невролог" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Сергей Вайсман</h3>
+            <div class="expert-role" itemprop="jobTitle">Заслуженный врач РФ, к.м.н., доктор остеопатии, невролог, рефлексотерапевт</div>
+            <ul class="expert-bio">
+              <li>Заслуженный врач Российской Федерации, кандидат медицинских наук</li>
+              <li>Доктор остеопатии, невролог, рефлексотерапевт</li>
+              <li>Член Российской остеопатической ассоциации</li>
             </ul>
             <details class="expert-details">
               <summary>Подробнее</summary>
               <div class="expert-extra" itemprop="description">
                 <ul>
-                  <li>Ведущая тренингов и деловых игр по коммуникациям и кросс-маркетингу</li>
-                  <li>Международный эксперт-практик по нетворкингу</li>
-                  <li>Создатель экосистемы доверительных деловых связей «Свои люди»</li>
+                  <li>Награждён орденами Гиппократа и Пирогова</li>
+                  <li>Место работы: ФГБУ «Национальный медицинский исследовательский центр высоких медицинских технологий — Центральный военно-клинический госпиталь им. А. А. Вишневского»</li>
+                  <li>Москва</li>
                 </ul>
               </div>
             </details>
@@ -2684,100 +2967,34 @@
           </div>
         </article>
 
-        <!-- Speaker 6: Виногродский -->
+        <!-- Speaker 14: Боярчук -->
         <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
           <div class="expert-photo-wrap">
             <picture>
-              <source srcset="img/speakers/vinogrodsky.webp" type="image/webp">
-              <img src="img/speakers/vinogrodsky.jpg" alt="Бронислав Виногродский — ведущий китаевед, писатель, переводчик древнекитайских трактатов" loading="lazy" decoding="async" itemprop="image">
+              <source srcset="img/speakers/boyarchuk.webp" type="image/webp">
+              <img src="img/speakers/boyarchuk.jpg" alt="Боярчук Ждан Анатольевич — специалист по методу «Миотэк», точечная нейростимуляция" loading="lazy" decoding="async" itemprop="image">
             </picture>
           </div>
           <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Бронислав Виногродский</h3>
-            <div class="expert-role" itemprop="jobTitle">Ведущий китаевед, писатель, переводчик</div>
+            <h3 class="expert-name" itemprop="name">Боярчук Ждан Анатольевич</h3>
+            <div class="expert-role" itemprop="jobTitle">Специалист по методу «Миотэк» (точечная нейростимуляция)</div>
             <ul class="expert-bio">
-              <li>40 лет изучения традиционной китайской культуры и древних когнитивных моделей</li>
-              <li>Постоянный консультант и наставник руководителей крупнейших российских бизнесов</li>
-              <li>Перевёл с древнекитайского более 40 философских трактатов</li>
+              <li>Около 5000 оздоровительных сеансов за 6 лет; пациенты от 3 месяцев до 90+ лет, среди них паралимпийские чемпионы и врачи</li>
+              <li>Дипломированный специалист Медицинского колледжа им. Бехтерева</li>
+              <li>Куратор интегративных оздоровительных практик в традициях И. П. Неумывакина, Ю. С. Николаева, М. В. Оганян</li>
             </ul>
             <details class="expert-details">
               <summary>Подробнее</summary>
               <div class="expert-extra" itemprop="description">
                 <ul>
-                  <li>Переводы: «Дао дэ цзин», «Книга Перемен», «Чжуан-цзы», «Лунь Юй», «Трактат Жёлтого императора о внутреннем», «Конфуций: Рассуждения в изречениях»</li>
-                  <li>Известен в России, Китае, Западной Европе и США интерпретациями древнекитайских философских текстов</li>
-                  <li>Лекции в МГИМО, МГУ, ВШЭ, РЭУ им. Плеханова и на евразийских форумах</li>
-                  <li>Частные консультации для участников списка Forbes</li>
-                  <li>Возглавлял Экспертный совет Российско-китайского комитета дружбы, мира и развития</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <!-- Speaker 7: Чечёткин -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/chechetkin.webp" type="image/webp">
-              <img src="img/speakers/chechetkin.jpg" alt="Чечёткин Игорь Владимирович — мастер боевых искусств РФ, эксперт по геральдике, вице-президент Всемирного Альянса Цигун" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Чечёткин Игорь Владимирович</h3>
-            <div class="expert-role" itemprop="jobTitle">Мастер боевых искусств РФ, эксперт по геральдике, вице-президент Всемирного Альянса Цигун</div>
-            <ul class="expert-bio">
-              <li>Член Высшего совета Российского Союза боевых искусств</li>
-              <li>Вице-президент Всемирного Альянса Цигун (штаб-квартира — Пекин, КНР); полномочия по РФ и СНГ с 2004 г.</li>
-              <li>Чемпион мира 2025 г. по открытому ледяному плаванию (Казахстан)</li>
-            </ul>
-            <details class="expert-details">
-              <summary>Подробнее</summary>
-              <div class="expert-extra" itemprop="description">
-                <ul>
-                  <li>Звание «Мастер боевых искусств Российской Федерации» (2006), «Мастер боевых искусств Казахстана» (2008)</li>
-                  <li>Выпускник МГУ СиТ России — тренер-преподаватель физической культуры и спорта</li>
-                  <li>Член военной группы Геральдического Совета при Президенте РФ с 1993 г.; основоположник геральдического обеспечения ФСО РФ, герольдмейстер ФСО РФ</li>
-                  <li>Эксперт в сфере геральдики и символики (РГСУ, первый набор кафедры)</li>
-                  <li>Член Попечительского совета Всероссийской федерации зимнего плавания</li>
-                  <li>Сопредседатель Всемирного Союза Сообществ Саморегуляции и Регенерации (совместно с Б. Б. Виногродским)</li>
-                  <li>Член международного Союза НПО «Ассамблея народов мира»</li>
-                  <li>Руководитель Совета стратегического развития КС НСБ РФ; руководитель департамента по контролю в негосударственных сферах безопасности (Комиссия по борьбе с коррупцией)</li>
-                  <li>Ветеран морской пехоты России и ФСО РФ</li>
-                  <li>Руководитель фонда «Тонино Гуэрра»</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <!-- Speaker 8: Бут -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/but.webp" type="image/webp">
-              <img src="img/speakers/but.jpg" alt="Бут Вениамин Евгеньевич — серебряный призёр Олимпиады 1988, заслуженный мастер спорта СССР" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Бут Вениамин Евгеньевич</h3>
-            <div class="expert-role" itemprop="jobTitle">Заслуженный мастер спорта СССР, серебряный призёр Олимпиады-1988</div>
-            <ul class="expert-bio">
-              <li>Серебро Олимпиады в Сеуле (1988) в академической гребле, восьмёрка сборной СССР</li>
-              <li>Чемпион мира 1985 г. в составе сборной СССР (восьмёрка)</li>
-              <li>Президент Федерации гребного спорта России (2012–2016)</li>
-            </ul>
-            <details class="expert-details">
-              <summary>Подробнее</summary>
-              <div class="expert-extra" itemprop="description">
-                <ul>
-                  <li>В академической гребле с 1976 г., Ленинград; тренеры — В. А. Поточкин, Э. Лин</li>
-                  <li>Дважды серебряный призёр чемпионатов мира (1986, 1987) в составе сборной СССР</li>
-                  <li>8-кратный чемпион СССР (1984–1992)</li>
-                  <li>Образование: НГУ физической культуры, спорта и здоровья им. П. Ф. Лесгафта; курсы MBA международной программы администрирования (2006)</li>
-                  <li>1998–2007 — ведущий специалист по работе с управляющим персоналом ЗАО «Джек-Пот», Москва</li>
-                  <li>С 2008 г. — генеральный директор ООО «Город молодого поколения», Москва</li>
-                  <li>Награды: медаль «За трудовую доблесть» (1988), медаль «В память 300-летия Санкт-Петербурга»</li>
+                  <li>Метод «Миотэк» работает на стыке доказательной и холистической медицины; не является массажем, остеопатией или мануальной терапией</li>
+                  <li>Личный кейс: вылечил у себя болезнь Бехтерева без таблеток и избавился от II группы инвалидности</li>
+                  <li>На практике подтвердил причины многих скрытых патологий и отсроченных осложнений, появляющихся у большинства людей при рождении</li>
+                  <li>Участник забегов на 10 км и полумарафонов (21 км)</li>
+                  <li>2013 — Санкт-Петербургский государственный университет кино и телевидения</li>
+                  <li>2012–2019 — производство и озвучка видео (медицина, просветительские проекты, фестивали ЗОЖ, семинары)</li>
+                  <li>2016 — переподготовка в ФГБОУ ДПО «ИРДПО»: «Государственное и муниципальное управление», профиль «Национальная безопасность»</li>
+                  <li>Композитор музыки к фильму о Сергее Есенине и Зинаиде Райх «Русалка — зелёные косы» (премьера 2 ноября 2011 г., Вологда)</li>
                 </ul>
               </div>
             </details>
@@ -2832,6 +3049,90 @@
           </div>
         </article>
 
+        <!-- Speaker 3: Юрьева -->
+        <article class="expert-card reveal reveal-delay-2" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/yurieva.webp" type="image/webp">
+              <img src="img/speakers/yurieva.jpg" alt="Елена Юрьевна Юрьева — международный эксперт по нетворкингу, кандидат психологических наук" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Елена Юрьевна Юрьева</h3>
+            <div class="expert-role" itemprop="jobTitle">Международный эксперт по нетворкингу, к.пс.н.</div>
+            <ul class="expert-bio">
+              <li>Автор книги о нетворкинге и бизнес-коммуникациях</li>
+              <li>Кандидат психологических наук</li>
+              <li>Основатель сообщества «Свои люди»</li>
+            </ul>
+            <details class="expert-details">
+              <summary>Подробнее</summary>
+              <div class="expert-extra" itemprop="description">
+                <ul>
+                  <li>Ведущая тренингов и деловых игр по коммуникациям и кросс-маркетингу</li>
+                  <li>Международный эксперт-практик по нетворкингу</li>
+                  <li>Создатель экосистемы доверительных деловых связей «Свои люди»</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        <!-- Speaker 17: Молодецкий -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/molodetsky.webp" type="image/webp">
+              <img src="img/speakers/molodetsky.jpg" alt="Олег Молодецкий — основатель квантового прикладного учения «Космоэнергетика»" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Олег Молодецкий</h3>
+            <div class="expert-role" itemprop="jobTitle">Основатель квантового прикладного учения «Космоэнергетика»</div>
+            <ul class="expert-bio">
+              <li>Основатель квантового прикладного учения «Космоэнергетика»</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Speaker 16: Джанышбекова -->
+        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
+          <div class="expert-photo-wrap">
+            <picture>
+              <source srcset="img/speakers/dzhanyshbekova.webp" type="image/webp">
+              <img src="img/speakers/dzhanyshbekova.jpg" alt="Зарема Джанышбекова — кармический и квантовый нумеролог, психолог" loading="lazy" decoding="async" itemprop="image">
+            </picture>
+          </div>
+          <div class="expert-body">
+            <h3 class="expert-name" itemprop="name">Зарема Джанышбекова</h3>
+            <div class="expert-role" itemprop="jobTitle">Кармический и квантовый нумеролог, психолог с дипломом</div>
+            <ul class="expert-bio">
+              <li>Работает на стыке кармической нумерологии, квантового метода и глубинной психологии</li>
+              <li>Помогает женщинам быстрее найти своё дело и точку опоры через цифры</li>
+              <li>Работает онлайн — из любой точки мира</li>
+            </ul>
+            <details class="expert-details">
+              <summary>Подробнее</summary>
+              <div class="expert-extra" itemprop="description">
+                <ul>
+                  <li>Образование и обучение: психология, гипноз, нумерология, квантовый метод</li>
+                  <li>20 лет личного поиска: от работы уборщицей, посудомойкой, официанткой до управляющей и бухгалтера</li>
+                  <li>Вложила в собственное развитие 3,5 млн рублей — пока не сложилась рабочая система</li>
+                  <li>Авторская позиция: «цифры показывают, кто ты, где твои деньги и что тормозило все эти годы — конкретно, не абстрактно»</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        </div>
+      </div>
+
+      <div class="speaker-tier">
+        <h3 class="speaker-tier-title">Ученики авторской школы С. Н. Кузнецова</h3>
+        <p class="speaker-tier-subtitle">Преемники авторской системы — прошли полный курс обучения и применяют метод на практике</p>
+        <div class="experts-grid experts-grid--students">
+
         <!-- Speaker 11: Титоренко -->
         <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
           <div class="expert-photo-wrap">
@@ -2859,38 +3160,6 @@
                   <li>Сертификаты специалиста по Мандалам и SMM-менеджера</li>
                   <li>Член Ассоциации Специалистов Метафизических Практик</li>
                   <li>Докладчик III международного научно-практического конгресса в Москве</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <!-- Speaker 12: Кобзев -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/kobzev.webp" type="image/webp">
-              <img src="img/speakers/kobzev.jpg" alt="Сергей Васильевич Кобзев — скульптор, член Союза художников России, директор музея «Путь русской славы»" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Сергей Васильевич Кобзев</h3>
-            <div class="expert-role" itemprop="jobTitle">Скульптор, член Союза художников России, директор музея «Путь русской славы»</div>
-            <ul class="expert-bio">
-              <li>Автор масштабных культурных проектов; 30 лет работы с детьми, семьями и молодёжью</li>
-              <li>Монументальный скульптор; концепция «От Рюрика до Петра Великого» (Старая Ладога), серия «Крепости России»</li>
-              <li>Создатель культурно-просветительского центра «Крепость Духа» (Ленинградская область, 10 га)</li>
-            </ul>
-            <details class="expert-details">
-              <summary>Подробнее</summary>
-              <div class="expert-extra" itemprop="description">
-                <p style="margin-bottom: 12px;"><strong>Тема выступления:</strong> «Числа, образы и корни: как культурный код нации защищает от деструктивных влияний»</p>
-                <ul>
-                  <li>Высшее художественное образование, специальность «монументальная скульптура»</li>
-                  <li>Авторские программы духовно-нравственного воспитания для детей и подростков</li>
-                  <li>Участие в экспертных комиссиях и общественных советах, сотрудничество с педагогами и учёными</li>
-                  <li>Музей исторической памяти, творческие студии, этнокультурные площадки, парк монументальной скульптуры в составе «Крепости Духа»</li>
-                  <li>Три уровня внутренней защиты: число как личный код, образ как визуальный якорь души, корень рода как энергия, удерживающая структуру</li>
                 </ul>
               </div>
             </details>
@@ -2927,179 +3196,7 @@
           </div>
         </article>
 
-        <!-- Speaker 14: Боярчук -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/boyarchuk.webp" type="image/webp">
-              <img src="img/speakers/boyarchuk.jpg" alt="Боярчук Ждан Анатольевич — специалист по методу «Миотэк», точечная нейростимуляция" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Боярчук Ждан Анатольевич</h3>
-            <div class="expert-role" itemprop="jobTitle">Специалист по методу «Миотэк» (точечная нейростимуляция)</div>
-            <ul class="expert-bio">
-              <li>Около 5000 оздоровительных сеансов за 6 лет; пациенты от 3 месяцев до 90+ лет, среди них паралимпийские чемпионы и врачи</li>
-              <li>Дипломированный специалист Медицинского колледжа им. Бехтерева</li>
-              <li>Куратор интегративных оздоровительных практик в традициях И. П. Неумывакина, Ю. С. Николаева, М. В. Оганян</li>
-            </ul>
-            <details class="expert-details">
-              <summary>Подробнее</summary>
-              <div class="expert-extra" itemprop="description">
-                <ul>
-                  <li>Метод «Миотэк» работает на стыке доказательной и холистической медицины; не является массажем, остеопатией или мануальной терапией</li>
-                  <li>Личный кейс: вылечил у себя болезнь Бехтерева без таблеток и избавился от II группы инвалидности</li>
-                  <li>На практике подтвердил причины многих скрытых патологий и отсроченных осложнений, появляющихся у большинства людей при рождении</li>
-                  <li>Участник забегов на 10 км и полумарафонов (21 км)</li>
-                  <li>2013 — Санкт-Петербургский государственный университет кино и телевидения</li>
-                  <li>2012–2019 — производство и озвучка видео (медицина, просветительские проекты, фестивали ЗОЖ, семинары)</li>
-                  <li>2016 — переподготовка в ФГБОУ ДПО «ИРДПО»: «Государственное и муниципальное управление», профиль «Национальная безопасность»</li>
-                  <li>Композитор музыки к фильму о Сергее Есенине и Зинаиде Райх «Русалка — зелёные косы» (премьера 2 ноября 2011 г., Вологда)</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <!-- Speaker 15: Вайсман -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/vaysman.webp" type="image/webp">
-              <img src="img/speakers/vaysman.jpg" alt="Сергей Вайсман — заслуженный врач РФ, кандидат медицинских наук, доктор остеопатии, невролог" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Сергей Вайсман</h3>
-            <div class="expert-role" itemprop="jobTitle">Заслуженный врач РФ, к.м.н., доктор остеопатии, невролог, рефлексотерапевт</div>
-            <ul class="expert-bio">
-              <li>Заслуженный врач Российской Федерации, кандидат медицинских наук</li>
-              <li>Доктор остеопатии, невролог, рефлексотерапевт</li>
-              <li>Член Российской остеопатической ассоциации</li>
-            </ul>
-            <details class="expert-details">
-              <summary>Подробнее</summary>
-              <div class="expert-extra" itemprop="description">
-                <ul>
-                  <li>Награждён орденами Гиппократа и Пирогова</li>
-                  <li>Место работы: ФГБУ «Национальный медицинский исследовательский центр высоких медицинских технологий — Центральный военно-клинический госпиталь им. А. А. Вишневского»</li>
-                  <li>Москва</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <!-- Speaker 16: Джанышбекова -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/dzhanyshbekova.webp" type="image/webp">
-              <img src="img/speakers/dzhanyshbekova.jpg" alt="Зарема Джанышбекова — кармический и квантовый нумеролог, психолог" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Зарема Джанышбекова</h3>
-            <div class="expert-role" itemprop="jobTitle">Кармический и квантовый нумеролог, психолог с дипломом</div>
-            <ul class="expert-bio">
-              <li>Работает на стыке кармической нумерологии, квантового метода и глубинной психологии</li>
-              <li>Помогает женщинам быстрее найти своё дело и точку опоры через цифры</li>
-              <li>Работает онлайн — из любой точки мира</li>
-            </ul>
-            <details class="expert-details">
-              <summary>Подробнее</summary>
-              <div class="expert-extra" itemprop="description">
-                <ul>
-                  <li>Образование и обучение: психология, гипноз, нумерология, квантовый метод</li>
-                  <li>20 лет личного поиска: от работы уборщицей, посудомойкой, официанткой до управляющей и бухгалтера</li>
-                  <li>Вложила в собственное развитие 3,5 млн рублей — пока не сложилась рабочая система</li>
-                  <li>Авторская позиция: «цифры показывают, кто ты, где твои деньги и что тормозило все эти годы — конкретно, не абстрактно»</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <!-- Speaker 17: Молодецкий -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/molodetsky.webp" type="image/webp">
-              <img src="img/speakers/molodetsky.jpg" alt="Олег Молодецкий — основатель квантового прикладного учения «Космоэнергетика»" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Олег Молодецкий</h3>
-            <div class="expert-role" itemprop="jobTitle">Основатель квантового прикладного учения «Космоэнергетика»</div>
-            <ul class="expert-bio">
-              <li>Основатель квантового прикладного учения «Космоэнергетика»</li>
-            </ul>
-          </div>
-        </article>
-
-        <!-- Speaker 18: Сидик Афган -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/sidik-afgan.webp" type="image/webp">
-              <img src="img/speakers/sidik-afgan.jpg" alt="Мохаммед Сидик Афган — математик, автор методики «философской математики»" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Мохаммед Сидик Афган</h3>
-            <div class="expert-role" itemprop="jobTitle">Математик, автор методики «философской математики»</div>
-            <ul class="expert-bio">
-              <li>Автор авторской методики «философской математики» — прогнозирования событий через числовые закономерности</li>
-              <li>Основатель Всемирного философского математического научного центра</li>
-              <li>Образование: Кабульский политехнический институт; продолжил учёбу в СССР (Липецк, Ленинград)</li>
-            </ul>
-            <details class="expert-details">
-              <summary>Подробнее</summary>
-              <div class="expert-extra" itemprop="description">
-                <ul>
-                  <li>Родился 20 марта 1958 г. в Кабуле, Афганистан</li>
-                  <li>По собственным заявлениям — магистр математики и доктор наук</li>
-                  <li>Известен публичными прогнозами по геополитическим и общественным событиям</li>
-                  <li>Постоянный гость российских телепрограмм («Пусть говорят», «Малахов», «Прямой эфир»)</li>
-                  <li>Выпустил авторский курс по математическому предсказанию событий</li>
-                  <li>Проживает в Турции</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <!-- Speaker 4: Крылов -->
-        <article class="expert-card reveal reveal-delay-3" itemscope itemtype="https://schema.org/Person">
-          <div class="expert-photo-wrap">
-            <picture>
-              <source srcset="img/speakers/krylov.webp" type="image/webp">
-              <img src="img/speakers/krylov.jpg" alt="Сергей Львович Крылов — российский певец, шоумен, актёр" loading="lazy" decoding="async" itemprop="image">
-            </picture>
-          </div>
-          <div class="expert-body">
-            <h3 class="expert-name" itemprop="name">Сергей Львович Крылов</h3>
-            <div class="expert-role" itemprop="jobTitle">Российский певец, шоумен, актёр</div>
-            <ul class="expert-bio">
-              <li>Артист эстрады, автор хитов «Чёрное море», «Короче, я звоню из Сочи»</li>
-              <li>Сыграл роль Остапа Бендера в фильме «Мечты идиота» (1992)</li>
-              <li>Член всесоюзной студии «Рекорд» (Москва) с 1986 года</li>
-            </ul>
-            <details class="expert-details">
-              <summary>Подробнее</summary>
-              <div class="expert-extra" itemprop="description">
-                <ul>
-                  <li>Сольный альбом «Иллюзия жизни» (1987), дебют на ТВ — «Утренняя почта», 1987</li>
-                  <li>Альбом «Порт-Саид» (1994) — «золотой» по итогам продаж</li>
-                  <li>Альбом «Мсье Высоцкий, вернитесь к нам» (1997) к 60-летию В. С. Высоцкого</li>
-                  <li>Сольный концерт в Manhattan Center Studio, Нью-Йорк (1995)</li>
-                  <li>Участник телепроектов «Последний герой», «Ты суперстар!», ведущий «Ночного канала Сно-Видение»</li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </article>
-
+        </div>
       </div>
     </div>
 
@@ -5164,14 +5261,19 @@
     var DialogProto = window.HTMLDialogElement.prototype;
     if (typeof DialogProto.showModal !== 'function') return;
 
-    var grid = document.querySelector('.experts-grid');
+    var grids = document.querySelectorAll('.experts-grid');
     var modal = document.getElementById('expert-modal');
-    if (!grid || !modal) return;
+    if (!grids.length || !modal) return;
     var content = modal.querySelector('.expert-modal-content');
     var closeBtn = modal.querySelector('.expert-modal-close');
     if (!content || !closeBtn) return;
 
-    grid.classList.add('experts-grid--compact');
+    grids.forEach(function(g){
+      // Headliners stay full-size; everything else gets compact treatment.
+      if (!g.classList.contains('experts-grid--headliners')) {
+        g.classList.add('experts-grid--compact');
+      }
+    });
 
     function fillFromCard(card){
       var photoWrap = card.querySelector('.expert-photo-wrap');
@@ -5200,7 +5302,7 @@
       if (body) body.scrollTop = 0;
     }
 
-    grid.querySelectorAll('.expert-card').forEach(function(card){
+    document.querySelectorAll('.experts-grid .expert-card').forEach(function(card){
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
       card.setAttribute('aria-haspopup', 'dialog');
