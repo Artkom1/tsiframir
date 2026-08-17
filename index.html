@@ -362,7 +362,7 @@
     .nav-cta {
       background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
       color: var(--white) !important; padding: 10px 22px !important;
-      border-radius: 50px !important; font-weight: 600 !important;
+      border-radius: 50px !important; font-weight: 600 !important; white-space: nowrap;
     }
     .nav-cta:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 20px rgba(184,148,46,0.3) !important; }
     .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
@@ -1465,6 +1465,15 @@
       .burger { display: flex; }
       .floating-cta { bottom: 20px; right: 20px; width: 54px; height: 54px; font-size: 1.3rem; }
     }
+    @media (min-width: 969px) {
+      .nav-links { gap: 16px; }
+    }
+    @media (min-width: 969px) and (max-width: 1199px) {
+      .nav-links { display: none; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); padding: 24px; gap: 16px; border-bottom: 1px solid var(--border-light); box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
+      .nav-links.open a { color: var(--text) !important; }
+      .burger { display: flex; }
+    }
     @media (max-width: 600px) {
       .urgency-bar { font-size: 0.75rem; padding: 10px 8px; }
       .hero h1 { font-size: 2rem; letter-spacing: 1px; margin-top: 20px; }
@@ -2172,6 +2181,7 @@
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contacts">Контакты</a></li>
         <li><a href="#register">Регистрация</a></li>
+        <li><a href="https://app.tsiframir.ru/" class="nav-cta">Войти в приложение</a></li>
         <li><button onclick="openPaymentSelector()" class="nav-cta" style="border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.88rem;">Оплатить</button></li>
       </ul>
       <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
