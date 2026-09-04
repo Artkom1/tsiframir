@@ -55,6 +55,35 @@ test('home is a permanent brand hub and its primary CTA opens a working calculat
   expect(JSON.stringify(calculationEvents)).not.toContain('1990');
 });
 
+test('calculator labels and validation errors are exposed to assistive technology', async ({ page }) => {
+  await page.goto('/tools/');
+  await page.locator('.module-tab[data-calculator="compatibility"]').click();
+
+  for (const fieldName of ['person1Data', 'person2Data']) {
+    const input = page.locator(`.calculator-form input[name="${fieldName}"]`);
+    const inputId = await input.getAttribute('id');
+    expect(inputId).toBeTruthy();
+    await expect(page.locator(`label[for="${inputId}"]`)).toBeVisible();
+
+    const describedBy = (await input.getAttribute('aria-describedby')).split(/\s+/);
+    const error = page.locator(`[data-field="${fieldName}"]`);
+    expect(describedBy).toContain(await error.getAttribute('id'));
+    await expect(error).toHaveAttribute('role', 'alert');
+    await expect(input).toHaveAttribute('aria-invalid', 'false');
+  }
+
+  const firstPerson = page.locator('input[name="person1Data"]');
+  await firstPerson.fill('неверный формат');
+  await page.locator('input[name="person2Data"]').fill('15.03.1985 Иванова Анна Сергеевна');
+  await page.getByRole('button', { name: 'Рассчитать совместимость' }).click();
+  await expect(firstPerson).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('[data-field="person1Data"]')).toBeVisible();
+
+  await firstPerson.fill('30.07.1982 Петров Иван Иванович');
+  await expect(firstPerson).toHaveAttribute('aria-invalid', 'false');
+  await expect(page.locator('[data-field="person1Data"]')).toBeHidden();
+});
+
 test('analytics fallback sends one safe event and strips personal parameters', async ({ page }) => {
   await page.goto('/');
   const result = await page.evaluate(async () => {

@@ -98,6 +98,42 @@ const CalculatorUI = (() => {
   };
 
   /**
+   * Connect dynamic labels, inputs, hints and validation messages for assistive
+   * technologies. The calculator configurations are trusted local data.
+   */
+  const enhanceFormAccessibility = (container, calculatorId) => {
+    container.querySelectorAll('.form-group').forEach((group) => {
+      const input = group.querySelector('.form-input[name]');
+      if (!input) return;
+
+      const safeCalculatorId = calculatorId.replace(/[^a-zA-Z0-9_-]/g, '-');
+      const safeFieldName = input.name.replace(/[^a-zA-Z0-9_-]/g, '-');
+      const inputId = `calculator-${safeCalculatorId}-${safeFieldName}`;
+      const errorId = `${inputId}-error`;
+      const hint = group.querySelector('.form-hint');
+      const error = group.querySelector(`[data-field="${input.name}"]`);
+
+      input.id = inputId;
+      input.setAttribute('aria-invalid', 'false');
+
+      const label = group.querySelector('.form-label');
+      if (label) label.htmlFor = inputId;
+
+      const describedBy = [];
+      if (hint) {
+        hint.id = `${inputId}-hint`;
+        describedBy.push(hint.id);
+      }
+      if (error) {
+        error.id = errorId;
+        error.setAttribute('role', 'alert');
+        describedBy.push(errorId);
+      }
+      if (describedBy.length) input.setAttribute('aria-describedby', describedBy.join(' '));
+    });
+  };
+
+  /**
    * Render dynamic form based on calculator config
    */
   const renderForm = (container, calculatorId) => {
@@ -168,6 +204,8 @@ const CalculatorUI = (() => {
         </div>
       `;
 
+      enhanceFormAccessibility(container, calculatorId);
+
       const submitBtn = container.querySelector('.btn-primary');
       if (submitBtn) {
         console.log('Attaching click handler to submit button (personalMatrix)');
@@ -224,6 +262,8 @@ const CalculatorUI = (() => {
           </button>
         </div>
       `;
+
+      enhanceFormAccessibility(container, calculatorId);
 
       const submitBtn = container.querySelector('.btn-primary');
       if (submitBtn) {
@@ -306,6 +346,8 @@ const CalculatorUI = (() => {
     `;
 
     container.innerHTML = formHTML;
+
+    enhanceFormAccessibility(container, calculatorId);
 
     // Add click handler to submit button
     const submitBtn = container.querySelector('.btn-primary');
@@ -419,8 +461,13 @@ const CalculatorUI = (() => {
     }
 
     // Clear errors
-    document.querySelectorAll('.form-error').forEach((el) => {
+    formContainer.querySelectorAll('.form-error').forEach((el) => {
       el.classList.add('hidden');
+      el.textContent = '';
+    });
+    formContainer.querySelectorAll('.form-input').forEach((input) => {
+      input.classList.remove('error');
+      input.setAttribute('aria-invalid', 'false');
     });
 
     trackCalculator('calculator_start');
@@ -459,11 +506,13 @@ const CalculatorUI = (() => {
    * Show field error
    */
   const showFieldError = (fieldName, error) => {
-    const input = document.querySelector(`input[name="${fieldName}"]`);
-    const errorEl = document.querySelector(`[data-field="${fieldName}"]`);
+    const formContainer = document.querySelector('.calculator-form');
+    const input = formContainer?.querySelector(`input[name="${fieldName}"]`);
+    const errorEl = formContainer?.querySelector(`[data-field="${fieldName}"]`);
 
     if (input) {
       input.classList.add('error');
+      input.setAttribute('aria-invalid', 'true');
     }
     if (errorEl) {
       errorEl.textContent = error;
@@ -475,18 +524,17 @@ const CalculatorUI = (() => {
    * Clear field error on input
    */
   const clearFieldError = (fieldName) => {
-    const input = document.querySelector(`input[name="${fieldName}"]`);
-    const errorEl = document.querySelector(`[data-field="${fieldName}"]`);
+    const formContainer = document.querySelector('.calculator-form');
+    const input = formContainer?.querySelector(`input[name="${fieldName}"]`);
+    const errorEl = formContainer?.querySelector(`[data-field="${fieldName}"]`);
 
     if (input) {
       input.classList.remove('error');
-      input.addEventListener('input', function handler() {
-        this.classList.remove('error');
-        this.removeEventListener('input', handler);
-      });
+      input.setAttribute('aria-invalid', 'false');
     }
     if (errorEl) {
       errorEl.classList.add('hidden');
+      errorEl.textContent = '';
     }
   };
 
