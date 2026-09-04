@@ -28,7 +28,20 @@ const cardObserver = 'IntersectionObserver' in window ? new IntersectionObserver
     track('event_card_view', { event_id: entry.target.dataset.eventId || 'unknown' });
   }
 }, { threshold: .5 }) : null;
-document.querySelectorAll('[data-event-id]').forEach((card) => cardObserver?.observe(card));
+function observeEventCards(root = document) {
+  root.querySelectorAll?.('[data-event-id]').forEach((card) => cardObserver?.observe(card));
+}
+observeEventCards();
+if (cardObserver && 'MutationObserver' in window) {
+  new MutationObserver((mutations) => {
+    for (const mutation of mutations) for (const node of mutation.addedNodes) {
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        if (node.matches?.('[data-event-id]')) cardObserver.observe(node);
+        observeEventCards(node);
+      }
+    }
+  }).observe(document.body, { childList: true, subtree: true });
+}
 
 if (document.body.dataset.page === 'archive') track('archive_view', { event_id: 'forum-2026-saint-petersburg' });
 

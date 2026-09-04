@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tsiframir.ru/assets/data/events.schema.json",
+  "title": "ЦифраМир forum catalogue",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["events"],
+  "properties": {
+    "$schema": { "type": "string", "format": "uri" },
+    "events": { "type": "array", "items": { "$ref": "#/$defs/event" } }
+  },
+  "$defs": {
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "slug", "title", "edition", "startDate", "endDate", "status", "city", "venue", "heroImage", "description", "speakers", "schedule", "tariffs", "salesOpen", "registrationUrl", "recap"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "paymentCode": { "type": "string", "pattern": "^[A-Z0-9]+$" },
+        "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "title": { "type": "string", "minLength": 1 },
+        "edition": { "type": "string", "minLength": 1 },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": "string", "format": "date-time" },
+        "status": { "enum": ["draft", "upcoming", "live", "past", "cancelled"] },
+        "city": { "type": ["string", "null"] },
+        "venue": { "type": ["string", "null"] },
+        "heroImage": { "type": ["string", "null"] },
+        "description": { "type": "string", "minLength": 1 },
+        "speakers": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "schedule": { "type": "array", "items": { "$ref": "#/$defs/day" } },
+        "tariffs": { "type": "array", "items": { "$ref": "#/$defs/tariff" } },
+        "salesOpen": { "type": "boolean" },
+        "registrationUrl": { "type": ["string", "null"] },
+        "recap": { "$ref": "#/$defs/recap" }
+      },
+      "allOf": [{
+        "if": { "properties": { "status": { "enum": ["past", "cancelled", "draft"] } }, "required": ["status"] },
+        "then": { "properties": { "salesOpen": { "const": false }, "registrationUrl": { "type": "null" } } }
+      }]
+    },
+    "day": {
+      "type": "object", "additionalProperties": false, "required": ["date", "label", "items"],
+      "properties": {
+        "date": { "type": "string", "format": "date" }, "label": { "type": "string", "minLength": 1 },
+        "items": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["time", "title"], "properties": { "time": { "type": "string", "minLength": 1 }, "title": { "type": "string", "minLength": 1 } } } }
+      }
+    },
+    "tariff": {
+      "type": "object", "additionalProperties": false, "required": ["code", "name", "amount", "enabled"],
+      "properties": { "code": { "type": "string", "pattern": "^[A-Z0-9_]+$" }, "name": { "type": "string", "minLength": 1 }, "amount": { "type": "number", "exclusiveMinimum": 0 }, "enabled": { "type": "boolean" } }
+    },
+    "recap": {
+      "type": "object", "additionalProperties": false, "required": ["status", "summary", "media"],
+      "properties": { "status": { "enum": ["none", "preparing", "published"] }, "summary": { "type": "string" }, "media": { "type": "array", "items": { "type": "object" } } }
+    }
+  }
+}

@@ -12,6 +12,10 @@ function getEventByPaymentCode(paymentCode) {
   return eventData.events.find((event) => event.paymentCode === paymentCode) || null;
 }
 
+function getPublicEvents() {
+  return eventData.events.filter((event) => PUBLIC_STATUSES.has(event.status));
+}
+
 function getTariff(event, tariffCode) {
   if (!event || !Array.isArray(event.tariffs)) return null;
   return event.tariffs.find((tariff) => tariff.code === tariffCode) || null;
@@ -41,4 +45,4 @@ function parseOrderId(orderId) {
   return legacy ? { eventId: 'forum-2026-saint-petersburg', tariffCode: legacy[1].toUpperCase() } : null;
 }
 
-module.exports = { authorizeSale, getEvent, getTariff, parseOrderId };
+module.exports = { authorizeSale, getEvent, getPublicEvents, getTariff, parseOrderId };

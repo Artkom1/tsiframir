@@ -1,3 +1,5 @@
+import { getEvent } from './events.js';
+
 const scheduleRoot = document.querySelector('#archive-schedule');
 const speakersRoot = document.querySelector('#archive-speakers');
 
@@ -9,14 +11,12 @@ function text(tag, value, className) {
 }
 
 try {
-  const [eventResponse, speakerResponse] = await Promise.all([
-    fetch('/assets/data/events.json'), fetch('/assets/data/speakers.json')
+  const [event, speakerResponse] = await Promise.all([
+    getEvent('forum-2026-saint-petersburg'), fetch('/assets/data/speakers.json')
   ]);
-  if (!eventResponse.ok || !speakerResponse.ok) throw new Error('archive_data_unavailable');
-  const events = await eventResponse.json();
+  if (!event || !speakerResponse.ok) throw new Error('archive_data_unavailable');
   const speakerData = await speakerResponse.json();
-  const event = events.events.find((item) => item.id === 'forum-2026-saint-petersburg');
-  if (!event || event.status !== 'past') throw new Error('archive_event_invalid');
+  if (event.status !== 'past') throw new Error('archive_event_invalid');
 
   scheduleRoot.replaceChildren(...event.schedule.map((day) => {
     const article = document.createElement('article'); article.className = 'schedule-day';

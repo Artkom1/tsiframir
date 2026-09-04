@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
-const { authorizeSale, parseOrderId } = require('../api/lib/event-policy');
+const { authorizeSale, getPublicEvents, parseOrderId } = require('../api/lib/event-policy');
 const checkout = require('../api/paykeeper/checkout');
 const config = require('../api/paykeeper/config');
 const callback = require('../api/paykeeper/callback');
@@ -29,6 +29,12 @@ test('past forum and all historical tariffs are closed', () => {
 test('unknown event and malformed orders fail closed', () => {
   assert.equal(authorizeSale('not-an-event', 'VIP', 5000).code, 'unknown_event');
   assert.equal(parseOrderId('anything'), null);
+});
+
+test('only supported public event states leave the shared server model', () => {
+  const events = getPublicEvents();
+  assert.equal(events.some((event) => event.status === 'draft'), false);
+  assert.deepEqual(events.map((event) => event.id), ['forum-2026-saint-petersburg']);
 });
 
 test('legacy orders map to the archived event', () => {
