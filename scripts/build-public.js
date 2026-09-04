@@ -33,6 +33,7 @@ for (const entry of publicEntries) {
 }
 
 for (const internalAsset of [
+  'assets/data/events.schema.json',
   'assets/js/calculators/README.md',
   'assets/js/calculators/calculator-test.js'
 ]) {
