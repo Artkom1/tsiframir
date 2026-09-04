@@ -1115,7 +1115,7 @@ const CalculatorUI = (() => {
       </div>
       <div class="ai-cta-block" style="margin-top: 24px; padding: 20px; background: rgba(184,148,46,0.08); border-radius: 8px; text-align: center;">
         <p style="margin: 0 0 12px 0; font-weight: 600; color: var(--primary-dark);">🎯 Хотите узнать больше о вашем числовом коде?</p>
-        <a href="#register" class="btn-ai-cta" style="display: inline-block; padding: 12px 28px; background: var(--primary-gold); color: white; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Записаться на форум →</a>
+        <a href="/forums/" class="btn-ai-cta" style="display: inline-block; padding: 12px 28px; background: var(--primary-gold); color: white; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Узнать о новом форуме →</a>
       </div>
       <div class="ai-analysis-footer">
         <small>🕐 ${new Date().toLocaleString('ru-RU')}</small>

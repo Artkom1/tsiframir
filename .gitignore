@@ -1,4 +1,7 @@
-.vercel
+node_modules/
+test-results/
+playwright-report/
+.vercel/
 .env
 .env.local
 .env.production

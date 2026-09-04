@@ -1,0 +1,107 @@
+const { test, expect } = require('@playwright/test');
+
+const publicPages = [
+  ['home', '/', 'https://tsiframir.ru/'],
+  ['forums', '/forums/', 'https://tsiframir.ru/forums/'],
+  ['archive', '/forums/2026-saint-petersburg/', 'https://tsiframir.ru/forums/2026-saint-petersburg/'],
+  ['tools', '/tools/', 'https://tsiframir.ru/tools/']
+];
+
+for (const [name, route, canonical] of publicPages) {
+  test(`${name} loads without browser or internal resource errors`, async ({ page }) => {
+    const errors = [];
+    page.on('console', (message) => { if (message.type() === 'error') errors.push(`console: ${message.text()}`); });
+    page.on('pageerror', (error) => errors.push(`page: ${error.message}`));
+    page.on('requestfailed', (request) => {
+      if (new URL(request.url()).origin === 'http://127.0.0.1:4174') errors.push(`request: ${request.url()}`);
+    });
+    page.on('response', (response) => {
+      if (new URL(response.url()).origin === 'http://127.0.0.1:4174' && response.status() >= 400) {
+        errors.push(`response ${response.status()}: ${response.url()}`);
+      }
+    });
+
+    await page.goto(route, { waitUntil: 'networkidle' });
+    await expect(page.locator('main')).toBeVisible();
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);
+    const description = await page.locator('meta[name="description"]').getAttribute('content');
+    expect(description.trim().length).toBeGreaterThan(40);
+    expect(await page.locator('h1').count()).toBe(1);
+    expect(errors).toEqual([]);
+  });
+}
+
+test('home is a permanent brand hub and its primary CTA opens a working calculation', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('система понимания человека через числа');
+  await expect(page.locator('body')).not.toContainText(/купить билет|65 из 100|осталось только 35|ранняя цена/i);
+  await page.getByRole('link', { name: 'Рассчитать свою матрицу' }).click();
+  await expect(page).toHaveURL(/\/tools\/$/);
+  await expect(page.locator('.module-tab')).toHaveCount(7);
+  await page.locator('input[name="day"]').fill('4');
+  await page.locator('input[name="month"]').fill('9');
+  await page.locator('input[name="year"]').fill('1990');
+  await page.getByRole('button', { name: 'Рассчитать' }).click();
+  await expect(page.locator('.result-area')).not.toContainText('Заполните форму');
+});
+
+test('forum catalogue links to a closed archive with historical content', async ({ page }) => {
+  await page.goto('/forums/');
+  await page.getByRole('link', { name: /Программа и состав спикеров/ }).click();
+  await expect(page).toHaveURL(/\/forums\/2026-saint-petersburg\/$/);
+  await expect(page.getByText('Форум прошёл', { exact: true }).first()).toBeVisible();
+  await expect(page.locator('#archive-schedule .schedule-day')).toHaveCount(2);
+  expect(await page.locator('#archive-speakers .speaker-card').count()).toBeGreaterThan(10);
+  await expect(page.locator('body')).not.toContainText(/купить билет|забронировать|осталось.*мест/i);
+  await expect(page.locator('a[href*="paykeeper"], form[action*="paykeeper"]')).toHaveCount(0);
+});
+
+test('mobile menu is operable with keyboard', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  const toggle = page.locator('[data-menu-toggle]');
+  await toggle.focus();
+  await page.keyboard.press('Enter');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('[data-menu]')).toHaveClass(/is-open/);
+  await page.keyboard.press('Escape');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggle).toBeFocused();
+});
+
+test('mobile menu remains usable in landscape and releases its scroll lock on resize', async ({ page }) => {
+  await page.setViewportSize({ width: 667, height: 375 });
+  await page.goto('/');
+  const toggle = page.locator('[data-menu-toggle]');
+  await toggle.click();
+  const menu = page.locator('[data-menu]');
+  await expect(menu).toHaveCSS('overflow-y', 'auto');
+  await expect(menu.getByRole('link', { name: 'Контакты' })).toBeVisible();
+  await page.setViewportSize({ width: 1024, height: 375 });
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('body')).not.toHaveClass(/menu-open/);
+});
+
+test('interest form reports success and emits no personal analytics data', async ({ page }) => {
+  await page.route('**/api/forum-interest', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }));
+  await page.goto('/forums/');
+  await page.locator('#interest-name').fill('Тест');
+  await page.locator('#interest-email').fill('test@example.invalid');
+  await page.locator('[name="consent"]').check();
+  await page.getByRole('button', { name: 'Сообщить о новом форуме' }).click();
+  await expect(page.locator('[data-form-status]')).toContainText('Спасибо');
+  const events = await page.evaluate(() => window.dataLayer || []);
+  const submitEvent = events.find((item) => item.event === 'event_interest_submit');
+  expect(submitEvent).toEqual({ event: 'event_interest_submit', event_status: 'date_pending' });
+  await expect(page.locator('[name="startedAt"]')).not.toHaveValue('');
+});
+
+test('interest form has an honest recoverable error state', async ({ page }) => {
+  await page.route('**/api/forum-interest', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: '{"ok":false,"error":"delivery_not_configured"}' }));
+  await page.goto('/forums/');
+  await page.locator('#interest-email').fill('test@example.invalid');
+  await page.locator('[name="consent"]').check();
+  await page.getByRole('button', { name: 'Сообщить о новом форуме' }).click();
+  await expect(page.locator('[data-form-status]')).toContainText('Сейчас отправка недоступна');
+  await expect(page.locator('[data-form-status] a[href^="mailto:"]')).toBeVisible();
+});
