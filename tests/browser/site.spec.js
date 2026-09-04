@@ -32,6 +32,10 @@ for (const [name, route, canonical] of publicPages) {
 }
 
 test('home is a permanent brand hub and its primary CTA opens a working calculation', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.gtagCalls = [];
+    window.gtag = (...args) => window.gtagCalls.push(args);
+  });
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('система понимания человека через числа');
   await expect(page.locator('body')).not.toContainText(/купить билет|65 из 100|осталось только 35|ранняя цена/i);
@@ -43,6 +47,23 @@ test('home is a permanent brand hub and its primary CTA opens a working calculat
   await page.locator('input[name="year"]').fill('1990');
   await page.getByRole('button', { name: 'Рассчитать' }).click();
   await expect(page.locator('.result-area')).not.toContainText('Заполните форму');
+  const calculationEvents = await page.evaluate(() => window.gtagCalls.filter((entry) => entry[0] === 'event'));
+  expect(calculationEvents).toEqual([
+    ['event', 'calculator_start', { calculator_id: 'birthDate' }],
+    ['event', 'calculator_complete', { calculator_id: 'birthDate' }]
+  ]);
+  expect(JSON.stringify(calculationEvents)).not.toContain('1990');
+});
+
+test('analytics fallback sends one safe event and strips personal parameters', async ({ page }) => {
+  await page.goto('/');
+  const result = await page.evaluate(async () => {
+    window.dataLayer = [];
+    window.gtag = undefined;
+    window.tsiframirTrack('contact_click', { location: 'test', email: 'private@example.invalid', phone: '+70000000000' });
+    return window.dataLayer;
+  });
+  expect(result).toEqual([{ event: 'contact_click', location: 'test' }]);
 });
 
 test('forum catalogue links to a closed archive with historical content', async ({ page }) => {

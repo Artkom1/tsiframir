@@ -7,6 +7,12 @@ const CalculatorUI = (() => {
   let currentCalculatorId = 'birthDate';
   let lastResult = null;
 
+  const trackCalculator = (eventName) => {
+    if (typeof window.tsiframirTrack === 'function') {
+      window.tsiframirTrack(eventName, { calculator_id: currentCalculatorId });
+    }
+  };
+
   /**
    * Render module selector (tabs)
    */
@@ -417,6 +423,7 @@ const CalculatorUI = (() => {
       el.classList.add('hidden');
     });
 
+    trackCalculator('calculator_start');
     console.log('🧮 Executing calculation...');
     console.log('Calculator ID:', currentCalculatorId);
     console.log('Data to calculate:', data);
@@ -440,6 +447,7 @@ const CalculatorUI = (() => {
     const resultArea = document.querySelector('.result-area');
     console.log('Rendering result to:', resultArea);
     renderResult(resultArea, result);
+    trackCalculator('calculator_complete');
 
     // Scroll to result
     setTimeout(() => {
