@@ -109,6 +109,17 @@ test('optional AI analysis never sends calculator input values', async ({ page }
   await expect(page.locator('.ai-analysis-content img')).toHaveCount(0);
 });
 
+test('word calculator rejects markup before rendering a result', async ({ page }) => {
+  await page.goto('/tools/');
+  await page.locator('.module-tab[data-calculator="wordCode"]').click();
+  const word = page.locator('input[name="word"]');
+  await word.fill('<img src=x onerror=alert(1)>');
+  await page.getByRole('button', { name: 'Рассчитать', exact: true }).click();
+  await expect(word).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('[data-field="word"]')).toContainText('только буквы');
+  await expect(page.locator('.result-area img')).toHaveCount(0);
+});
+
 test('analytics fallback sends one safe event and strips personal parameters', async ({ page }) => {
   await page.goto('/');
   const result = await page.evaluate(async () => {

@@ -967,7 +967,8 @@ const CalculatorUI = (() => {
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'tsiframir-calculator'
         },
         body: JSON.stringify(payload),
         signal: controller.signal

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "node scripts/build-public.js",
     "test": "npm run validate:events && node --test tests/*.test.js",
     "test:p0": "node --test tests/payment-policy.test.js",
     "test:browser": "playwright test",

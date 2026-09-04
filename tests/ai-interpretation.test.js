@@ -25,6 +25,7 @@ function request(body, overrides = {}) {
       host: 'tsiframir.ru',
       origin: 'https://tsiframir.ru',
       'content-type': 'application/json',
+      'x-requested-with': 'tsiframir-calculator',
       'content-length': String(Buffer.byteLength(serialized)),
       'x-vercel-forwarded-for': '203.0.113.20',
       ...headers
@@ -38,6 +39,24 @@ test('AI endpoint rejects cross-origin, non-JSON and unexpected personal fields'
   let res = response();
   await handler(request({ number: 7, calculatorType: 'birthDate' }, {
     headers: { origin: 'https://attacker.example', host: 'tsiframir.ru', 'content-type': 'application/json' }
+  }), res);
+  assert.equal(res.statusCode, 403);
+
+  res = response();
+  await handler(request({ number: 7, calculatorType: 'birthDate' }, {
+    headers: { origin: '', host: 'tsiframir.ru', 'content-type': 'application/json' }
+  }), res);
+  assert.equal(res.statusCode, 403);
+
+  res = response();
+  await handler(request({ number: 7, calculatorType: 'birthDate' }, {
+    headers: { origin: 'http://tsiframir.ru', host: 'tsiframir.ru', 'content-type': 'application/json' }
+  }), res);
+  assert.equal(res.statusCode, 403);
+
+  res = response();
+  await handler(request({ number: 7, calculatorType: 'birthDate' }, {
+    headers: { origin: 'https://tsiframir.ru', host: 'tsiframir.ru', 'content-type': 'application/json', 'x-requested-with': '' }
   }), res);
   assert.equal(res.statusCode, 403);
 

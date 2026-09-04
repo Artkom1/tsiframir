@@ -91,7 +91,7 @@
     Registry: CalculatorRegistry,
     UI: CalculatorUI,
     Validation: CalculatorValidation,
-    Test: CalculatorTest,
+    Test: window.CalculatorTest || null,
 
     // Utility functions
     execute: (calculatorId, inputs) => CalculatorRegistry.executeCalculation(calculatorId, inputs),

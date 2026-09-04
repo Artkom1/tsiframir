@@ -43,9 +43,18 @@ function isRateLimited(req, now = Date.now()) {
 
 function isSameOrigin(req) {
   const origin = clean(req.headers?.origin, 500);
-  if (!origin) return true;
+  if (!origin) return false;
   try {
-    return new URL(origin).host === clean(req.headers?.host, 500);
+    const allowedOrigins = new Set();
+    const canonical = clean(process.env.SITE_URL, 500) || 'https://tsiframir.ru';
+    allowedOrigins.add(new URL(canonical).origin);
+    const vercelUrl = clean(process.env.VERCEL_URL, 500);
+    if (vercelUrl) allowedOrigins.add(new URL(`https://${vercelUrl}`).origin);
+    if (process.env.NODE_ENV !== 'production') {
+      const host = clean(req.headers?.host, 500);
+      if (/^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host)) allowedOrigins.add(`http://${host}`);
+    }
+    return allowedOrigins.has(new URL(origin).origin);
   } catch (_) {
     return false;
   }
@@ -66,6 +75,9 @@ async function handler(req, res) {
   }
   if (!isSameOrigin(req)) {
     return res.status(403).json({ success: false, error: 'cross_origin_request' });
+  }
+  if (clean(req.headers?.['x-requested-with'], 100) !== 'tsiframir-calculator') {
+    return res.status(403).json({ success: false, error: 'invalid_request_context' });
   }
   const contentType = clean(req.headers?.['content-type'], 100).toLowerCase();
   if (!contentType.startsWith('application/json')) {
