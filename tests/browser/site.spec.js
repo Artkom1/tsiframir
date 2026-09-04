@@ -84,6 +84,31 @@ test('calculator labels and validation errors are exposed to assistive technolog
   await expect(page.locator('[data-field="person1Data"]')).toBeHidden();
 });
 
+test('optional AI analysis never sends calculator input values', async ({ page }) => {
+  let requestBody;
+  await page.route('**/api/ai-interpretation', async (route) => {
+    requestBody = route.request().postDataJSON();
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        analysis: { text: '<img src=x onerror=alert(1)> **Безопасный текст**' }
+      })
+    });
+  });
+  await page.goto('/tools/');
+  await page.locator('input[name="day"]').fill('4');
+  await page.locator('input[name="month"]').fill('9');
+  await page.locator('input[name="year"]').fill('1990');
+  await page.getByRole('button', { name: 'Рассчитать' }).click();
+  await page.locator('.btn-ai').click();
+  await expect.poll(() => requestBody).toEqual({ number: 5, calculatorType: 'birthDate' });
+  expect(JSON.stringify(requestBody)).not.toContain('1990');
+  await expect(page.locator('.ai-analysis-content')).toContainText('<img src=x onerror=alert(1)> Безопасный текст');
+  await expect(page.locator('.ai-analysis-content img')).toHaveCount(0);
+});
+
 test('analytics fallback sends one safe event and strips personal parameters', async ({ page }) => {
   await page.goto('/');
   const result = await page.evaluate(async () => {

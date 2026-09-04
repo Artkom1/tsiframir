@@ -4,59 +4,114 @@
  * Fallback to local database if API unavailable
  */
 
+const crypto = require('crypto');
 const { getFromCache, saveToCache } = require('./utils/cache.js');
 const { getAIAnalysisOpenAI } = require('./utils/openai-client.js');
 const { getPrompt } = require('./utils/prompts.js');
 
-async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+const ALLOWED_CALCULATORS = new Set([
+  'personalMatrix', 'birthDate', 'fullName', 'compatibility',
+  'wordCode', 'lifeCycles', 'passportAnalysis'
+]);
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 8;
+const requestWindows = new Map();
 
-  // Handle OPTIONS requests
+function clean(value, max) {
+  return String(value || '').trim().slice(0, max);
+}
+
+function clientKey(req) {
+  const forwarded = clean(req.headers?.['x-vercel-forwarded-for'] || req.headers?.['x-forwarded-for'], 200);
+  const address = forwarded.split(',')[0].trim() || clean(req.socket?.remoteAddress, 100) || 'unknown';
+  return crypto.createHash('sha256').update(address).digest('hex');
+}
+
+function isRateLimited(req, now = Date.now()) {
+  if (requestWindows.size >= 1000) {
+    for (const [key, value] of requestWindows) if (value.expiresAt <= now) requestWindows.delete(key);
+  }
+  const key = clientKey(req);
+  const current = requestWindows.get(key);
+  if (!current || current.expiresAt <= now) {
+    requestWindows.set(key, { count: 1, expiresAt: now + WINDOW_MS });
+    return false;
+  }
+  current.count += 1;
+  return current.count > MAX_REQUESTS_PER_WINDOW;
+}
+
+function isSameOrigin(req) {
+  const origin = clean(req.headers?.origin, 500);
+  if (!origin) return true;
+  try {
+    return new URL(origin).host === clean(req.headers?.host, 500);
+  } catch (_) {
+    return false;
+  }
+}
+
+async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Vary', 'Origin');
+
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    res.setHeader('Allow', 'POST');
+    return res.status(204).end();
   }
 
-  // Только POST запросы
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ success: false, error: 'method_not_allowed' });
+  }
+  if (!isSameOrigin(req)) {
+    return res.status(403).json({ success: false, error: 'cross_origin_request' });
+  }
+  const contentType = clean(req.headers?.['content-type'], 100).toLowerCase();
+  if (!contentType.startsWith('application/json')) {
+    return res.status(415).json({ success: false, error: 'unsupported_media_type' });
+  }
+  const contentLength = Number(req.headers?.['content-length'] || 0);
+  if (Number.isFinite(contentLength) && contentLength > 2048) {
+    return res.status(413).json({ success: false, error: 'payload_too_large' });
   }
 
   try {
-    const { number, calculatorType, userData, person1Name, person2Name, calculationTrace } = req.body;
-
-    // Валидация входных данных
-    if (!number) {
+    const body = req.body && typeof req.body === 'object' && !Array.isArray(req.body) ? req.body : {};
+    const keys = Object.keys(body);
+    const number = body.number;
+    const calculatorType = clean(body.calculatorType, 40);
+    if (keys.some((key) => !['number', 'calculatorType'].includes(key)) ||
+        !Number.isInteger(number) || number < 1 || number > 99 ||
+        !ALLOWED_CALCULATORS.has(calculatorType)) {
       return res.status(400).json({
         success: false,
-        error: 'Missing number parameter'
+        error: 'invalid_request'
       });
     }
 
-    console.log(`📊 AI Analysis Request: number=${number}, type=${calculatorType}`);
-
-    // Проверить наличие API ключа
     const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
-      console.log('⚠️  OPENAI_API_KEY not configured - using local analysis only');
       return res.status(200).json({
         success: false,
         fallback: true,
         message: 'AI API не настроен. Используется локальный анализ.'
       });
     }
+    if (isRateLimited(req)) {
+      return res.status(429).json({
+        success: false,
+        fallback: true,
+        message: 'Слишком много запросов. Пожалуйста, попробуйте позже.'
+      });
+    }
 
-    // Создать уникальный ключ кэша
-    const cacheKey = createCacheKey(number, calculatorType, person1Name, person2Name, calculationTrace);
-    console.log(`🔍 Cache key: ${cacheKey}`);
+    // Кэш зависит только от неперсональных, проверенных значений.
+    const cacheKey = `analysis_${calculatorType}_${number}`;
 
-    // Проверить кэш
     const cachedResult = getFromCache(cacheKey);
     if (cachedResult) {
-      console.log(`✅ Cache hit for ${cacheKey}`);
       return res.status(200).json({
         success: true,
         analysis: cachedResult,
@@ -65,17 +120,8 @@ async function handler(req, res) {
       });
     }
 
-    console.log(`📡 Cache miss - calling OpenAI API...`);
-
-    // Получить промпт для AI
-    const prompt = getPrompt(
-      number,
-      calculatorType,
-      userData,
-      person1Name,
-      person2Name,
-      calculationTrace
-    );
+    // Имена, даты, слова и ход расчёта во внешний API не передаются.
+    const prompt = getPrompt(number, calculatorType);
 
     // Отправить в OpenAI API
     const analysis = await getAIAnalysisOpenAI(apiKey, prompt, calculatorType);
@@ -88,9 +134,7 @@ async function handler(req, res) {
       });
     }
 
-    // Сохранить в кэш (на 30 дней)
     saveToCache(cacheKey, analysis, 30 * 24 * 60 * 60);
-    console.log(`💾 Saved to cache: ${cacheKey}`);
 
     return res.status(200).json({
       success: true,
@@ -129,23 +173,5 @@ async function handler(req, res) {
   }
 }
 
-/**
- * Создать уникальный ключ для кэша
- */
-function createCacheKey(number, calculatorType, person1Name, person2Name, calculationTrace) {
-  if (calculatorType === 'compatibility' && person1Name && person2Name) {
-    // Для совместимости используем сортированные имена
-    const names = [person1Name, person2Name].sort().join('_');
-    return `analysis_compat_${names}`;
-  }
-  // Для word code добавляем сам текст в ключ
-  if (calculatorType === 'wordCode' && calculationTrace) {
-    const wordMatch = calculationTrace.match(/^Слово: (.+?)$/m);
-    if (wordMatch) {
-      return `analysis_word_${wordMatch[1].toLowerCase().replace(/\s+/g, '_')}`;
-    }
-  }
-  return `analysis_${number}_${calculatorType}`;
-}
-
 module.exports = handler;
+module.exports._test = { clientKey, isRateLimited, isSameOrigin, requestWindows };

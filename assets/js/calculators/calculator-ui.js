@@ -43,7 +43,6 @@ const CalculatorUI = (() => {
    * Switch active calculator
    */
   const switchCalculator = (calculatorId, selectorContainer) => {
-    console.log('🔄 Switching to calculator:', calculatorId);
     currentCalculatorId = calculatorId;
 
     // Update active tab
@@ -53,7 +52,6 @@ const CalculatorUI = (() => {
 
     // Render new form
     const formContainer = document.querySelector('.calculator-form');
-    console.log('Rendering form for:', calculatorId);
     renderForm(formContainer, calculatorId);
 
     // Clear previous result
@@ -137,9 +135,7 @@ const CalculatorUI = (() => {
    * Render dynamic form based on calculator config
    */
   const renderForm = (container, calculatorId) => {
-    console.log('📋 Rendering form for calculator:', calculatorId);
     const calculator = CalculatorRegistry.getCalculator(calculatorId);
-    console.log('Calculator config retrieved:', !!calculator);
 
     if (!calculator) {
       console.error('Calculator not found:', calculatorId);
@@ -147,12 +143,10 @@ const CalculatorUI = (() => {
       return;
     }
 
-    console.log('Calculator inputs:', Object.keys(calculator.inputs));
     let formHTML = '';
 
     // Special form for personal matrix calculator
     if (calculatorId === 'personalMatrix') {
-      console.log('Using personal matrix form');
       formHTML = `
         <div class="form-section-group">
           <h4 style="margin-bottom: 16px; color: var(--text); font-size: 0.95rem; font-weight: 600;">📅 Дата рождения</h4>
@@ -208,7 +202,6 @@ const CalculatorUI = (() => {
 
       const submitBtn = container.querySelector('.btn-primary');
       if (submitBtn) {
-        console.log('Attaching click handler to submit button (personalMatrix)');
         submitBtn.removeEventListener('click', handleFormSubmit);
         submitBtn.addEventListener('click', handleFormSubmit);
       }
@@ -217,7 +210,6 @@ const CalculatorUI = (() => {
 
     // Special compact form for compatibility calculator
     if (calculatorId === 'compatibility') {
-      console.log('Using compact form for compatibility calculator');
       formHTML = `
         <div class="form-section-group">
           <h4 style="margin-bottom: 16px; color: var(--text); font-size: 0.95rem; font-weight: 600;">Человек 1</h4>
@@ -267,11 +259,9 @@ const CalculatorUI = (() => {
 
       const submitBtn = container.querySelector('.btn-primary');
       if (submitBtn) {
-        console.log('Attaching click handler to submit button (compatibility)');
         submitBtn.removeEventListener('click', handleFormSubmit);
         submitBtn.addEventListener('click', handleFormSubmit);
         submitBtn.addEventListener('click', () => {
-          console.log('✓ Button click is firing');
         });
       }
       return;
@@ -351,15 +341,12 @@ const CalculatorUI = (() => {
 
     // Add click handler to submit button
     const submitBtn = container.querySelector('.btn-primary');
-    console.log('Submit button found:', !!submitBtn);
     if (submitBtn) {
-      console.log('Attaching click handler to submit button');
       submitBtn.removeEventListener('click', handleFormSubmit);
       submitBtn.addEventListener('click', handleFormSubmit);
 
       // Test that the listener was attached
       submitBtn.addEventListener('click', () => {
-        console.log('✓ Button click is firing');
       });
     } else {
       console.error('❌ Submit button not found');
@@ -370,12 +357,10 @@ const CalculatorUI = (() => {
    * Handle form submission
    */
   const handleFormSubmit = function(e) {
-    console.log('📝 Form submission triggered');
     e.preventDefault();
 
     // Find the form container
     const formContainer = e.target.closest('.calculator-form') || document.querySelector('.calculator-form');
-    console.log('Form container found:', !!formContainer);
 
     if (!formContainer) {
       console.error('❌ Form container not found');
@@ -384,36 +369,26 @@ const CalculatorUI = (() => {
 
     // Get all input fields
     const inputs = formContainer.querySelectorAll('input');
-    console.log('Input fields found:', inputs.length);
     const data = {};
 
     inputs.forEach(input => {
       data[input.name] = input.value;
-      console.log(`  - ${input.name}: "${input.value}"`);
     });
 
-    console.log('Collected data:', data);
 
     // Special handling for compatibility calculator (parse compact format)
     if (currentCalculatorId === 'compatibility') {
-      console.log('🔍 Parsing compact format for compatibility...');
-      console.log('Person 1 raw:', data.person1Data);
-      console.log('Person 2 raw:', data.person2Data);
 
       const person1Parsed = parseDateName(data.person1Data);
       const person2Parsed = parseDateName(data.person2Data);
 
-      console.log('Person 1 parsed:', person1Parsed);
-      console.log('Person 2 parsed:', person2Parsed);
 
       if (!person1Parsed) {
-        console.error('❌ Cannot parse person 1 data:', data.person1Data);
         showFieldError('person1Data', 'Неправильный формат. Используйте: 30.07.1982 Петров Иван Иванович');
         return;
       }
 
       if (!person2Parsed) {
-        console.error('❌ Cannot parse person 2 data:', data.person2Data);
         showFieldError('person2Data', 'Неправильный формат. Используйте: 15.03.1985 Иванова Анна Сергеевна');
         return;
       }
@@ -430,17 +405,14 @@ const CalculatorUI = (() => {
         person2Year: person2Parsed.year
       };
 
-      console.log('✓ Successfully parsed compatibility data:', newData);
 
       // Replace data object with parsed data
       Object.keys(data).forEach(key => delete data[key]);
       Object.assign(data, newData);
-      console.log('✓ Data object updated:', data);
     }
 
     // Validate
     const calculator = CalculatorRegistry.getCalculator(currentCalculatorId);
-    console.log('Calculator found:', !!calculator);
 
     if (!calculator) {
       console.error('Calculator not found:', currentCalculatorId);
@@ -449,12 +421,10 @@ const CalculatorUI = (() => {
     }
 
     const validation = CalculatorValidation.validateForm(data, calculator.inputs);
-    console.log('Validation result:', validation.valid, validation.errors);
 
     if (!validation.valid) {
       // Show errors
       for (const [fieldName, error] of Object.entries(validation.errors)) {
-        console.log(`Error on field ${fieldName}: ${error}`);
         showFieldError(fieldName, error);
       }
       return;
@@ -471,16 +441,9 @@ const CalculatorUI = (() => {
     });
 
     trackCalculator('calculator_start');
-    console.log('🧮 Executing calculation...');
-    console.log('Calculator ID:', currentCalculatorId);
-    console.log('Data to calculate:', data);
 
     // Execute calculation
     const result = CalculatorRegistry.executeCalculation(currentCalculatorId, data);
-    console.log('Calculation result:', result);
-    console.log('Result method:', result.method);
-    console.log('Result success:', result.success);
-    console.log('Result output:', result.output);
 
     if (!result.success) {
       console.error('Calculation failed:', result.error);
@@ -489,10 +452,8 @@ const CalculatorUI = (() => {
     }
 
     // Show result
-    console.log('✓ Calculation successful');
     lastResult = result;
     const resultArea = document.querySelector('.result-area');
-    console.log('Rendering result to:', resultArea);
     renderResult(resultArea, result);
     trackCalculator('calculator_complete');
 
@@ -542,8 +503,6 @@ const CalculatorUI = (() => {
    * Render personal matrix result (birth date + full name combined)
    */
   const renderPersonalMatrixResult = (container, result) => {
-    // Store for AI analysis
-    lastCalculationResult = result;
     const { destiny, personality, expression } = result.output;
     const { day, month, year, surname, name, patronymic } = result.inputs;
 
@@ -626,9 +585,6 @@ const CalculatorUI = (() => {
    * Render word code analysis result
    */
   const renderWordCodeResult = (container, result) => {
-    // Store for AI analysis
-    lastCalculationResult = result;
-
     const { primary, secondary, meaning } = result.output;
     const interp = INTERPRETATIONS_DB[secondary] || {};
 
@@ -694,12 +650,6 @@ const CalculatorUI = (() => {
    * Render compatibility result
    */
   const renderCompatibilityResult = (container, result) => {
-    // Store for AI analysis
-    lastCalculationResult = result;
-
-    console.log('🔗 renderCompatibilityResult called');
-    console.log('result.output:', result.output);
-
     const { person1, person2, compatibility, extendedAnalysis } = result.output;
     const { percent, level, description } = compatibility;
     const { matrixScores, unionType, energyBalance, favorableMonths, phases, lessons } = extendedAnalysis || {};
@@ -844,35 +794,25 @@ const CalculatorUI = (() => {
    * Render local interpretation with AI button
    */
   const renderLocalInterpretation = (container, result) => {
-    console.log('renderLocalInterpretation called');
-    console.log('result.method type:', typeof result.method);
-    console.log('result.method value:', result.method);
-    console.log('result.method === "personalMatrix":', result.method === 'personalMatrix');
-    console.log('result.method === "compatibility":', result.method === 'compatibility');
-    console.log('result.method === "wordCode":', result.method === 'wordCode');
 
     // Handle personal matrix results separately
     if (result.method === 'personalMatrix') {
-      console.log('👤 ✅ Rendering personal matrix result');
       renderPersonalMatrixResult(container, result);
       return;
     }
 
     // Handle compatibility results separately
     if (result.method === 'compatibility') {
-      console.log('🔗 ✅ Rendering compatibility result');
       renderCompatibilityResult(container, result);
       return;
     }
 
     // Handle word code analysis separately
     if (result.method === 'wordCode') {
-      console.log('📝 ✅ Rendering word code result');
       renderWordCodeResult(container, result);
       return;
     }
 
-    console.log('👤 Rendering standard interpretation for method:', result.method);
 
     const num = result.output.secondary;
     const interp = INTERPRETATIONS_DB[num] || {};
@@ -971,61 +911,35 @@ const CalculatorUI = (() => {
    */
   const loadInterpretations = async () => {
     try {
-      console.log('📚 Loading interpretations...');
       const response = await fetch('/assets/data/numerology-system.json');
       const data = await response.json();
       INTERPRETATIONS_DB = data.numberInterpretations.data;
-      console.log('✅ Interpretations loaded:', Object.keys(INTERPRETATIONS_DB).length, 'numbers');
     } catch (error) {
       console.error('❌ Error loading interpretations:', error);
     }
   };
 
-  // Store last calculation result for AI analysis
-  let lastCalculationResult = null;
-
   /**
    * Attach AI button handlers
    */
   const attachAIButtonHandlers = (container) => {
-    console.log('🔗 attachAIButtonHandlers called');
     const buttons = container.querySelectorAll('.btn-ai');
-    console.log('Found AI buttons:', buttons.length);
 
     buttons.forEach((button, index) => {
-      console.log(`Attaching handler to button ${index}:`, button.dataset);
       button.addEventListener('click', () => {
         const number = button.dataset.number;
         const type = button.dataset.type;
-        console.log('🖱️  AI button clicked for number:', number, 'type:', type);
         requestAIAnalysis(number, type);
       });
     });
   };
 
   /**
-   * Get current calculator data from form
-   */
-  const getCurrentCalculatorData = () => {
-    const formContainer = document.querySelector('.calculator-form');
-    if (!formContainer) return {};
-
-    const data = {};
-    const inputs = formContainer.querySelectorAll('input');
-    inputs.forEach(input => {
-      data[input.name] = input.value;
-    });
-    return data;
-  };
-
-  /**
    * Request AI analysis
    */
   const requestAIAnalysis = async (number, calculatorType) => {
-    console.log('🔄 requestAIAnalysis called:', { number, calculatorType });
 
     const button = document.querySelector(`[data-number="${number}"]`);
-    console.log('Button found:', button);
     if (!button) {
       console.error('Button not found for number:', number);
       return;
@@ -1038,9 +952,7 @@ const CalculatorUI = (() => {
       button.textContent = '⏳ Генерирую анализ... (5-10 сек)';
       button.style.opacity = '0.6';
 
-      console.log('📤 Sending API request...');
       const apiUrl = '/api/ai-interpretation';
-      console.log('API URL:', apiUrl);
 
       // Create timeout controller (30 second timeout)
       const controller = new AbortController();
@@ -1051,20 +963,6 @@ const CalculatorUI = (() => {
         number: parseInt(number),
         calculatorType: calculatorType || 'birthDate'
       };
-
-      // Add calculation trace for word code and other calculators
-      if (lastCalculationResult && lastCalculationResult.trace) {
-        payload.calculationTrace = lastCalculationResult.trace.join('\n');
-        console.log('✅ Added calculation trace:', payload.calculationTrace.substring(0, 100));
-      }
-
-      // For compatibility, add person names from stored data
-      if (calculatorType === 'compatibility') {
-        const data = getCurrentCalculatorData();
-        if (data.person1Name) payload.person1Name = data.person1Name;
-        if (data.person2Name) payload.person2Name = data.person2Name;
-        console.log('✅ Compatibility request with names:', payload);
-      }
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -1077,14 +975,12 @@ const CalculatorUI = (() => {
 
       clearTimeout(timeout);
 
-      console.log('📥 API response status:', response.status);
 
       if (!response.ok) {
         throw new Error(`API returned status ${response.status}: ${response.statusText}`);
       }
 
       const result = await response.json();
-      console.log('📋 API response:', result);
 
       if (!result.success) {
         console.warn('API returned success=false');
@@ -1097,7 +993,6 @@ const CalculatorUI = (() => {
       }
 
       // Показать AI анализ
-      console.log('✨ Displaying AI analysis...');
       displayAIAnalysis(result.analysis, result.cached);
       button.style.display = 'none';
 
@@ -1133,8 +1028,15 @@ const CalculatorUI = (() => {
     const aiSection = document.createElement('div');
     aiSection.className = 'ai-analysis-section';
 
-    // Parse markdown to HTML (proper implementation)
-    const lines = analysis.text.split('\n');
+    // Текст внешней модели недоверенный: сначала экранируем HTML, затем
+    // поддерживаем только ограниченную markdown-разметку заголовков и bold.
+    const escapeHTML = (value) => String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+    const lines = String(analysis?.text || '').split('\n').map(escapeHTML);
     let htmlParts = [];
     let inList = false;
 
