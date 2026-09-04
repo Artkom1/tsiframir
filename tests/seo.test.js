@@ -100,3 +100,13 @@ test('archive speaker rendering is limited to confirmed names and local photos',
   assert.match(renderer, /speaker\.photo/);
   assert.doesNotMatch(renderer, /speaker\.(?:bio|role|details|url)/);
 });
+
+test('interest forms fail closed to POST when client JavaScript is unavailable', () => {
+  for (const relativePath of ['index.html', 'forums/index.html', 'forums/2026-saint-petersburg/index.html']) {
+    const html = read(relativePath);
+    const forms = [...html.matchAll(/<form\b[^>]*data-interest-form[^>]*>/gi)];
+    assert.equal(forms.length, 1, `${relativePath}: interest form count`);
+    assert.match(forms[0][0], /\bmethod="post"/i, `${relativePath}: must not degrade to GET`);
+    assert.match(forms[0][0], /\baction="\/api\/forum-interest"/i, `${relativePath}: server endpoint`);
+  }
+});
