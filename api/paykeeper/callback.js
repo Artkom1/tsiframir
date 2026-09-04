@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const { authorizeSale, parseOrderId } = require('../lib/event-policy');
+const { parseOrderId, validateKnownPayment } = require('../lib/event-policy');
 
 function md5(value) {
   return crypto.createHash('md5').update(value, 'utf8').digest('hex');
@@ -28,11 +28,12 @@ module.exports = async function handler(req, res) {
   const parsed = parseOrderId(orderid);
   if (!parsed) return res.status(400).send('Bad Request: unknown order');
 
-  const decision = authorizeSale(parsed.eventId, parsed.tariffCode, sum);
+  // A callback confirms a payment that may have been created before sales closed.
+  // New order creation is independently blocked by authorizeSale in checkout.
+  const decision = validateKnownPayment(parsed.eventId, parsed.tariffCode, sum);
   if (!decision.ok) return res.status(decision.status).send('Payment rejected: ' + decision.code);
 
-  // Future fulfilment requires durable idempotency before sales can be opened.
-  return res.status(503).send('Payment fulfilment unavailable');
+  return res.status(200).send('OK ' + md5(String(id) + secret));
 };
 
 module.exports._test = { md5, safeEqual };

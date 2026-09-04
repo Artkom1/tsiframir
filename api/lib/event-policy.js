@@ -35,6 +35,17 @@ function authorizeSale(eventId, tariffCode, amount) {
   return { ok: true, status: 200, event, tariff };
 }
 
+function validateKnownPayment(eventId, tariffCode, amount) {
+  const event = getEvent(eventId);
+  if (!event) return { ok: false, status: 404, code: 'unknown_event' };
+  const tariff = getTariff(event, tariffCode);
+  if (!tariff) return { ok: false, status: 404, code: 'unknown_tariff' };
+  if (!Number.isFinite(Number(amount)) || Number(amount) !== tariff.amount) {
+    return { ok: false, status: 400, code: 'amount_mismatch' };
+  }
+  return { ok: true, status: 200, event, tariff };
+}
+
 function parseOrderId(orderId) {
   const current = /^TSIFRAMIR-([A-Z0-9]+)-([A-Z0-9_]+)-\d{8}-[0-9a-f]{6}$/i.exec(String(orderId || ''));
   if (current) {
@@ -45,4 +56,4 @@ function parseOrderId(orderId) {
   return legacy ? { eventId: 'forum-2026-saint-petersburg', tariffCode: legacy[1].toUpperCase() } : null;
 }
 
-module.exports = { authorizeSale, getEvent, getPublicEvents, getTariff, parseOrderId };
+module.exports = { authorizeSale, getEvent, getPublicEvents, getTariff, parseOrderId, validateKnownPayment };

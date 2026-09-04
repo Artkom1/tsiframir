@@ -103,6 +103,22 @@ test('mobile menu remains usable in landscape and releases its scroll lock on re
   await expect(page.locator('body')).not.toHaveClass(/menu-open/);
 });
 
+test('Escape does not steal focus while the menu is closed', async ({ page }) => {
+  await page.goto('/forums/');
+  const email = page.locator('#interest-email');
+  await email.focus();
+  await page.keyboard.press('Escape');
+  await expect(email).toBeFocused();
+});
+
+test('forum dates stay on Moscow calendar dates in other browser time zones', async ({ browser }) => {
+  const context = await browser.newContext({ timezoneId: 'Pacific/Honolulu' });
+  const page = await context.newPage();
+  await page.goto('/forums/');
+  await expect(page.locator('[data-past-events]')).toContainText(/13.*14 июня 2026/);
+  await context.close();
+});
+
 test('interest form reports success and emits no personal analytics data', async ({ page }) => {
   await page.route('**/api/forum-interest', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }));
   await page.goto('/forums/');

@@ -58,14 +58,31 @@ test('old browser config no longer discloses PayKeeper URL', async () => {
   assert.equal('serverUrl' in res.body, false);
 });
 
-test('signed callback for the past event is rejected', async () => {
+test('signed callback preserves acknowledgement for a known historical order', async () => {
   const previous = process.env.PAYKEEPER_SECRET;
   process.env.PAYKEEPER_SECRET = 'test-only-secret';
   const body = { id: '42', sum: '5000', clientid: 'test@example.invalid', orderid: 'TSIFRAMIR-VIP-20260613-abcdef' };
   body.key = crypto.createHash('md5').update(body.id + body.sum + body.clientid + body.orderid + process.env.PAYKEEPER_SECRET).digest('hex');
+  const acknowledgement = 'OK ' + crypto.createHash('md5').update(body.id + process.env.PAYKEEPER_SECRET).digest('hex');
   const res = response();
   await callback({ method: 'POST', body }, res);
   if (previous === undefined) delete process.env.PAYKEEPER_SECRET; else process.env.PAYKEEPER_SECRET = previous;
-  assert.equal(res.statusCode, 410);
-  assert.match(res.body, /event_sales_closed/);
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body, acknowledgement);
+});
+
+test('signed callback rejects unknown tariffs and amount changes', async () => {
+  const previous = process.env.PAYKEEPER_SECRET;
+  process.env.PAYKEEPER_SECRET = 'test-only-secret';
+  for (const values of [
+    { sum: '1', orderid: 'TSIFRAMIR-VIP-20260613-abcdef' },
+    { sum: '5000', orderid: 'TSIFRAMIR-NOT_A_TARIFF-20260613-abcdef' }
+  ]) {
+    const body = { id: '43', clientid: 'test@example.invalid', ...values };
+    body.key = crypto.createHash('md5').update(body.id + body.sum + body.clientid + body.orderid + process.env.PAYKEEPER_SECRET).digest('hex');
+    const res = response();
+    await callback({ method: 'POST', body }, res);
+    assert.notEqual(res.statusCode, 200);
+  }
+  if (previous === undefined) delete process.env.PAYKEEPER_SECRET; else process.env.PAYKEEPER_SECRET = previous;
 });

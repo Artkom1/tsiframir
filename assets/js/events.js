@@ -26,7 +26,7 @@ export function formatEventDates(event) {
   const start = new Date(event.startDate);
   const end = new Date(event.endDate);
   const formatter = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Moscow' });
-  if (start.toDateString() === end.toDateString()) return formatter.format(start);
-  const sameMonth = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
-  return sameMonth ? `${start.getDate()}–${formatter.format(end)}` : `${formatter.format(start)} — ${formatter.format(end)}`;
+  return typeof formatter.formatRange === 'function'
+    ? formatter.formatRange(start, end)
+    : `${formatter.format(start)} — ${formatter.format(end)}`;
 }

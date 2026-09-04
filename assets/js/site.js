@@ -12,7 +12,12 @@ function setMenu(open) {
 }
 menuButton?.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
 menu?.addEventListener('click', (event) => { if (event.target.closest('a')) setMenu(false); });
-document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { setMenu(false); menuButton?.focus(); } });
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') {
+    setMenu(false);
+    menuButton.focus();
+  }
+});
 const mobileMenuQuery = window.matchMedia('(max-width: 980px)');
 mobileMenuQuery.addEventListener?.('change', (event) => { if (!event.matches) setMenu(false); });
 

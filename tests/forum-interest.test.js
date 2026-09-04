@@ -15,8 +15,12 @@ function response() {
   };
 }
 
-function request(body, method = 'POST') {
-  return { method, headers: { 'content-length': String(Buffer.byteLength(JSON.stringify(body))) }, body };
+function request(body, method = 'POST', headers = {}) {
+  return {
+    method,
+    headers: { 'content-length': String(Buffer.byteLength(JSON.stringify(body))), ...headers },
+    body
+  };
 }
 
 function validBody(overrides = {}) {
@@ -68,11 +72,48 @@ test('interest endpoint delivers validated data through server-only HTTPS config
     assert.equal(res.statusCode, 200);
     assert.deepEqual(res.payload, { ok: true });
     assert.equal(delivery.url, 'https://leads.example.invalid/forum');
+    assert.ok(delivery.options.signal instanceof AbortSignal);
     const payload = JSON.parse(delivery.options.body);
     assert.deepEqual(payload, {
       source: 'tsiframir.ru', topic: 'next_forum', email: 'reader@example.invalid', name: 'Читатель', consent: true
     });
   } finally {
+    global.fetch = previousFetch;
+    if (previousUrl === undefined) delete process.env.FORUM_INTEREST_WEBHOOK_URL;
+    else process.env.FORUM_INTEREST_WEBHOOK_URL = previousUrl;
+  }
+});
+
+test('interest endpoint deduplicates delivery and rate limits repeated clients', async () => {
+  const previousUrl = process.env.FORUM_INTEREST_WEBHOOK_URL;
+  const previousFetch = global.fetch;
+  const { requestWindows, recentDeliveries } = handler._test;
+  requestWindows.clear();
+  recentDeliveries.clear();
+  process.env.FORUM_INTEREST_WEBHOOK_URL = 'https://leads.example.invalid/forum';
+  let deliveries = 0;
+  global.fetch = async () => { deliveries += 1; return { ok: true }; };
+  try {
+    const headers = { 'x-vercel-forwarded-for': '203.0.113.10' };
+    let res = response();
+    await handler(request(validBody(), 'POST', headers), res);
+    assert.equal(res.statusCode, 200);
+    res = response();
+    await handler(request(validBody(), 'POST', headers), res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(deliveries, 1);
+
+    for (let index = 0; index < 6; index += 1) {
+      res = response();
+      await handler(request(validBody({ email: `reader-${index}@example.invalid` }), 'POST', {
+        'x-vercel-forwarded-for': '203.0.113.11'
+      }), res);
+      assert.equal(res.statusCode, index < 5 ? 200 : 429);
+    }
+    assert.equal(deliveries, 6);
+  } finally {
+    requestWindows.clear();
+    recentDeliveries.clear();
     global.fetch = previousFetch;
     if (previousUrl === undefined) delete process.env.FORUM_INTEREST_WEBHOOK_URL;
     else process.env.FORUM_INTEREST_WEBHOOK_URL = previousUrl;
