@@ -1,0 +1,59 @@
+{
+  "$schema": "https://tsiframir.ru/assets/data/events.schema.json",
+  "events": [
+    {
+      "id": "forum-2026-saint-petersburg",
+      "paymentCode": "2026SPB",
+      "slug": "2026-saint-petersburg",
+      "title": "I Международный форум ЦифраМир — Санкт-Петербург, 13–14 июня 2026 года",
+      "edition": "I Международный форум ЦифраМир",
+      "startDate": "2026-06-13T10:00:00+03:00",
+      "endDate": "2026-06-14T14:30:00+03:00",
+      "status": "past",
+      "city": "Санкт-Петербург",
+      "venue": "Гостиница «Нептун», набережная Обводного канала, 93А",
+      "heroImage": "/img/banner.webp",
+      "description": "Архив первого международного форума «ЦифраМир», прошедшего в Санкт-Петербурге 13–14 июня 2026 года.",
+      "speakers": [
+        "kuznetsov", "afgan", "vkuznetsov", "vinogrodsky", "krylov", "but",
+        "zakharevich", "chechetkin", "baykovsky", "kobzev", "vaysman",
+        "bozhevikova", "boyarchuk", "shostko", "kudryavtseva", "yurieva",
+        "molodetsky", "dzhanyshbekova", "titorenko", "zhuro", "tsareva",
+        "sunchugasheva", "samedova", "potapova", "betretdinov"
+      ],
+      "schedule": [
+        { "date": "2026-06-13", "label": "День первый — 13 июня 2026", "items": [
+          { "time": "10:00", "title": "Регистрация участников" },
+          { "time": "10:30", "title": "Торжественное открытие форума" },
+          { "time": "11:00", "title": "Пленарные доклады и мастер-классы" },
+          { "time": "13:00", "title": "Обеденный перерыв" },
+          { "time": "14:00", "title": "Продолжение программы форума" },
+          { "time": "17:00", "title": "Торжественное закрытие форума" }
+        ] },
+        { "date": "2026-06-14", "label": "День второй — 14 июня 2026", "items": [
+          { "time": "10:00", "title": "Отправление автобуса" },
+          { "time": "10:15–13:00", "title": "Экскурсия по местам силы Петербурга" },
+          { "time": "13:00–14:30", "title": "Трапеза в Александро-Невской лавре" },
+          { "time": "14:30", "title": "Завершение маршрута" }
+        ] }
+      ],
+      "tariffs": [
+        { "code": "STANDARD_SEMINAR", "name": "Стандарт", "amount": 1800, "enabled": false },
+        { "code": "VIP_SEMINAR", "name": "VIP", "amount": 5000, "enabled": false },
+        { "code": "POWER_PLACES", "name": "Места силы", "amount": 5000, "enabled": false },
+        { "code": "PACKAGE_STD_PLUS_POWER", "name": "Стандарт + места силы", "amount": 6800, "enabled": false },
+        { "code": "PACKAGE_VIP_PLUS_POWER", "name": "VIP + места силы", "amount": 10000, "enabled": false },
+        { "code": "SPEAKER_10", "name": "Выступление 10 минут", "amount": 5000, "enabled": false },
+        { "code": "SPEAKER_15", "name": "Выступление 15 минут", "amount": 7000, "enabled": false },
+        { "code": "SPEAKER_20", "name": "Выступление 20 минут", "amount": 10000, "enabled": false },
+        { "code": "SPEAKER_30", "name": "Выступление 30 минут", "amount": 13000, "enabled": false },
+        { "code": "STD", "name": "Устаревший тариф Standard", "amount": 1800, "enabled": false },
+        { "code": "VIP", "name": "Устаревший тариф VIP", "amount": 5000, "enabled": false },
+        { "code": "EXC", "name": "Устаревший тариф Excursion", "amount": 5000, "enabled": false }
+      ],
+      "salesOpen": false,
+      "registrationUrl": null,
+      "recap": { "status": "preparing", "summary": "Материалы форума готовятся.", "media": [] }
+    }
+  ]
+}
