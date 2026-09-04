@@ -81,3 +81,22 @@ test('known broken logo path is absent from public sources', () => {
     assert.doesNotMatch(read(relativePath), /HorizontalLogos\.png/i, relativePath);
   }
 });
+
+test('public pages do not present unverified media, scarcity or testimonials', () => {
+  const publicHtml = [...pages.keys()].map(read).join('\n');
+  assert.doesNotMatch(publicHtml, /youtube\.com\/results|остал(?:ось|ись)\s+только\s+\d+|\d+\s+из\s+\d+\s+мест/i);
+  assert.doesNotMatch(publicHtml, /class="[^"]*(?:testimonial|review)[^"]*"/i);
+
+  const eventData = JSON.parse(read('assets/data/events.json'));
+  const archive = eventData.events.find((event) => event.id === 'forum-2026-saint-petersburg');
+  assert.ok(archive, 'archived forum is missing');
+  assert.equal(archive.recap.status, 'preparing');
+  assert.deepEqual(archive.recap.media, []);
+});
+
+test('archive speaker rendering is limited to confirmed names and local photos', () => {
+  const renderer = read('assets/js/archive.js');
+  assert.match(renderer, /speaker\.name/);
+  assert.match(renderer, /speaker\.photo/);
+  assert.doesNotMatch(renderer, /speaker\.(?:bio|role|details|url)/);
+});
