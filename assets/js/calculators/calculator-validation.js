@@ -114,6 +114,7 @@ const CalculatorValidation = (() => {
     word: (value) => {
       if (!value || value.trim() === '') return 'Введите слово или код';
       if (value.trim().length < 2) return 'Слово слишком короткое';
+      if (!/^[А-Яа-яЁёA-Za-z0-9\s-]+$/.test(value)) return 'Используйте только буквы, цифры, пробелы и дефис';
       return null;
     },
 
