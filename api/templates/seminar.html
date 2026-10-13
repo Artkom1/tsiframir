@@ -66,6 +66,7 @@
       <fieldset data-registration-fields {{FORM_DISABLED}}><legend class="sr-only">Данные участника</legend>
         <div class="field"><label for="participant-name">Имя</label><input id="participant-name" name="name" autocomplete="name" minlength="2" maxlength="100" required aria-describedby="checkout-status"></div>
         <div class="field"><label for="participant-email">Email</label><input id="participant-email" name="email" type="email" autocomplete="email" maxlength="160" required aria-describedby="checkout-status"></div>
+        <div class="field"><label for="participant-phone">Телефон (необязательно)</label><input id="participant-phone" name="phone" type="tel" autocomplete="tel" maxlength="20" aria-describedby="checkout-status"></div>
         <label class="consent"><input type="checkbox" name="consent" required><span>Согласен(а) на обработку данных по <a href="/privacy.html">политике конфиденциальности</a> и принимаю <a href="/offer.html#seminar-nizhny">условия участия</a>.</span></label>
       </fieldset>
       <button class="button" type="submit" data-checkout {{FORM_DISABLED}}>{{PAY_BUTTON}}</button>

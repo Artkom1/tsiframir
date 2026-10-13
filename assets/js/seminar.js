@@ -53,7 +53,7 @@ function unavailable() {
 }
 
 function submitPayment(result, amount) {
-  const names = ['sum', 'clientid', 'orderid', 'service_name', 'client_email', 'client_phone', 'expiry', 'sign'];
+  const names = ['sum', 'clientid', 'orderid', 'service_name', 'client_email', 'client_phone', 'expiry', 'sign', 'cart'];
   if (result.method !== 'POST' || result.action !== 'https://tsiframir.server.paykeeper.ru/create/' ||
       result.amount !== amount || result.eventId !== current.eventId || !result.fields ||
       Object.keys(result.fields).length !== names.length ||
@@ -106,7 +106,8 @@ form.addEventListener('submit', async event => {
     const response = await fetch('/api/seminar-checkout', {
       method: 'POST', cache: 'no-store', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ eventId: latest.eventId, name: form.elements.name.value,
-        email: form.elements.email.value, consent: form.elements.consent.checked, expectedAmount: displayedAmount })
+        email: form.elements.email.value, phone: form.elements.phone.value,
+        consent: form.elements.consent.checked, expectedAmount: displayedAmount })
     });
     const result = await response.json();
     if (response.status === 409 && result.error === 'price_changed') {
@@ -115,7 +116,7 @@ form.addEventListener('submit', async event => {
     }
     if (!response.ok || !result.ok) {
       message(response.status === 410 ? 'Онлайн-продажи закрыты.' : response.status === 400 ?
-        'Проверьте имя, email и согласие с условиями.' : 'Оплата сейчас недоступна. Заказ не подтверждён. Свяжитесь с организатором.', true);
+        'Проверьте данные участника и согласие с условиями.' : 'Оплата сейчас недоступна. Заказ не подтверждён. Свяжитесь с организатором.', true);
       return;
     }
     submitPayment(result, displayedAmount);

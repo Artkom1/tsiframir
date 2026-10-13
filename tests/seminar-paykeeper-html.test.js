@@ -30,7 +30,8 @@ test('native payload uses server tariff, unique event order, fixed merchant and 
     assert.equal(result.fields.sign, signFields(result.fields, config.secret));
     assert.match(result.orderId, /^TSMNN-20261101-[A-Z_]+-[a-f0-9-]{36}$/);
     assert.match(result.fields.service_name, /01\.11\.2026.*12:00–18:00.*Советская, 12.*1 участник/);
-    assert.equal(result.fields.cart, undefined); assert.equal(result.fields.user_result_callback, undefined);
+    assert.deepEqual(JSON.parse(result.fields.cart), [{ name: 'Участие в семинаре «Число π и система ЦифраМир», 01.11.2026, 1 человек', price: amount, quantity: 1, sum: amount, tax: 'none' }]);
+    assert.equal(result.fields.client_phone, ''); assert.equal(result.fields.user_result_callback, undefined);
     assert.doesNotMatch(JSON.stringify(result), /unit-test-secret/);
     assert.notEqual(prepareHtmlPayment(form(amount), config, Date.parse(time)).orderId, result.orderId);
   }
@@ -39,13 +40,25 @@ test('native payload uses server tariff, unique event order, fixed merchant and 
 test('native builder refuses stale consent, client order/amount changes, closed sales and another merchant', () => {
   const now = Date.parse('2026-10-26T00:00:00+03:00');
   assert.equal(prepareHtmlPayment(form(1600), config, now).status, 409);
-  for (const extra of [{ sum: 1 }, { amount: 1 }, { expiry: '2099-01-01' }, { orderid: 'forged' }, { tariffCode: 'EARLY' }]) {
+  for (const extra of [{ sum: 1 }, { amount: 1 }, { expiry: '2099-01-01' }, { orderid: 'forged' }, { tariffCode: 'EARLY' }, { cart: '[]' }]) {
     assert.equal(prepareHtmlPayment({ ...form(1800), ...extra }, config, now).status, 400);
   }
   assert.equal(prepareHtmlPayment(form(2000), config, Date.parse('2026-11-01T18:00:00+03:00')).status, 410);
   for (const serverUrl of ['example.paykeeper.ru', 'http://tsiframir.server.paykeeper.ru', 'https://tsiframir.server.paykeeper.ru@evil.invalid', 'https://tsiframir.server.paykeeper.ru/create/', 'https://tsiframir.server.paykeeper.ru/?x=1']) {
     assert.throws(() => prepareHtmlPayment(form(1800), { ...config, serverUrl }, now));
   }
+});
+
+test('existing optional phone is bounded, validated and covered by the provider signature', () => {
+  const now = Date.parse('2026-10-25T12:00:00+03:00');
+  const result = prepareHtmlPayment({ ...form(1600), phone: ' +0 (000) 000-00-00 ' }, config, now);
+  assert.equal(result.fields.client_phone, '+0 (000) 000-00-00');
+  assert.equal(result.fields.sign, signFields(result.fields, config.secret));
+  assert.notEqual(result.fields.sign, signFields({ ...result.fields, client_phone: '' }, config.secret));
+  for (const phone of [null, 123, 'x', '+', '1'.repeat(21), '<script>', '123\n456']) {
+    assert.equal(prepareHtmlPayment({ ...form(1600), phone }, config, now).status, 400);
+  }
+  assert.equal(prepareHtmlPayment({ ...form(1600), phone: '' }, config, now).ok, true);
 });
 
 test('merchant expiry requires an explicit account zone, independent of event and runtime zones', () => {

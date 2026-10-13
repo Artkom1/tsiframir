@@ -44,12 +44,17 @@ function prepareHtmlPayment(body, config, now = Date.now()) {
   const orderId = `TSMNN-20261101-${q.tariffCode.toUpperCase()}-${crypto.randomUUID()}`;
   const fields = {
     sum: q.amount.toFixed(2), clientid: decision.contact.name, orderid: orderId,
-    service_name: SERVICE, client_email: decision.contact.email, client_phone: '',
+    service_name: SERVICE, client_email: decision.contact.email, client_phone: decision.contact.phone,
     expiry: expiryInMerchantZone(q.expiresAt, config.providerTimeZone)
   };
   fields.sign = signFields(fields, config.secret);
-  // No unsigned cart/return override: keep the existing merchant's verified
-  // receipt/return settings. The provider owns its payment confirmation/ledger.
+  // Preserve the old merchant form's cart contract, with server-owned amounts.
+  // tax:none is the historical configuration, NOT newly verified fiscal advice.
+  // Native SHA-256 does not cover cart: provider fiscal validation and suitability
+  // must be verified before opening the hard-off runtime gate.
+  fields.cart = JSON.stringify([{ name: 'Участие в семинаре «Число π и система ЦифраМир», 01.11.2026, 1 человек',
+    price: q.amount, quantity: 1, sum: q.amount, tax: 'none' }]);
+  // Do not add an unsigned return override; use the existing merchant settings.
   // These contact fields must travel via POST, never a URL or application log.
   return { ok: true, method: 'POST', action: origin + '/create/', fields,
     orderId, eventId: q.eventId, tariffCode: q.tariffCode, amount: q.amount,

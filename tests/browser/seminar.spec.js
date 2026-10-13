@@ -85,10 +85,13 @@ test('a visible tab refreshes upcoming to live at noon from server timestamps', 
 test('native checkout sends signed fields by POST only to the existing merchant', async ({ page }) => {
   const { prepareHtmlPayment } = require('../../api/lib/seminar-paykeeper-html');
   const now = Date.parse('2026-10-25T23:55:00+03:00');
-  const body = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', consent: true, expectedAmount: 1600 };
+  const body = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', phone: '+0 (000) 000-00-00', consent: true, expectedAmount: 1600 };
   const payload = prepareHtmlPayment(body, { serverUrl: 'tsiframir.server.paykeeper.ru', secret: 'test-only', providerTimeZone: 'Europe/Moscow' }, now);
   await page.route('**/api/seminar-quote', route => route.fulfill({ json: { ...quote(now), paymentAvailable: true } }));
-  await page.route('**/api/seminar-checkout', route => route.fulfill({ json: payload }));
+  await page.route('**/api/seminar-checkout', route => {
+    expect(route.request().postDataJSON()).toEqual(body);
+    return route.fulfill({ json: payload });
+  });
   let posted;
   await page.route('https://tsiframir.server.paykeeper.ru/**', route => {
     posted = { method: route.request().method(), url: route.request().url(), fields: Object.fromEntries(new URLSearchParams(route.request().postData())) };
@@ -96,9 +99,11 @@ test('native checkout sends signed fields by POST only to the existing merchant'
   });
   await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
   await page.getByLabel('Имя', { exact: true }).fill(body.name); await page.getByLabel('Email', { exact: true }).fill(body.email); await page.locator('[name=consent]').check();
+  await page.getByLabel('Телефон (необязательно)', { exact: true }).fill(body.phone);
   await page.locator('[data-checkout]').click(); await page.waitForURL(payload.action);
   expect(posted.method).toBe('POST'); expect(posted.url).toBe(payload.action); expect(posted.fields).toEqual(payload.fields);
-  expect(posted.url).not.toMatch(/name=|email=|test@/);
+  expect(posted.url).not.toMatch(/name=|email=|test@|phone=|000-00/);
+  expect(JSON.parse(posted.fields.cart)[0]).toMatchObject({ quantity: 1, price: 1600, sum: 1600, tax: 'none' });
 });
 
 test('native checkout refuses a substituted merchant URL', async ({ page }) => {
