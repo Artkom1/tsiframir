@@ -16,6 +16,11 @@
       "required": ["id", "slug", "title", "edition", "startDate", "endDate", "status", "city", "venue", "heroImage", "description", "speakers", "schedule", "tariffs", "salesOpen", "registrationUrl", "recap"],
       "properties": {
         "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "type": { "enum": ["forum", "seminar", "meeting"] },
+        "timeZone": { "const": "Europe/Moscow" },
+        "salesClose": { "type": "string", "format": "date-time" },
+        "schedulePreliminary": { "type": "boolean" },
+        "speakerImage": { "type": ["string", "null"] },
         "paymentCode": { "type": "string", "pattern": "^[A-Z0-9]+$" },
         "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
         "title": { "type": "string", "minLength": 1 },
@@ -48,7 +53,7 @@
     },
     "tariff": {
       "type": "object", "additionalProperties": false, "required": ["code", "name", "amount", "enabled"],
-      "properties": { "code": { "type": "string", "pattern": "^[A-Z0-9_]+$" }, "name": { "type": "string", "minLength": 1 }, "amount": { "type": "number", "exclusiveMinimum": 0 }, "enabled": { "type": "boolean" } }
+      "properties": { "code": { "type": "string", "pattern": "^[A-Z0-9_]+$" }, "name": { "type": "string", "minLength": 1 }, "amount": { "type": "number", "exclusiveMinimum": 0 }, "enabled": { "type": "boolean" }, "validFrom": {"type": "string", "format": "date-time"}, "validUntil": {"type": "string", "format": "date-time"} }
     },
     "recap": {
       "type": "object", "additionalProperties": false, "required": ["status", "summary", "media"],

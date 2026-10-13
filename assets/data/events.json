@@ -2,6 +2,43 @@
   "$schema": "https://tsiframir.ru/assets/data/events.schema.json",
   "events": [
     {
+      "id": "seminar-2026-nizhny-novgorod",
+      "type": "seminar",
+      "slug": "2026-nizhny-novgorod",
+      "title": "Число π и система ЦифраМир",
+      "edition": "Число π и система ЦифраМир",
+      "startDate": "2026-11-01T12:00:00+03:00",
+      "endDate": "2026-11-01T18:00:00+03:00",
+      "salesClose": "2026-11-01T18:00:00+03:00",
+      "timeZone": "Europe/Moscow",
+      "status": "upcoming",
+      "city": "Нижний Новгород",
+      "venue": "Маринс Парк Отель, ул. Советская, 12",
+      "heroImage": "/img/seminar-nizhny-2026.svg",
+      "speakerImage": "/img/speakers/kuznetsov.webp",
+      "description": "Очный семинар Сергея Николаевича Кузнецова. Авторский взгляд на число π, цифровые закономерности и личный рост.",
+      "speakers": ["kuznetsov"],
+      "schedulePreliminary": true,
+      "schedule": [{"date": "2026-11-01", "label": "1 ноября · 12:00–18:00 по Москве", "items": [
+        {"time": "12:00–12:15", "title": "Приветствие и знакомство с программой"},
+        {"time": "12:15–13:30", "title": "Число π и основы авторской системы «ЦифраМир»"},
+        {"time": "13:30–14:00", "title": "Кофе-брейк"},
+        {"time": "14:00–15:15", "title": "Цифровые закономерности и личный рост: авторский подход"},
+        {"time": "15:15–15:45", "title": "Перерыв"},
+        {"time": "15:45–17:00", "title": "Авторские примеры, обсуждение и разбор вопросов"},
+        {"time": "17:00–17:15", "title": "Перерыв"},
+        {"time": "17:15–18:00", "title": "Вопросы Сергею Кузнецову и итоги"}
+      ]}],
+      "tariffs": [
+        {"code": "EARLY", "name": "До 25 октября включительно", "amount": 1600, "enabled": true, "validUntil": "2026-10-26T00:00:00+03:00"},
+        {"code": "STANDARD", "name": "26–31 октября", "amount": 1800, "enabled": true, "validFrom": "2026-10-26T00:00:00+03:00", "validUntil": "2026-11-01T00:00:00+03:00"},
+        {"code": "EVENT_DAY", "name": "1 ноября, до 18:00", "amount": 2000, "enabled": true, "validFrom": "2026-11-01T00:00:00+03:00", "validUntil": "2026-11-01T18:00:00+03:00"}
+      ],
+      "salesOpen": true,
+      "registrationUrl": "/forums/2026-nizhny-novgorod/#registration",
+      "recap": {"status": "none", "summary": "", "media": []}
+    },
+    {
       "id": "forum-2026-saint-petersburg",
       "paymentCode": "2026SPB",
       "slug": "2026-saint-petersburg",

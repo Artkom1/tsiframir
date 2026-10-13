@@ -34,7 +34,7 @@ test('unknown event and malformed orders fail closed', () => {
 test('only supported public event states leave the shared server model', () => {
   const events = getPublicEvents();
   assert.equal(events.some((event) => event.status === 'draft'), false);
-  assert.deepEqual(events.map((event) => event.id), ['forum-2026-saint-petersburg']);
+  assert.deepEqual(events.map((event) => event.id), ['seminar-2026-nizhny-novgorod', 'forum-2026-saint-petersburg']);
 });
 
 test('legacy orders map to the archived event', () => {

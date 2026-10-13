@@ -24,6 +24,9 @@ function getTariff(event, tariffCode) {
 function authorizeSale(eventId, tariffCode, amount) {
   const event = getEvent(eventId);
   if (!event) return { ok: false, status: 404, code: 'unknown_event' };
+  // Timed seminars use their own server quote/checkout. Historical endpoints
+  // must never allow callers to select a cheaper scheduled tariff.
+  if (event.type === 'seminar') return { ok: false, status: 409, code: 'use_event_checkout' };
   if (!PUBLIC_STATUSES.has(event.status) || !SALE_STATUSES.has(event.status) || event.salesOpen !== true) {
     return { ok: false, status: 410, code: 'event_sales_closed' };
   }
