@@ -82,39 +82,70 @@ test('a visible tab refreshes upcoming to live at noon from server timestamps', 
   await expect(page.locator('[data-checkout]')).toBeEnabled();
 });
 
-test('native checkout sends signed fields by POST only to the existing merchant', async ({ page }) => {
-  const { prepareHtmlPayment } = require('../../api/lib/seminar-paykeeper-html');
-  const now = Date.parse('2026-10-25T23:55:00+03:00');
-  const body = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', phone: '+0 (000) 000-00-00', consent: true, expectedAmount: 1600 };
-  const payload = prepareHtmlPayment(body, { serverUrl: 'tsiframir.server.paykeeper.ru', secret: 'test-only', providerTimeZone: 'Europe/Moscow' }, now);
-  await page.route('**/api/seminar-quote', route => route.fulfill({ json: { ...quote(now), paymentAvailable: true } }));
+const receiptToken = 'eyJ0ZXN0Ijp0cnVlfQ.' + 'A'.repeat(43);
+const invoiceUrl = 'https://tsiframir.server.paykeeper.ru/bill/20261013205736625';
+const invoicePayload = { ok: true, invoiceUrl, statusToken: receiptToken, amount: 1600, quantity: 1 };
+const registration = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', phone: '', consent: true, expectedAmount: 1600 };
+
+async function fillRegistration(page) {
+  await page.getByLabel('Имя', { exact: true }).fill(registration.name);
+  await page.getByLabel('Email', { exact: true }).fill(registration.email);
+  await page.locator('[name=consent]').check();
+}
+
+test('API checkout navigates only to existing merchant invoice without editable fields or contacts', async ({ page }) => {
+  await page.route('**/api/seminar-quote', route => route.fulfill({ json: at('2026-10-25T23:55:00+03:00') }));
   await page.route('**/api/seminar-checkout', route => {
-    expect(route.request().postDataJSON()).toEqual(body);
-    return route.fulfill({ json: payload });
+    expect(route.request().postDataJSON()).toEqual(registration);
+    return route.fulfill({ json: invoicePayload });
   });
-  let posted;
+  let request;
   await page.route('https://tsiframir.server.paykeeper.ru/**', route => {
-    posted = { method: route.request().method(), url: route.request().url(), fields: Object.fromEntries(new URLSearchParams(route.request().postData())) };
+    request = { method: route.request().method(), url: route.request().url(), body: route.request().postData() };
     return route.fulfill({ contentType: 'text/html', body: '<title>Provider test double</title>' });
   });
   await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
-  await page.getByLabel('Имя', { exact: true }).fill(body.name); await page.getByLabel('Email', { exact: true }).fill(body.email); await page.locator('[name=consent]').check();
-  await page.getByLabel('Телефон (необязательно)', { exact: true }).fill(body.phone);
-  await page.locator('[data-checkout]').click(); await page.waitForURL(payload.action);
-  expect(posted.method).toBe('POST'); expect(posted.url).toBe(payload.action); expect(posted.fields).toEqual(payload.fields);
-  expect(posted.url).not.toMatch(/name=|email=|test@|phone=|000-00/);
-  expect(JSON.parse(posted.fields.cart)[0]).toMatchObject({ quantity: 1, price: 1600, sum: 1600, tax: 'none' });
+  await fillRegistration(page);
+  await page.locator('[data-checkout]').click(); await page.waitForURL(invoiceUrl);
+  expect(request).toEqual({ method: 'GET', url: invoiceUrl, body: null });
+  expect(request.url).not.toMatch(/name=|email=|test@|phone=|amount=|cart=/);
+  await page.goto(url);
+  expect(await page.evaluate(() => sessionStorage.getItem('tsiframir-seminar-20261101-receipt'))).toBe(receiptToken);
 });
 
-test('native checkout refuses a substituted merchant URL', async ({ page }) => {
-  const { prepareHtmlPayment } = require('../../api/lib/seminar-paykeeper-html');
-  const now = Date.parse('2026-10-25T23:55:00+03:00');
-  const body = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', consent: true, expectedAmount: 1600 };
-  const payload = prepareHtmlPayment(body, { serverUrl: 'tsiframir.server.paykeeper.ru', secret: 'test-only', providerTimeZone: 'Europe/Moscow' }, now);
-  await page.route('**/api/seminar-quote', route => route.fulfill({ json: { ...quote(now), paymentAvailable: true } }));
-  await page.route('**/api/seminar-checkout', route => route.fulfill({ json: { ...payload, action: 'https://another.paykeeper.ru/create/' } }));
+test('API checkout refuses a substituted merchant URL', async ({ page }) => {
+  await page.route('**/api/seminar-quote', route => route.fulfill({ json: at('2026-10-25T23:55:00+03:00') }));
+  await page.route('**/api/seminar-checkout', route => route.fulfill({ json: { ...invoicePayload, invoiceUrl: 'https://another.paykeeper.ru/bill/20261013205736625' } }));
   await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
-  await page.getByLabel('Имя', { exact: true }).fill(body.name); await page.getByLabel('Email', { exact: true }).fill(body.email); await page.locator('[name=consent]').check();
+  await fillRegistration(page);
   await page.locator('[data-checkout]').click(); await expect(page.locator('[data-checkout-status]')).toContainText('Не удалось перейти к оплате');
   expect(new URL(page.url()).pathname).toBe(url);
+});
+
+test('return verifies saved capability server-side; only verified paid displays complete confirmation', async ({ page }) => {
+  let state = 'pending', calls = 0;
+  await page.addInitScript(token => sessionStorage.setItem('tsiframir-seminar-20261101-receipt', token), receiptToken);
+  await page.route('**/api/seminar-status', route => {
+    calls++;
+    expect(route.request().method()).toBe('POST');
+    expect(route.request().postDataJSON()).toEqual({ statusToken: receiptToken });
+    return route.fulfill({ json: { ok: true, state, orderId: 'TSMNN-test', amount: 1600, quantity: 1 } });
+  });
+  await page.goto(url + '?paid=1&payment_id=123&email=forged%40example.invalid');
+  await expect(page.locator('[data-receipt-text]')).toContainText('оплата пока не подтверждена');
+  await expect(page.locator('[data-receipt-text]')).not.toContainText('forged');
+  state = 'paid'; await page.locator('[data-receipt-check]').click();
+  await expect(page.locator('[data-receipt-text]')).toContainText('Оплата подтверждена');
+  for (const text of ['TSMNN-test', '1600', '1 ноября 2026', '12:00–18:00', 'Советская, 12', 'Один участник']) {
+    await expect(page.locator('[data-receipt-text]')).toContainText(text);
+  }
+  expect(calls).toBeGreaterThanOrEqual(2);
+});
+
+test('URL success without a saved signed receipt never claims paid', async ({ page }) => {
+  let calls = 0;
+  await page.route('**/api/seminar-status', route => { calls++; return route.fulfill({ json: { ok: true, state: 'paid' } }); });
+  await page.goto(url + '?paid=1&payment_id=123');
+  await expect(page.locator('[data-receipt]')).toBeHidden();
+  expect(calls).toBe(0);
 });

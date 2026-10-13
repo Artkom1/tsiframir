@@ -68,18 +68,18 @@ test('merchant expiry requires an explicit account zone, independent of event an
   assert.throws(() => expiryInMerchantZone('2026-10-25T21:00:00Z', 'Invalid/Zone'));
 });
 
-test('checkout wiring issues native payload only through verified runtime and hides configuration errors', async () => {
+test('checkout uses injected provider only through verified runtime and hides configuration errors', async () => {
   const { createHandler } = require('../api/seminar-checkout')._test;
   const response = () => ({ statusCode: 200, headers: {}, setHeader(k,v) { this.headers[k]=v; }, status(n) { this.statusCode=n; return this; }, json(body) { this.body=body; return this; } });
   const req = { method: 'POST', headers: { origin: 'https://tsiframir.ru', 'content-type': 'application/json' }, body: form(1600) };
   const now = () => Date.parse('2026-10-25T23:55:00+03:00');
-  const allowed = createHandler({ available: () => true, config: () => config, now });
+  const allowed = createHandler({ available: () => true, config: () => config, now, prepare: prepareHtmlPayment });
   const ok = response(); await allowed(req, ok);
   assert.equal(ok.statusCode, 200); assert.equal(ok.body.fields.expiry, '2026-10-26 00:00:00');
   assert.equal(ok.body.fields.sign, signFields(ok.body.fields, config.secret)); assert.match(ok.headers['Cache-Control'], /no-store/);
   const closed = createHandler({ available: () => false, config: () => { throw new Error('must_not_read_config'); }, now });
   const blocked = response(); await closed(req, blocked); assert.equal(blocked.statusCode, 503);
-  const broken = createHandler({ available: () => true, config: () => ({ ...config, providerTimeZone: null }), now });
+  const broken = createHandler({ available: () => true, config: () => ({ ...config, providerTimeZone: null }), now, prepare: prepareHtmlPayment });
   const failed = response(); await broken(req, failed); assert.equal(failed.statusCode, 503);
   for (const result of [blocked, failed]) assert.deepEqual(result.body, { ok: false, error: 'payment_temporarily_unavailable' });
   const stale = response(); await allowed({ ...req, body: form(1800) }, stale); assert.equal(stale.statusCode, 409);

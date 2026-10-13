@@ -8,6 +8,11 @@ let needsConfirmation = false;
 let busy = false;
 let timer;
 let refreshPromise;
+const RECEIPT_KEY = 'tsiframir-seminar-20261101-receipt';
+const receipt = form.querySelector('[data-receipt]');
+const receiptText = form.querySelector('[data-receipt-text]');
+const receiptButton = form.querySelector('[data-receipt-check]');
+let statusBusy = false;
 
 function message(text, focus = false) {
   status.textContent = text;
@@ -53,26 +58,39 @@ function unavailable() {
 }
 
 function submitPayment(result, amount) {
-  const names = ['sum', 'clientid', 'orderid', 'service_name', 'client_email', 'client_phone', 'expiry', 'sign', 'cart'];
-  if (result.method !== 'POST' || result.action !== 'https://tsiframir.server.paykeeper.ru/create/' ||
-      result.amount !== amount || result.eventId !== current.eventId || !result.fields ||
-      Object.keys(result.fields).length !== names.length ||
-      !names.every(name => typeof result.fields[name] === 'string') ||
-      result.fields.sum !== amount.toFixed(2) || result.fields.orderid !== result.orderId ||
-      !/^TSMNN-20261101-[A-Z_]+-[a-f0-9-]{36}$/.test(result.orderId) ||
-      !/^[a-f0-9]{64}$/.test(result.fields.sign)) throw new Error('invalid_payment');
-  const paymentForm = document.createElement('form');
-  paymentForm.method = 'POST'; paymentForm.action = result.action; paymentForm.hidden = true;
-  for (const name of names) {
-    const input = document.createElement('input');
-    input.type = 'hidden'; input.name = name; input.value = result.fields[name];
-    paymentForm.append(input);
-  }
-  document.body.append(paymentForm);
-  // POST keeps participant details out of the URL. Never render provider fields
-  // as markup or interpret a return URL as evidence of payment.
-  HTMLFormElement.prototype.submit.call(paymentForm);
+  if (result.amount !== amount || result.quantity !== 1 ||
+      !/^https:\/\/tsiframir\.server\.paykeeper\.ru\/bill\/\d{10,32}$/.test(result.invoiceUrl) ||
+      typeof result.statusToken !== 'string' || result.statusToken.length > 1024 ||
+      !/^[\w-]+\.[\w-]{43}$/.test(result.statusToken)) throw new Error('invalid_payment');
+  // Store the opaque, signed receipt capability before leaving. No contacts,
+  // signature keys or caller-controlled amounts are in the navigation URL.
+  sessionStorage.setItem(RECEIPT_KEY, result.statusToken);
+  window.location.assign(result.invoiceUrl);
 }
+
+async function checkReceipt() {
+  if (statusBusy) return;
+  let token;
+  try { token = sessionStorage.getItem(RECEIPT_KEY); } catch (_) { return; }
+  if (!token) return;
+  statusBusy = true;
+  receipt.hidden = false;
+  receiptButton.disabled = true;
+  receiptText.textContent = 'Проверяем оплату…';
+  try {
+    const response = await fetch('/api/seminar-status', { method: 'POST', cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ statusToken: token }) });
+    const result = await response.json();
+    if (!response.ok || !result.ok || !['paid', 'pending', 'expired'].includes(result.state)) throw new Error('status_unavailable');
+    receiptText.textContent = result.state === 'paid' ?
+      `Оплата подтверждена. Заказ ${result.orderId}. Один участник, ${result.amount} ₽. Число π и система ЦифраМир — 1 ноября 2026, 12:00–18:00 МСК. Маринс Парк Отель, Нижний Новгород, ул. Советская, 12. Сохраните номер заказа.` :
+      result.state === 'expired' ? 'Срок действия счёта истёк. Оплата не подтверждена. Для участия создайте новый заказ по текущей стоимости.' :
+        `Заказ ${result.orderId}: оплата пока не подтверждена. Если вы уже оплатили, проверьте статус ещё раз через несколько секунд.`;
+  } catch (_) {
+    receiptText.textContent = 'Сейчас не удалось проверить оплату. Возврат на эту страницу не подтверждает платёж. Проверьте статус позже или свяжитесь с организатором.';
+  } finally { statusBusy = false; receiptButton.disabled = false; }
+}
+receiptButton.addEventListener('click', checkReceipt);
 
 async function refresh() {
   if (refreshPromise) return refreshPromise;
@@ -128,7 +146,8 @@ form.addEventListener('submit', async event => {
   }
 });
 
-document.addEventListener('visibilitychange', () => { if (!document.hidden && !busy) refresh().catch(unavailable); });
-window.addEventListener('pageshow', () => refresh().catch(unavailable));
+document.addEventListener('visibilitychange', () => { if (!document.hidden && !busy) { refresh().catch(unavailable); checkReceipt(); } });
+window.addEventListener('pageshow', () => { refresh().catch(unavailable); checkReceipt(); });
 display(current);
 refresh().catch(unavailable);
+checkReceipt();

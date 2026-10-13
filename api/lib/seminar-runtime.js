@@ -1,18 +1,23 @@
 'use strict';
 
-// The existing merchant supports native HTML payments with the current secret.
-// Mandatory signature enforcement, fiscal settings, bank-session expiry and
-// provider confirmation/ledger are not yet verified. An ENV flag alone MUST NOT
-// open sales. Complete the native-flow gates in SEMINAR_PAYMENT.md first.
-function paymentAvailable() { return false; }
+// Authenticated invoice API and the existing merchant ledger are verified.
+// Exact pre-debit bank-session expiry at a tariff boundary remains unverified.
+// Owner may explicitly allow completion of an already started bank payment.
+// Default is strict/off; this flag must never be enabled without that decision.
+function paymentAvailable(env = process.env) {
+  return env.PAYKEEPER_SEMINAR_ALLOW_STARTED_PAYMENT_COMPLETION === 'true' &&
+    !!env.PAYKEEPER_SERVER_URL && !!env.PAYKEEPER_API_LOGIN &&
+    !!env.PAYKEEPER_API_PASSWORD && String(env.PAYKEEPER_SECRET || '').trim().length >= 16;
+}
 
 function paymentConfig() {
   return {
     serverUrl: process.env.PAYKEEPER_SERVER_URL,
     secret: String(process.env.PAYKEEPER_SECRET || '').replace(/[\r\n\t]/g, '').trim(),
-    // Set only after reading the existing account's timezone in its cabinet.
-    // A missing zone prevents payment preparation even if availability changes.
-    providerTimeZone: null
+    apiLogin: process.env.PAYKEEPER_API_LOGIN,
+    apiPassword: process.env.PAYKEEPER_API_PASSWORD,
+    // Verified against created_datetime/expiry_datetime in the actual merchant.
+    providerTimeZone: 'Europe/Moscow'
   };
 }
 

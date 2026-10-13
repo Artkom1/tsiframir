@@ -61,4 +61,4 @@ function prepareHtmlPayment(body, config, now = Date.now()) {
     quantity: 1, createdAt: q.serverTime, expiresAt: q.expiresAt };
 }
 
-module.exports = { prepareHtmlPayment, expiryInMerchantZone, signFields };
+module.exports = { prepareHtmlPayment, expiryInMerchantZone, signFields, merchantOrigin, SERVICE };

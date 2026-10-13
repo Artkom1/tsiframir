@@ -1,9 +1,9 @@
 'use strict';
 const { validateRegistration } = require('./lib/seminar-policy');
-const { prepareHtmlPayment } = require('./lib/seminar-paykeeper-html');
+const { prepareInvoice } = require('./lib/seminar-paykeeper-api');
 const { paymentAvailable, paymentConfig } = require('./lib/seminar-runtime');
 
-function createHandler({ available = paymentAvailable, config = paymentConfig, now = Date.now } = {}) {
+function createHandler({ available = paymentAvailable, config = paymentConfig, now = Date.now, prepare = prepareInvoice } = {}) {
  return async function handler(req, res) {
   res.setHeader('Cache-Control', 'private, no-store');
   if (req.method !== 'POST') {
@@ -20,9 +20,8 @@ function createHandler({ available = paymentAvailable, config = paymentConfig, n
   if (!decision.ok) return res.status(decision.status).json(decision);
   if (!available()) return res.status(503).json({ ok: false, error: 'payment_temporarily_unavailable' });
   try {
-    // No invoice/order is claimed paid here: the provider creates its record
-    // from this signed POST and owns the verified receipt and cabinet ledger.
-    const payment = prepareHtmlPayment(req.body, config(), serverTime);
+    // Return to the same approved origin so its sessionStorage receipt survives.
+    const payment = await prepare(req.body, { ...config(), returnOrigin: origin || 'https://tsiframir.ru' }, serverTime);
     return res.status(payment.ok ? 200 : payment.status).json(payment);
   } catch (_) {
     // Never reflect configuration, contacts or provider credentials into errors.
