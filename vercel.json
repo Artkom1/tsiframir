@@ -2,9 +2,15 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "public-dist",
+  "rewrites": [
+    { "source": "/forums/2026-nizhny-novgorod", "destination": "/api/seminar-page" },
+    { "source": "/forums/2026-nizhny-novgorod/", "destination": "/api/seminar-page" },
+    { "source": "/forums/2026-nizhny-novgorod/index.html", "destination": "/api/seminar-page" }
+  ],
   "functions": {
     "api/*.js": {
       "memory": 512,
+      "includeFiles": "api/templates/**",
       "maxDuration": 30
     },
     "api/paykeeper/*.js": {

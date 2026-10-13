@@ -1,15 +1,13 @@
-const EVENTS_URL = '/assets/data/events.json';
+const EVENTS_URL = '/api/events';
 const PUBLIC_STATUSES = new Set(['upcoming', 'live', 'past', 'cancelled']);
-let eventPromise;
 
 export async function loadEvents() {
-  eventPromise ||= fetch(EVENTS_URL, { headers: { Accept: 'application/json' } }).then(async (response) => {
+  return fetch(EVENTS_URL, { cache: 'no-store', headers: { Accept: 'application/json' } }).then(async (response) => {
     if (!response.ok) throw new Error('event_data_unavailable');
     const data = await response.json();
     if (!data || !Array.isArray(data.events)) throw new Error('event_data_invalid');
     return data.events;
   });
-  return eventPromise;
 }
 
 export async function getPublicEvents() {

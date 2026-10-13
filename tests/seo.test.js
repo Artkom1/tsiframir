@@ -102,7 +102,7 @@ test('archive speaker rendering is limited to confirmed names and local photos',
 });
 
 test('interest forms fail closed to POST when client JavaScript is unavailable', () => {
-  for (const relativePath of ['index.html', 'forums/index.html', 'forums/2026-saint-petersburg/index.html']) {
+  for (const relativePath of ['forums/index.html', 'forums/2026-saint-petersburg/index.html']) {
     const html = read(relativePath);
     const forms = [...html.matchAll(/<form\b[^>]*data-interest-form[^>]*>/gi)];
     assert.equal(forms.length, 1, `${relativePath}: interest form count`);

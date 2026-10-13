@@ -22,22 +22,26 @@ function eventCard(event) {
   const copy = document.createElement('div');
   copy.className = 'forum-card-copy';
   const isPast = event.status === 'past';
-  const statusLabel = isPast ? 'Форум прошёл' : event.status === 'cancelled' ? 'Форум отменён' : 'Предстоящее событие';
+  const kind = event.type === 'seminar' ? 'Семинар' : 'Форум';
+  const statusLabel = isPast ? `${kind} прошёл` : event.status === 'cancelled' ? `${kind} отменён` : event.status === 'live' ? 'Проходит сейчас' : 'Предстоящее событие';
   const status = text('span', statusLabel, `tag ${isPast ? 'tag-past' : ''}`);
   const details = text('p', `${event.city || 'Место уточняется'} · ${formatEventDates(event)}${event.venue ? `\n${event.venue}` : ''}`, 'preserve-lines');
-  const link = text('a', isPast ? 'Программа и состав спикеров →' : 'Открыть событие →', 'text-link');
+  const link = text('a', isPast && event.type !== 'seminar' ? 'Программа и состав спикеров →' : 'Открыть событие →', 'text-link');
   link.href = eventPath(event);
   copy.append(status, text('h3', event.edition), details, link);
   article.append(image, copy);
   return article;
 }
 
-try {
+async function update() { try {
   const events = await getPublicEvents();
   const upcoming = events.filter((event) => event.status === 'upcoming' || event.status === 'live');
   const past = events.filter((event) => event.status === 'past' || event.status === 'cancelled');
-  if (upcoming.length) upcomingRoot.replaceChildren(...upcoming.map(eventCard));
+  upcomingRoot.replaceChildren(...(upcoming.length ? upcoming.map(eventCard) : [text('p', 'Новые встречи появятся здесь после подтверждения.', 'materials-state')]));
   pastRoot.replaceChildren(...(past.length ? past.map(eventCard) : [text('p', 'Архив пока пуст.', 'materials-state')]));
 } catch (_) {
   pastRoot.replaceChildren(text('p', 'Архив событий временно недоступен. Попробуйте обновить страницу позднее.', 'materials-state'));
 }
+}
+update();
+document.addEventListener('visibilitychange', () => { if (!document.hidden) update(); });
