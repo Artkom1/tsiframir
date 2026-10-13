@@ -33,6 +33,12 @@ test('invoice deadline is the earliest of 15 minutes, tariff boundary and closur
   ]) assert.equal(ms(quote(ms(time)).expiresAt), ms(end));
 });
 
+test('next server transition includes noon lifecycle independently of tariff expiry', () => {
+  assert.equal(quote(ms('2026-11-01T11:59:59+03:00')).nextTransitionAt, '2026-11-01T09:00:00.000Z');
+  assert.equal(quote(ms('2026-11-01T12:00:00+03:00')).nextTransitionAt, '2026-11-01T15:00:00.000Z');
+  assert.equal(quote(ms('2026-11-01T18:00:00+03:00')).nextTransitionAt, null);
+});
+
 test('runtime time zone never changes server tariff or expiry', () => {
   const script = "console.log(JSON.stringify(require('./api/lib/seminar-policy').quote(Date.parse('2026-10-26T00:00:00+03:00'))))";
   const values = ['UTC', 'Pacific/Honolulu', 'Asia/Tokyo'].map(TZ => execFileSync(process.execPath, ['-e', script], { cwd: require('node:path').join(__dirname, '..'), env: { ...process.env, TZ }, encoding: 'utf8' }));

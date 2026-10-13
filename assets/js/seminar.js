@@ -42,8 +42,8 @@ function display(next) {
   if (changed) message(`Стоимость изменилась: теперь ${next.amount} ₽ за одного участника. Подтвердите новую сумму отдельным нажатием кнопки.`, true);
   clearTimeout(timer);
   // Delay is derived exclusively from two server timestamps, not device time.
-  if (next.salesOpen) timer = setTimeout(() => refresh().catch(unavailable), Math.max(1000,
-    Math.min(Date.parse(next.validUntil) - Date.parse(next.serverTime) + 100, 6 * 60 * 60_000)));
+  if (next.nextTransitionAt) timer = setTimeout(() => refresh().catch(unavailable), Math.max(1000,
+    Math.min(Date.parse(next.nextTransitionAt) - Date.parse(next.serverTime) + 100, 6 * 60 * 60_000)));
   return changed;
 }
 

@@ -16,11 +16,13 @@ function quote(now = Date.now()) {
   const salesOpen = EVENT.salesOpen && time < close;
   const tariff = salesOpen ? EVENT.tariffs.find(item => item.enabled &&
     (!item.validFrom || time >= Date.parse(item.validFrom)) && time < Date.parse(item.validUntil)) : null;
+  const transitions = [start, end, close, Date.parse(tariff?.validUntil)].filter(value => value > time);
   return {
     eventId: EVENT_ID, serverTime: new Date(time).toISOString(), timeZone: EVENT.timeZone,
     status, salesOpen: Boolean(salesOpen && tariff), currency: 'RUB', quantity: 1,
     tariffCode: tariff?.code || null, amount: tariff?.amount || null,
     validUntil: tariff?.validUntil || null,
+    nextTransitionAt: transitions.length ? new Date(Math.min(...transitions)).toISOString() : null,
     expiresAt: tariff ? new Date(Math.floor(Math.min(time + 15 * 60_000, Date.parse(tariff.validUntil), close) / 1000) * 1000).toISOString() : null,
     salesClose: EVENT.salesClose
   };

@@ -64,6 +64,18 @@ test('visibility refresh closes sales, and success URL does not certify a paymen
   await expect(page.locator('#state-success')).toBeHidden();
 });
 
+test('a visible tab refreshes upcoming to live at noon from server timestamps', async ({ page }) => {
+  await page.clock.install({ time: new Date('2030-01-01T00:00:00Z') });
+  let current = at('2026-11-01T11:59:59+03:00');
+  await page.route('**/api/seminar-quote', route => route.fulfill({ json: current }));
+  await page.goto(url); await expect(page.locator('[data-current-price]')).toHaveText('2000 ₽');
+  await expect(page.locator('[data-lifecycle]')).toBeHidden();
+  current = at('2026-11-01T12:00:00+03:00');
+  await page.clock.fastForward(1200);
+  await expect(page.locator('[data-lifecycle]')).toContainText('Семинар проходит сегодня');
+  await expect(page.locator('[data-checkout]')).toBeEnabled();
+});
+
 test('native checkout sends signed fields by POST only to the existing merchant', async ({ page }) => {
   const { prepareHtmlPayment } = require('../../api/lib/seminar-paykeeper-html');
   const now = Date.parse('2026-10-25T23:55:00+03:00');
