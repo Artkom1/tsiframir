@@ -63,3 +63,35 @@ test('visibility refresh closes sales, and success URL does not certify a paymen
   await expect(page.locator('#state-unknown')).toBeVisible();
   await expect(page.locator('#state-success')).toBeHidden();
 });
+
+test('native checkout sends signed fields by POST only to the existing merchant', async ({ page }) => {
+  const { prepareHtmlPayment } = require('../../api/lib/seminar-paykeeper-html');
+  const now = Date.parse('2026-10-25T23:55:00+03:00');
+  const body = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', consent: true, expectedAmount: 1600 };
+  const payload = prepareHtmlPayment(body, { serverUrl: 'tsiframir.server.paykeeper.ru', secret: 'test-only', providerTimeZone: 'Europe/Moscow' }, now);
+  await page.route('**/api/seminar-quote', route => route.fulfill({ json: { ...quote(now), paymentAvailable: true } }));
+  await page.route('**/api/seminar-checkout', route => route.fulfill({ json: payload }));
+  let posted;
+  await page.route('https://tsiframir.server.paykeeper.ru/**', route => {
+    posted = { method: route.request().method(), url: route.request().url(), fields: Object.fromEntries(new URLSearchParams(route.request().postData())) };
+    return route.fulfill({ contentType: 'text/html', body: '<title>Provider test double</title>' });
+  });
+  await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
+  await page.getByLabel('Имя', { exact: true }).fill(body.name); await page.getByLabel('Email', { exact: true }).fill(body.email); await page.locator('[name=consent]').check();
+  await page.locator('[data-checkout]').click(); await page.waitForURL(payload.action);
+  expect(posted.method).toBe('POST'); expect(posted.url).toBe(payload.action); expect(posted.fields).toEqual(payload.fields);
+  expect(posted.url).not.toMatch(/name=|email=|test@/);
+});
+
+test('native checkout refuses a substituted merchant URL', async ({ page }) => {
+  const { prepareHtmlPayment } = require('../../api/lib/seminar-paykeeper-html');
+  const now = Date.parse('2026-10-25T23:55:00+03:00');
+  const body = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', consent: true, expectedAmount: 1600 };
+  const payload = prepareHtmlPayment(body, { serverUrl: 'tsiframir.server.paykeeper.ru', secret: 'test-only', providerTimeZone: 'Europe/Moscow' }, now);
+  await page.route('**/api/seminar-quote', route => route.fulfill({ json: { ...quote(now), paymentAvailable: true } }));
+  await page.route('**/api/seminar-checkout', route => route.fulfill({ json: { ...payload, action: 'https://another.paykeeper.ru/create/' } }));
+  await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
+  await page.getByLabel('Имя', { exact: true }).fill(body.name); await page.getByLabel('Email', { exact: true }).fill(body.email); await page.locator('[name=consent]').check();
+  await page.locator('[data-checkout]').click(); await expect(page.locator('[data-checkout-status]')).toContainText('Не удалось перейти к оплате');
+  expect(new URL(page.url()).pathname).toBe(url);
+});

@@ -52,6 +52,28 @@ function unavailable() {
   message('Не удалось проверить текущую стоимость. Обновите страницу или свяжитесь с организатором.');
 }
 
+function submitPayment(result, amount) {
+  const names = ['sum', 'clientid', 'orderid', 'service_name', 'client_email', 'client_phone', 'expiry', 'sign'];
+  if (result.method !== 'POST' || result.action !== 'https://tsiframir.server.paykeeper.ru/create/' ||
+      result.amount !== amount || result.eventId !== current.eventId || !result.fields ||
+      Object.keys(result.fields).length !== names.length ||
+      !names.every(name => typeof result.fields[name] === 'string') ||
+      result.fields.sum !== amount.toFixed(2) || result.fields.orderid !== result.orderId ||
+      !/^TSMNN-20261101-[A-Z_]+-[a-f0-9-]{36}$/.test(result.orderId) ||
+      !/^[a-f0-9]{64}$/.test(result.fields.sign)) throw new Error('invalid_payment');
+  const paymentForm = document.createElement('form');
+  paymentForm.method = 'POST'; paymentForm.action = result.action; paymentForm.hidden = true;
+  for (const name of names) {
+    const input = document.createElement('input');
+    input.type = 'hidden'; input.name = name; input.value = result.fields[name];
+    paymentForm.append(input);
+  }
+  document.body.append(paymentForm);
+  // POST keeps participant details out of the URL. Never render provider fields
+  // as markup or interpret a return URL as evidence of payment.
+  HTMLFormElement.prototype.submit.call(paymentForm);
+}
+
 async function refresh() {
   if (refreshPromise) return refreshPromise;
   refreshPromise = (async () => {
@@ -96,9 +118,7 @@ form.addEventListener('submit', async event => {
         'Проверьте имя, email и согласие с условиями.' : 'Оплата сейчас недоступна. Заказ не подтверждён. Свяжитесь с организатором.', true);
       return;
     }
-    const url = new URL(result.invoiceUrl);
-    if (url.protocol !== 'https:' || !url.hostname.endsWith('.paykeeper.ru')) throw new Error('invalid_invoice');
-    window.location.assign(url.href);
+    submitPayment(result, displayedAmount);
   } catch (_) {
     message('Не удалось перейти к оплате. Заказ не подтверждён. Попробуйте позднее или свяжитесь с организатором.', true);
   } finally {
