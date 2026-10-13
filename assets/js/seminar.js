@@ -14,6 +14,10 @@ const receiptText = form.querySelector('[data-receipt-text]');
 const receiptButton = form.querySelector('[data-receipt-check]');
 let statusBusy = false;
 
+function savedReceipt() {
+  try { return sessionStorage.getItem(RECEIPT_KEY); } catch (_) { return null; }
+}
+
 function message(text, focus = false) {
   status.textContent = text;
   if (focus) status.focus();
@@ -31,12 +35,14 @@ function display(next) {
     node.dataset.current = String(active);
     node.querySelector('[data-tariff-marker]').textContent = active ? 'Текущая стоимость' : '';
   });
-  const canPay = next.salesOpen && next.paymentAvailable;
+  const existingOrder = Boolean(savedReceipt());
+  const canPay = next.salesOpen && next.paymentAvailable && !existingOrder;
   fields.disabled = !canPay;
   button.disabled = busy || !canPay;
-  button.textContent = !next.salesOpen ? 'Онлайн-продажи закрыты' : !next.paymentAvailable ? 'Онлайн-оплата временно недоступна' :
+  button.textContent = existingOrder ? 'Заказ уже создан — проверьте оплату ниже' : !next.salesOpen ? 'Онлайн-продажи закрыты' : !next.paymentAvailable ? 'Онлайн-оплата временно недоступна' :
     needsConfirmation ? `Подтвердить ${next.amount} ₽ и оплатить` : `Оплатить ${next.amount} ₽`;
-  notice.textContent = !next.salesOpen ? 'Новые заказы не принимаются. По вопросам участия свяжитесь с организатором.' :
+  notice.textContent = existingOrder ? 'Проверьте статус существующего заказа ниже. Перед повторной оплатой или покупкой ещё одного билета свяжитесь с организатором.' :
+    !next.salesOpen ? 'Новые заказы не принимаются. По вопросам участия свяжитесь с организатором.' :
     !next.paymentAvailable ? 'Онлайн-оплата временно недоступна. По вопросам участия свяжитесь с организатором.' :
       'Один билет на одного участника. Перед переходом к оплате стоимость будет проверена ещё раз.';
   const banner = document.querySelector('[data-lifecycle]');
@@ -58,6 +64,7 @@ function unavailable() {
 }
 
 function submitPayment(result, amount) {
+  if (savedReceipt()) throw new Error('existing_order');
   if (result.amount !== amount || result.quantity !== 1 ||
       !/^https:\/\/tsiframir\.server\.paykeeper\.ru\/bill\/\d{10,32}$/.test(result.invoiceUrl) ||
       typeof result.statusToken !== 'string' || result.statusToken.length > 1024 ||
@@ -70,8 +77,7 @@ function submitPayment(result, amount) {
 
 async function checkReceipt() {
   if (statusBusy) return;
-  let token;
-  try { token = sessionStorage.getItem(RECEIPT_KEY); } catch (_) { return; }
+  const token = savedReceipt();
   if (!token) return;
   statusBusy = true;
   receipt.hidden = false;
@@ -84,7 +90,7 @@ async function checkReceipt() {
     if (!response.ok || !result.ok || !['paid', 'pending', 'expired'].includes(result.state)) throw new Error('status_unavailable');
     receiptText.textContent = result.state === 'paid' ?
       `Оплата подтверждена. Заказ ${result.orderId}. Один участник, ${result.amount} ₽. Число π и система ЦифраМир — 1 ноября 2026, 12:00–18:00 МСК. Маринс Парк Отель, Нижний Новгород, ул. Советская, 12. Сохраните номер заказа.` :
-      result.state === 'expired' ? 'Срок действия счёта истёк. Оплата не подтверждена. Для участия создайте новый заказ по текущей стоимости.' :
+      result.state === 'expired' ? `Заказ ${result.orderId}: срок действия счёта истёк, оплата пока не подтверждена. Уже начатая банковская оплата ещё может завершиться. Проверьте статус повторно или свяжитесь с организатором перед повторной оплатой.` :
         `Заказ ${result.orderId}: оплата пока не подтверждена. Если вы уже оплатили, проверьте статус ещё раз через несколько секунд.`;
   } catch (_) {
     receiptText.textContent = 'Сейчас не удалось проверить оплату. Возврат на эту страницу не подтверждает платёж. Проверьте статус позже или свяжитесь с организатором.';
@@ -109,7 +115,7 @@ async function refresh() {
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
-  if (busy || !current.salesOpen || !current.paymentAvailable) return;
+  if (busy || savedReceipt() || !current.salesOpen || !current.paymentAvailable) return;
   if (!form.reportValidity()) return;
   const displayedAmount = current.amount;
   busy = true;

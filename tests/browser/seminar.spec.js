@@ -149,3 +149,25 @@ test('URL success without a saved signed receipt never claims paid', async ({ pa
   await expect(page.locator('[data-receipt]')).toBeHidden();
   expect(calls).toBe(0);
 });
+
+test('expired invoice retains its receipt and prevents a duplicate order before late paid confirmation', async ({ page }) => {
+  let state = 'expired', checkouts = 0;
+  await page.addInitScript(token => sessionStorage.setItem('tsiframir-seminar-20261101-receipt', token), receiptToken);
+  await page.route('**/api/seminar-quote', route => route.fulfill({ json: at('2026-10-26T00:00:00+03:00') }));
+  await page.route('**/api/seminar-checkout', route => { checkouts++; return route.fulfill({ json: invoicePayload }); });
+  await page.route('**/api/seminar-status', route => {
+    expect(route.request().postDataJSON()).toEqual({ statusToken: receiptToken });
+    return route.fulfill({ json: { ok: true, state, orderId: 'TSMNN-original', amount: 1600, quantity: 1 } });
+  });
+  await page.goto(url);
+  await expect(page.locator('[data-receipt-text]')).toContainText('банковская оплата ещё может завершиться');
+  await expect(page.locator('[data-receipt-text]')).not.toContainText('создайте новый заказ');
+  await expect(page.locator('[data-checkout]')).toBeDisabled();
+  await page.locator('[data-seminar-form]').evaluate(form => form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
+  expect(checkouts).toBe(0);
+  expect(await page.evaluate(() => sessionStorage.getItem('tsiframir-seminar-20261101-receipt'))).toBe(receiptToken);
+  state = 'paid'; await page.locator('[data-receipt-check]').click();
+  await expect(page.locator('[data-receipt-text]')).toContainText('Оплата подтверждена. Заказ TSMNN-original');
+  await expect(page.locator('[data-checkout]')).toBeDisabled();
+  expect(checkouts).toBe(0);
+});
