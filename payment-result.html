@@ -98,63 +98,16 @@
   <div class="container">
     <div class="result-card">
 
-      <!-- SUCCESS STATE -->
-      <div id="state-success" style="display:none">
-        <span class="result-icon">✅</span>
-        <h1 class="result-title success">Платёж принят!</h1>
-        <p class="result-subtitle">Ваш платёж отправлен на обработку в банк.</p>
-
-        <div class="notice-box success">
-          <strong>Что происходит сейчас</strong>
-          Платёж проходит финальное подтверждение через платёжную систему Альфа-Банк / PayKeeper. Обычно это занимает от нескольких секунд до нескольких минут.
-        </div>
-
-        <div class="notice-box info">
-          <strong>⚠️ Важно</strong>
-          Перенаправление на эту страницу не является окончательным подтверждением оплаты.
-          Подтверждение придёт на ваш email после того, как платёж будет окончательно верифицирован.
-          Если письмо не пришло в течение 10–15 минут, напишите нам: <a href="mailto:kisl506@mail.ru">kisl506@mail.ru</a>
-        </div>
-
-        <p id="payment-ref-block" style="font-size:0.85rem; color:var(--text-muted); margin-top:8px; display:none">
-          Номер платежа: <span class="payment-ref" id="payment-id-display"></span>
-        </p>
-
-        <div class="btn-group">
-          <a href="index.html" class="btn-primary">На главную</a>
-          <a href="mailto:kisl506@mail.ru" class="btn-secondary">Написать организаторам</a>
-        </div>
-      </div>
-
-      <!-- FAIL STATE -->
-      <div id="state-fail" style="display:none">
-        <span class="result-icon">❌</span>
-        <h1 class="result-title fail">Платёж не завершён</h1>
-        <p class="result-subtitle">К сожалению, платёж не был завершён или был отклонён банком.</p>
-
-        <div class="notice-box fail">
-          <strong>Возможные причины</strong>
-          Недостаточно средств на карте, ограничения на онлайн-платежи, истёк срок действия карты,
-          или платёж был отменён вами.
-        </div>
-
-        <div class="notice-box info">
-          <strong>Что делать</strong>
-          Новую оплату следует начинать только со страницы действующей услуги. Если проблема повторяется — свяжитесь с нами:
-          <a href="mailto:kisl506@mail.ru">kisl506@mail.ru</a> или <a href="tel:+79165127377">+7 916 512-73-77</a>
-        </div>
-
-        <div class="btn-group">
-          <a href="/" class="btn-primary">На главную</a>
-          <a href="mailto:kisl506@mail.ru" class="btn-secondary">Написать нам</a>
-        </div>
-      </div>
-
-      <!-- UNKNOWN / DIRECT ACCESS STATE -->
+      <!-- A browser redirect cannot verify a payment. The provider keeps the payment record. -->
       <div id="state-unknown">
         <span class="result-icon">🔄</span>
-        <h1 class="result-title" style="color:var(--blue)">Обработка платежа</h1>
-        <p class="result-subtitle">Статус вашего платежа уточняется. Пожалуйста, подождите или обратитесь к организаторам.</p>
+        <h1 class="result-title" style="color:var(--blue)">Уточните статус оплаты</h1>
+        <p class="result-subtitle">Возврат на эту страницу не подтверждает оплату. Проверьте результат и квитанцию в платёжной системе PayKeeper.</p>
+        <div class="notice-box info">
+          <strong>Если результат неясен</strong>
+          Свяжитесь с организаторами: <a href="mailto:kisl506@mail.ru">kisl506@mail.ru</a> или <a href="tel:+79165127377">+7 916 512-73-77</a>.
+          Если деньги списаны, не оплачивайте повторно до уточнения статуса.
+        </div>
         <div class="btn-group">
           <a href="index.html" class="btn-primary">На главную</a>
           <a href="mailto:kisl506@mail.ru" class="btn-secondary">Написать нам</a>
@@ -174,30 +127,6 @@
     </p>
   </div>
 </footer>
-
-<script>
-  (function () {
-    var params = new URLSearchParams(window.location.search);
-    var result = params.get('result');
-    var paymentId = params.get('payment_id');
-
-    var stateSuccess = document.getElementById('state-success');
-    var stateFail = document.getElementById('state-fail');
-    var stateUnknown = document.getElementById('state-unknown');
-
-    if (result === 'success') {
-      stateSuccess.style.display = 'block';
-      stateUnknown.style.display = 'none';
-      if (paymentId) {
-        document.getElementById('payment-id-display').textContent = paymentId;
-        document.getElementById('payment-ref-block').style.display = 'block';
-      }
-    } else if (result === 'fail') {
-      stateFail.style.display = 'block';
-      stateUnknown.style.display = 'none';
-    }
-  })();
-</script>
 
 </body>
 </html>

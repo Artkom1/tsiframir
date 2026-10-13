@@ -59,9 +59,15 @@ test('visibility refresh closes sales, and success URL does not certify a paymen
   current = at('2026-11-01T18:00:00+03:00');
   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
   await expect(page.locator('[data-checkout]')).toBeDisabled(); await expect(page.locator('[data-lifecycle]')).toContainText('Семинар завершён');
-  await page.goto('/payment-result.html?success=true&paid=1&orderId=forged');
-  await expect(page.locator('#state-unknown')).toBeVisible();
-  await expect(page.locator('#state-success')).toBeHidden();
+  for (const query of ['', '?result=success&payment_id=forged', '?result=fail&payment_id=forged', '?success=true&paid=1&orderId=forged']) {
+    await page.goto('/payment-result.html' + query);
+    await expect(page.locator('#state-unknown')).toBeVisible();
+    await expect(page.locator('h1')).toHaveText('Уточните статус оплаты');
+    await expect(page.locator('#state-success')).toHaveCount(0);
+    await expect(page.locator('body')).not.toContainText('forged');
+    await expect(page.locator('body')).not.toContainText('Платёж принят');
+    await expect(page.locator('body')).not.toContainText('Подтверждение придёт');
+  }
 });
 
 test('a visible tab refreshes upcoming to live at noon from server timestamps', async ({ page }) => {
