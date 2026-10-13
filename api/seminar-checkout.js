@@ -14,7 +14,7 @@ module.exports = async function handler(req, res) {
   if (!String(req.headers?.['content-type'] || '').startsWith('application/json')) return res.status(415).json({ ok: false, error: 'json_required' });
   const decision = validateRegistration(req.body);
   if (!decision.ok) return res.status(decision.status).json(decision);
-  // Do not collect contacts, create an ephemeral order or promise a ticket when
-  // the existing project's durable payment infrastructure is unavailable.
+  // Native PayKeeper HTML signing is prepared, but merchant enforcement and
+  // confirmation are unverified. Do not issue a payment form or promise a ticket.
   return res.status(503).json({ ok: false, error: 'payment_temporarily_unavailable' });
 };
