@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+# Installed as a new deploy hook; ignore all unrelated certificate renewals.
+if [ "${RENEWED_LINEAGE:-}" = /etc/letsencrypt/live/tsiframir.ru ]; then
+    /usr/sbin/nginx -t
+    /usr/bin/systemctl reload nginx
+fi

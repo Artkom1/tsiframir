@@ -1,0 +1,40 @@
+[Unit]
+Description=Tsiframir public website and payment handlers
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=tsiframir-site
+Group=tsiframir-site
+WorkingDirectory=/opt/tsiframir-site/current
+Environment=NODE_ENV=production
+Environment=PORT=8093
+Environment=SITE_URL=https://tsiframir.ru
+EnvironmentFile=/etc/tsiframir-site/site.env
+ExecStart=/opt/tsiframir-site/runtime/bin/node --max-old-space-size=64 scripts/serve-production.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=15
+MemoryMax=128M
+CPUQuota=50%
+TasksMax=32
+LimitNOFILE=512
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+LockPersonality=true
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

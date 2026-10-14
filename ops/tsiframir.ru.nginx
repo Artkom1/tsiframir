@@ -1,0 +1,48 @@
+# New vhost only. Existing app and other host configuration is unchanged.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name tsiframir.ru www.tsiframir.ru;
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/tsiframir-site-acme;
+        default_type text/plain;
+        try_files $uri =404;
+    }
+    location / { return 301 https://$host$request_uri; }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name tsiframir.ru www.tsiframir.ru;
+    ssl_certificate /etc/letsencrypt/live/tsiframir.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/tsiframir.ru/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    client_max_body_size 16k;
+    client_body_timeout 15s;
+    # Do not log URLs, receipt tokens or payment data.
+    access_log off;
+    error_log /var/log/nginx/tsiframir-site-error.log warn;
+
+    location / {
+        proxy_pass http://127.0.0.1:8093;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-Port 443;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Vercel-Forwarded-For "";
+        proxy_set_header Forwarded "";
+        proxy_set_header Proxy "";
+        proxy_connect_timeout 3s;
+        proxy_read_timeout 60s;
+        proxy_send_timeout 30s;
+        proxy_cache off;
+        proxy_request_buffering on;
+    }
+}
