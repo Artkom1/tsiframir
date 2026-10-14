@@ -14,9 +14,9 @@ function render(now = Date.now()) {
     '@context': 'https://schema.org', '@type': 'Event', name: EVENT.title, description: EVENT.description,
     startDate: EVENT.startDate, endDate: EVENT.endDate, eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    url: 'https://tsiframir.ru/forums/2026-nizhny-novgorod/', image: 'https://tsiframir.ru/img/seminar-nizhny-2026.png',
+    url: 'https://tsiframir.ru/forums/2026-nizhny-novgorod/', image: 'https://tsiframir.ru/img/masterclass-pi-2026.webp',
     performer: { '@type': 'Person', name: 'Сергей Николаевич Кузнецов' },
-    organizer: { '@type': 'Organization', name: 'ЦифраМир', url: 'https://tsiframir.ru/', telephone: '+7 916 512-73-77' },
+    organizer: { '@type': 'Organization', name: 'ЦифраМир', url: 'https://tsiframir.ru/', telephone: ['+79202997772', '+79087305573'] },
     location: { '@type': 'Place', name: 'Маринс Парк Отель / Marins Нижний Новгород', address: {
       '@type': 'PostalAddress', streetAddress: 'ул. Советская, 12', addressLocality: 'Нижний Новгород', addressCountry: 'RU' } }
   };
@@ -26,7 +26,7 @@ function render(now = Date.now()) {
     EVENT_SCHEMA: json(schema), QUOTE: json(q), PRICE: q.amount ? q.amount + ' ₽' : 'Онлайн-продажи закрыты',
     PRICE_UNIT: q.amount ? ' / один участник' : '', CTA: q.salesOpen ? 'Зарегистрироваться и оплатить' : 'Информация об участии',
     LIFECYCLE_HIDDEN: q.status === 'upcoming' ? 'hidden' : '',
-    LIFECYCLE: q.status === 'past' ? 'Семинар завершён. Страница сохранена в архиве; онлайн-продажи закрыты.' : q.status === 'live' ? 'Семинар проходит сегодня, 12:00–18:00 по Москве.' : '',
+    LIFECYCLE: q.status === 'past' ? 'Мастер-класс завершён. Страница сохранена в архиве; онлайн-продажи закрыты.' : q.status === 'live' ? 'Мастер-класс проходит сегодня, 12:00–15:00 по Москве.' : '',
     SPEAKER_IMAGE: escape(EVENT.speakerImage), FORM_DISABLED: canPay ? '' : 'disabled',
     PAY_BUTTON: canPay ? 'Оплатить ' + q.amount + ' ₽' : q.salesOpen ? 'Онлайн-оплата временно недоступна' : 'Онлайн-продажи закрыты',
     PAYMENT_NOTICE: canPay ? 'Один билет на одного участника. Перед переходом к оплате стоимость будет проверена ещё раз.' : q.salesOpen ? 'Онлайн-оплата временно недоступна. По вопросам участия свяжитесь с организатором.' : 'Новые заказы не принимаются. По вопросам участия свяжитесь с организатором.',

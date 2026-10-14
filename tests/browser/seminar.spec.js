@@ -8,17 +8,17 @@ for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboa
   const failures = [];
   page.on('pageerror', error => failures.push(error.message));
   page.on('response', response => { if (response.url().startsWith('http://127.0.0.1:4174') && response.status() >= 400) failures.push(`${response.status()} ${response.url()}`); });
-  await page.goto(url); await expect(page.locator('h1')).toHaveText('Число π и система ЦифраМир');
+  await page.goto(url); await expect(page.locator('h1')).toHaveText('Код богатства');
   await expect(page.locator('[data-checkout]')).toBeDisabled();
   await expect(page.locator('[data-payment-notice]')).toContainText('Онлайн-оплата временно недоступна');
-  await expect(page.locator('.schedule li')).toHaveCount(8);
-  await expect(page.locator('#speaker img')).toHaveJSProperty('naturalWidth', 361);
+  await expect(page.locator('.schedule li')).toHaveCount(5);
+  await expect(page.locator('.hero-portrait img')).toHaveJSProperty('naturalWidth', 800);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.keyboard.press('Tab'); await expect(page.locator('.skip-link')).toBeFocused();
   expect(await page.locator('.skip-link').evaluate(node => getComputedStyle(node).outlineStyle)).not.toBe('none');
   await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)');
   await page.locator('.skip-link').evaluate(node => node.blur());
-  await page.screenshot({ path: `/home/mikhail/tsiframir-seminar-evidence-20261013/seminar-local-${width}.png`, fullPage: true });
+  await page.screenshot({ path: `/home/mikhail/tsiframir-seminar-redesign-evidence-20261014/seminar-local-${width}.png`, fullPage: true });
   expect(failures).toEqual([]);
 });
 
@@ -56,9 +56,9 @@ test('visibility refresh closes sales, and success URL does not certify a paymen
   let current = at('2026-11-01T12:00:00+03:00');
   await page.route('**/api/seminar-quote', route => route.fulfill({ json: current }));
   await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
-  current = at('2026-11-01T18:00:00+03:00');
+  current = at('2026-11-01T15:00:00+03:00');
   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
-  await expect(page.locator('[data-checkout]')).toBeDisabled(); await expect(page.locator('[data-lifecycle]')).toContainText('Семинар завершён');
+  await expect(page.locator('[data-checkout]')).toBeDisabled(); await expect(page.locator('[data-lifecycle]')).toContainText('Мастер-класс завершён');
   for (const query of ['', '?result=success&payment_id=forged', '?result=fail&payment_id=forged', '?success=true&paid=1&orderId=forged']) {
     await page.goto('/payment-result.html' + query);
     await expect(page.locator('#state-unknown')).toBeVisible();
@@ -78,7 +78,7 @@ test('a visible tab refreshes upcoming to live at noon from server timestamps', 
   await expect(page.locator('[data-lifecycle]')).toBeHidden();
   current = at('2026-11-01T12:00:00+03:00');
   await page.clock.fastForward(1200);
-  await expect(page.locator('[data-lifecycle]')).toContainText('Семинар проходит сегодня');
+  await expect(page.locator('[data-lifecycle]')).toContainText('Мастер-класс проходит сегодня');
   await expect(page.locator('[data-checkout]')).toBeEnabled();
 });
 
@@ -136,7 +136,7 @@ test('return verifies saved capability server-side; only verified paid displays 
   await expect(page.locator('[data-receipt-text]')).not.toContainText('forged');
   state = 'paid'; await page.locator('[data-receipt-check]').click();
   await expect(page.locator('[data-receipt-text]')).toContainText('Оплата подтверждена');
-  for (const text of ['TSMNN-test', '1600', '1 ноября 2026', '12:00–18:00', 'Советская, 12', 'Один участник']) {
+  for (const text of ['TSMNN-test', '1600', '1 ноября 2026', '12:00–15:00', 'Советская, 12', 'Один участник']) {
     await expect(page.locator('[data-receipt-text]')).toContainText(text);
   }
   expect(calls).toBeGreaterThanOrEqual(2);

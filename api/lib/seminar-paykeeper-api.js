@@ -62,7 +62,7 @@ async function prepareInvoice(body, config, now = Date.now(), { fetchImpl = fetc
   const expiry = expiryInMerchantZone(q.expiresAt, config.providerTimeZone);
   const service = {
     service_name: SERVICE,
-    cart: JSON.stringify([{ name: 'Участие в семинаре «Число π и система ЦифраМир», 01.11.2026, 1 человек',
+    cart: JSON.stringify([{ name: 'Участие в мастер-классе «Код богатства», 01.11.2026, 12:00–15:00 МСК, 1 человек',
       price: q.amount, quantity: 1, sum: q.amount, tax: 'none' }]),
     user_result_callback: returnOrigin + RETURN_PATH,
     custom_data: JSON.stringify({ eventId: EVENT_ID, tariff: q.tariffCode, quantity: 1 })

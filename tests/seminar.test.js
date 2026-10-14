@@ -13,11 +13,37 @@ const ms = value => Date.parse(value);
 const form = amount => ({ eventId: EVENT_ID, name: 'Тестовый Участник', email: 'test@example.invalid', consent: true, expectedAmount: amount });
 const response = () => ({ headers: {}, statusCode: 200, setHeader(k, v) { this.headers[k] = v; }, status(n) { this.statusCode = n; return this; }, json(value) { this.body = value; return this; }, send(value) { this.body = value; return this; } });
 
+test('masterclass schedule is contiguous for exactly 180 minutes including the break', () => {
+  const minutes = value => { const [h, m] = value.split(':').map(Number); return h * 60 + m; };
+  let cursor = 12 * 60, total = 0;
+  for (const item of EVENT.schedule.flatMap(day => day.items)) {
+    const [start, end] = item.time.split('–').map(minutes);
+    assert.equal(start, cursor, 'no gaps or overlaps');
+    assert.ok(end > start); total += end - start; cursor = end;
+  }
+  assert.equal(cursor, 15 * 60); assert.equal(total, 180);
+  assert.equal(ms(EVENT.endDate) - ms(EVENT.startDate), 180 * 60_000);
+  assert.equal(EVENT.salesClose, EVENT.endDate);
+  assert.equal(EVENT.tariffs.at(-1).validUntil, EVENT.salesClose);
+  assert.equal(EVENT_ID, 'seminar-2026-nizhny-novgorod');
+});
+
+test('rendered event metadata, contacts and receipt description agree with the revised meeting', () => {
+  const html = render(ms('2026-10-14T12:00:00+03:00'));
+  const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+  assert.equal(schema.endDate, '2026-11-01T15:00:00+03:00');
+  assert.deepEqual(schema.organizer.telephone, ['+79202997772', '+79087305573']);
+  assert.match(schema.name, /Код богатства/);
+  assert.match(html, /12:00–15:00/); assert.match(html, /в 15:00/);
+  assert.doesNotMatch(html, /18:00|79165127377|Шесть часов|fonts\.googleapis|telesco\.pe/);
+  assert.match(html, /tel:\+79202997772/); assert.match(html, /tel:\+79087305573/);
+});
+
 for (const [time, amount, status] of [
   ['2026-10-25T23:59:59+03:00', 1600, 'upcoming'], ['2026-10-26T00:00:00+03:00', 1800, 'upcoming'],
   ['2026-10-31T23:59:59+03:00', 1800, 'upcoming'], ['2026-11-01T00:00:00+03:00', 2000, 'upcoming'],
-  ['2026-11-01T12:00:00+03:00', 2000, 'live'], ['2026-11-01T17:59:59+03:00', 2000, 'live'],
-  ['2026-11-01T18:00:00+03:00', null, 'past']
+  ['2026-11-01T12:00:00+03:00', 2000, 'live'], ['2026-11-01T14:59:59+03:00', 2000, 'live'],
+  ['2026-11-01T15:00:00+03:00', null, 'past']
 ]) test(`server tariff ${time} → ${amount}, ${status}`, () => {
   const result = quote(ms(time));
   assert.equal(result.amount, amount); assert.equal(result.status, status); assert.equal(result.salesOpen, amount !== null);
@@ -29,14 +55,14 @@ test('invoice deadline is the earliest of 15 minutes, tariff boundary and closur
     ['2026-10-13T12:00:00+03:00', '2026-10-13T12:15:00+03:00'],
     ['2026-10-25T23:55:00+03:00', '2026-10-26T00:00:00+03:00'],
     ['2026-10-31T23:55:00+03:00', '2026-11-01T00:00:00+03:00'],
-    ['2026-11-01T17:55:00+03:00', '2026-11-01T18:00:00+03:00']
+    ['2026-11-01T14:55:00+03:00', '2026-11-01T15:00:00+03:00']
   ]) assert.equal(ms(quote(ms(time)).expiresAt), ms(end));
 });
 
 test('next server transition includes noon lifecycle independently of tariff expiry', () => {
   assert.equal(quote(ms('2026-11-01T11:59:59+03:00')).nextTransitionAt, '2026-11-01T09:00:00.000Z');
-  assert.equal(quote(ms('2026-11-01T12:00:00+03:00')).nextTransitionAt, '2026-11-01T15:00:00.000Z');
-  assert.equal(quote(ms('2026-11-01T18:00:00+03:00')).nextTransitionAt, null);
+  assert.equal(quote(ms('2026-11-01T12:00:00+03:00')).nextTransitionAt, '2026-11-01T12:00:00.000Z');
+  assert.equal(quote(ms('2026-11-01T15:00:00+03:00')).nextTransitionAt, null);
 });
 
 test('runtime time zone never changes server tariff or expiry', () => {
@@ -153,15 +179,15 @@ test('provider or persistence failure never fabricates a successful order', asyn
 });
 
 test('rendered page has one speaker, accurate dates, canonical, data-driven program and no unavailable offers', () => {
-  for (const time of ['2026-10-13T12:00:00+03:00', '2026-11-01T12:00:00+03:00', '2026-11-01T18:00:00+03:00']) {
+  for (const time of ['2026-10-13T12:00:00+03:00', '2026-11-01T12:00:00+03:00', '2026-11-01T15:00:00+03:00']) {
     const html = render(ms(time));
     assert.doesNotMatch(html, /\{\{[A-Z_]+\}\}|EventCompleted|Шехирев|гипнотерап|медитаци|Вячеслав/i);
     assert.equal((html.match(/<h1>/g) || []).length, 1);
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
     assert.equal(schema.performer.name, 'Сергей Николаевич Кузнецов'); assert.equal(schema.startDate, EVENT.startDate); assert.equal(schema.offers, undefined);
-    assert.equal(ms(schema.endDate) - ms(schema.startDate), 6 * 60 * 60_000);
+    assert.equal(ms(schema.endDate) - ms(schema.startDate), 3 * 60 * 60_000);
     for (const item of EVENT.schedule[0].items) assert.ok(html.includes(item.title));
     assert.match(html, /method="post" action="\/api\/seminar-checkout"/);
   }
-  const past = render(ms(EVENT.endDate)); assert.match(past, /Семинар завершён/); assert.doesNotMatch(past, />Зарегистрироваться и оплатить</);
+  const past = render(ms(EVENT.endDate)); assert.match(past, /Мастер-класс завершён/); assert.doesNotMatch(past, />Зарегистрироваться и оплатить</);
 });

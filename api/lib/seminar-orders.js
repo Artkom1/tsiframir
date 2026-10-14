@@ -29,7 +29,7 @@ function createOrderService({ repository, provider, secret, now = Date.now }) {
         id, eventId: q.eventId, tariffCode: q.tariffCode, amount: q.amount, currency: q.currency, quantity: 1,
         contact: decision.contact, status: 'creating', createdAt: q.serverTime, expiresAt: q.expiresAt,
         accessTokenHash: digest(accessToken), consentAt: q.serverTime,
-        serviceName: 'Участие в семинаре «Число π и система ЦифраМир», 1 ноября 2026, 1 человек'
+        serviceName: 'Участие в мастер-классе «Код богатства», 1 ноября 2026, 12:00–15:00 МСК, 1 человек'
       };
       // MUST commit before contacting PayKeeper; failed/ambiguous requests are
       // retained for reconciliation, never silently retried as another invoice.

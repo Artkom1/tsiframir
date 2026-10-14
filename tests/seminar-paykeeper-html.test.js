@@ -20,7 +20,7 @@ test('native payload uses server tariff, unique event order, fixed merchant and 
   for (const [time, amount, expiry] of [
     ['2026-10-25T23:55:00+03:00', 1600, '2026-10-26 00:00:00'],
     ['2026-10-31T23:55:00+03:00', 1800, '2026-11-01 00:00:00'],
-    ['2026-11-01T17:55:00+03:00', 2000, '2026-11-01 18:00:00']
+    ['2026-11-01T14:55:00+03:00', 2000, '2026-11-01 15:00:00']
   ]) {
     const result = prepareHtmlPayment(form(amount), config, Date.parse(time));
     assert.equal(result.ok, true); assert.equal(result.method, 'POST');
@@ -29,8 +29,8 @@ test('native payload uses server tariff, unique event order, fixed merchant and 
     assert.equal(result.fields.expiry, expiry); assert.equal(result.fields.client_email, form(amount).email);
     assert.equal(result.fields.sign, signFields(result.fields, config.secret));
     assert.match(result.orderId, /^TSMNN-20261101-[A-Z_]+-[a-f0-9-]{36}$/);
-    assert.match(result.fields.service_name, /01\.11\.2026.*12:00–18:00.*Советская, 12.*1 участник/);
-    assert.deepEqual(JSON.parse(result.fields.cart), [{ name: 'Участие в семинаре «Число π и система ЦифраМир», 01.11.2026, 1 человек', price: amount, quantity: 1, sum: amount, tax: 'none' }]);
+    assert.match(result.fields.service_name, /01\.11\.2026.*12:00–15:00.*Советская, 12.*1 участник/);
+    assert.deepEqual(JSON.parse(result.fields.cart), [{ name: 'Участие в мастер-классе «Код богатства», 01.11.2026, 12:00–15:00 МСК, 1 человек', price: amount, quantity: 1, sum: amount, tax: 'none' }]);
     assert.equal(result.fields.client_phone, ''); assert.equal(result.fields.user_result_callback, undefined);
     assert.doesNotMatch(JSON.stringify(result), /unit-test-secret/);
     assert.notEqual(prepareHtmlPayment(form(amount), config, Date.parse(time)).orderId, result.orderId);
@@ -43,7 +43,7 @@ test('native builder refuses stale consent, client order/amount changes, closed 
   for (const extra of [{ sum: 1 }, { amount: 1 }, { expiry: '2099-01-01' }, { orderid: 'forged' }, { tariffCode: 'EARLY' }, { cart: '[]' }]) {
     assert.equal(prepareHtmlPayment({ ...form(1800), ...extra }, config, now).status, 400);
   }
-  assert.equal(prepareHtmlPayment(form(2000), config, Date.parse('2026-11-01T18:00:00+03:00')).status, 410);
+  assert.equal(prepareHtmlPayment(form(2000), config, Date.parse('2026-11-01T15:00:00+03:00')).status, 410);
   for (const serverUrl of ['example.paykeeper.ru', 'http://tsiframir.server.paykeeper.ru', 'https://tsiframir.server.paykeeper.ru@evil.invalid', 'https://tsiframir.server.paykeeper.ru/create/', 'https://tsiframir.server.paykeeper.ru/?x=1']) {
     assert.throws(() => prepareHtmlPayment(form(1800), { ...config, serverUrl }, now));
   }

@@ -52,7 +52,7 @@ test('invoice API refuses amount/order/tariff injection and stale consent before
     assert.equal((await prepareInvoice({ ...body, ...extra }, config, now, options)).status, 400);
   }
   assert.equal((await prepareInvoice({ ...body, expectedAmount: 1800 }, config, now, options)).status, 409);
-  assert.equal((await prepareInvoice({ ...body, expectedAmount: 2000 }, config, Date.parse('2026-11-01T18:00:00+03:00'), options)).status, 410);
+  assert.equal((await prepareInvoice({ ...body, expectedAmount: 2000 }, config, Date.parse('2026-11-01T15:00:00+03:00'), options)).status, 410);
 });
 
 test('return preserves an approved checkout origin and cannot redirect elsewhere', async () => {

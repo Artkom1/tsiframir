@@ -47,8 +47,8 @@ function display(next) {
       'Один билет на одного участника. Перед переходом к оплате стоимость будет проверена ещё раз.';
   const banner = document.querySelector('[data-lifecycle]');
   banner.hidden = next.status === 'upcoming';
-  banner.textContent = next.status === 'past' ? 'Семинар завершён. Страница сохранена в архиве; онлайн-продажи закрыты.' :
-    next.status === 'live' ? 'Семинар проходит сегодня, 12:00–18:00 по Москве.' : '';
+  banner.textContent = next.status === 'past' ? 'Мастер-класс завершён. Страница сохранена в архиве; онлайн-продажи закрыты.' :
+    next.status === 'live' ? 'Мастер-класс проходит сегодня, 12:00–15:00 по Москве.' : '';
   document.querySelector('[data-registration-link]').textContent = next.salesOpen ? 'Зарегистрироваться и оплатить' : 'Информация об участии';
   if (changed) message(`Стоимость изменилась: теперь ${next.amount} ₽ за одного участника. Подтвердите новую сумму отдельным нажатием кнопки.`, true);
   clearTimeout(timer);
@@ -89,7 +89,7 @@ async function checkReceipt() {
     const result = await response.json();
     if (!response.ok || !result.ok || !['paid', 'pending', 'expired'].includes(result.state)) throw new Error('status_unavailable');
     receiptText.textContent = result.state === 'paid' ?
-      `Оплата подтверждена. Заказ ${result.orderId}. Один участник, ${result.amount} ₽. Число π и система ЦифраМир — 1 ноября 2026, 12:00–18:00 МСК. Маринс Парк Отель, Нижний Новгород, ул. Советская, 12. Сохраните номер заказа.` :
+      `Оплата подтверждена. Заказ ${result.orderId}. Один участник, ${result.amount} ₽. Код богатства — мастер-класс ЦифраМир — 1 ноября 2026, 12:00–15:00 МСК. Маринс Парк Отель, Нижний Новгород, ул. Советская, 12. Сохраните номер заказа.` :
       result.state === 'expired' ? `Заказ ${result.orderId}: срок действия счёта истёк, оплата пока не подтверждена. Уже начатая банковская оплата ещё может завершиться. Проверьте статус повторно или свяжитесь с организатором перед повторной оплатой.` :
         `Заказ ${result.orderId}: оплата пока не подтверждена. Если вы уже оплатили, проверьте статус ещё раз через несколько секунд.`;
   } catch (_) {

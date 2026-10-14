@@ -6,7 +6,7 @@
 const crypto = require('node:crypto');
 const { validateRegistration } = require('./seminar-policy');
 const MERCHANT_ORIGIN = 'https://tsiframir.server.paykeeper.ru';
-const SERVICE = 'Число π и система ЦифраМир, 01.11.2026, 12:00–18:00 МСК; Маринс Парк Отель, Нижний Новгород, Советская, 12; 1 участник';
+const SERVICE = 'Код богатства — мастер-класс ЦифраМир, 01.11.2026, 12:00–15:00 МСК; Маринс Парк Отель, Нижний Новгород, Советская, 12; 1 участник';
 
 function merchantOrigin(value) {
   const url = new URL(String(value).startsWith('https://') ? value : 'https://' + value);
@@ -52,7 +52,7 @@ function prepareHtmlPayment(body, config, now = Date.now()) {
   // tax:none is the historical configuration, NOT newly verified fiscal advice.
   // Native SHA-256 does not cover cart: provider fiscal validation and suitability
   // must be verified before opening the hard-off runtime gate.
-  fields.cart = JSON.stringify([{ name: 'Участие в семинаре «Число π и система ЦифраМир», 01.11.2026, 1 человек',
+  fields.cart = JSON.stringify([{ name: 'Участие в мастер-классе «Код богатства», 01.11.2026, 12:00–15:00 МСК, 1 человек',
     price: q.amount, quantity: 1, sum: q.amount, tax: 'none' }]);
   // Do not add an unsigned return override; use the existing merchant settings.
   // These contact fields must travel via POST, never a URL or application log.
