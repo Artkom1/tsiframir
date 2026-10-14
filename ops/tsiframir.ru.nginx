@@ -3,6 +3,9 @@ server {
     listen 80;
     listen [::]:80;
     server_name tsiframir.ru www.tsiframir.ru;
+    # Request URLs can contain signed payment receipts, including on redirects.
+    access_log off;
+    error_log /dev/null crit;
     location ^~ /.well-known/acme-challenge/ {
         root /var/www/tsiframir-site-acme;
         default_type text/plain;
@@ -24,7 +27,7 @@ server {
     client_body_timeout 15s;
     # Do not log URLs, receipt tokens or payment data.
     access_log off;
-    error_log /var/log/nginx/tsiframir-site-error.log warn;
+    error_log /dev/null crit;
 
     location / {
         proxy_pass http://127.0.0.1:8093;

@@ -6,6 +6,7 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const { pipeline } = require('node:stream/promises');
+const { createExistingAIHandler } = require('./existing-ai-backend');
 
 const PUBLIC_ROOT = path.resolve(__dirname, '../public-dist');
 const BODY_LIMIT = 16384;
@@ -60,6 +61,7 @@ function readBody(req) {
 
 function createServer({ publicRoot = PUBLIC_ROOT } = {}) {
   const root = fs.realpathSync(publicRoot);
+  const existingAI = process.env.SITE_AI_USE_EXISTING_BACKEND === 'true' ? createExistingAIHandler() : null;
   const server = http.createServer({ maxHeaderSize: 16384, requestTimeout: 30000, headersTimeout: 15000 }, async (req, res) => {
     res.status = code => { res.statusCode = code; return res; };
     res.json = data => { res.setHeader('Content-Type', 'application/json; charset=utf-8'); res.end(JSON.stringify(data)); return res; };
@@ -73,7 +75,8 @@ function createServer({ publicRoot = PUBLIC_ROOT } = {}) {
       try { pathname = decodeURIComponent(url.pathname); } catch (_) { return reply(res, 400, 'invalid_path'); }
       if (pathname.includes('\0') || pathname.includes('\\') || pathname.split('/').some(part => part.startsWith('.'))) return reply(res, 404, 'not_found');
       const apiPath = pathname.replace(/\/$/, '').replace(/\.js$/, '');
-      const handler = seminarPaths.has(pathname) ? routes.get('/api/seminar-page') : routes.get(apiPath);
+      const handler = seminarPaths.has(pathname) ? routes.get('/api/seminar-page') :
+        apiPath === '/api/ai-interpretation' && existingAI ? existingAI : routes.get(apiPath);
       if (handler) {
         if (Number(req.headers['content-length'] || 0) > BODY_LIMIT) {
           res.setHeader('Connection', 'close');

@@ -11,6 +11,7 @@ WorkingDirectory=/opt/tsiframir-site/current
 Environment=NODE_ENV=production
 Environment=PORT=8093
 Environment=SITE_URL=https://tsiframir.ru
+Environment=SITE_AI_USE_EXISTING_BACKEND=true
 EnvironmentFile=/etc/tsiframir-site/site.env
 ExecStart=/opt/tsiframir-site/runtime/bin/node --max-old-space-size=64 scripts/serve-production.js
 Restart=on-failure

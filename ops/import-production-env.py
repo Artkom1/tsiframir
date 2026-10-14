@@ -9,7 +9,8 @@ sys.path.insert(0, '/home/mikhail/tsiframir-incident-20261013T051608Z')
 from vercel_readonly import PROJECT, TEAM, session_headers
 
 REQUIRED = {'PAYKEEPER_SERVER_URL', 'PAYKEEPER_SECRET', 'PAYKEEPER_API_LOGIN', 'PAYKEEPER_API_PASSWORD'}
-OPTIONAL = {'OPENAI_API_KEY', 'FORUM_INTEREST_WEBHOOK_URL'}
+# AI remains on the existing backend; its credential is not needed on this VPS.
+OPTIONAL = {'FORUM_INTEREST_WEBHOOK_URL'}
 
 def main():
     headers = session_headers()
@@ -28,7 +29,10 @@ def main():
         values[item['key']] = detail.json()['value']
     if not REQUIRED.issubset(values) or not all(values[k] for k in REQUIRED):
         raise RuntimeError('Required environment is incomplete')
-    if values['PAYKEEPER_SERVER_URL'].rstrip('/') != 'https://tsiframir.server.paykeeper.ru':
+    # Existing handlers accept this exact merchant with or without https://.
+    if values['PAYKEEPER_SERVER_URL'].rstrip('/') not in {
+        'https://tsiframir.server.paykeeper.ru', 'tsiframir.server.paykeeper.ru'
+    }:
         raise RuntimeError('Unexpected merchant')
     values['PAYKEEPER_SEMINAR_ALLOW_STARTED_PAYMENT_COMPLETION'] = 'true'
     # systemd EnvironmentFile double-quote escaping; reject control characters.
