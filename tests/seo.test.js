@@ -66,12 +66,20 @@ test('robots and sitemap expose only intentional indexable URLs', () => {
   assert.doesNotMatch(sitemap, /payment-result/);
 });
 
-test('public pages contain no phone other than the approved number', () => {
+test('global contacts stay unchanged and event-specific phones are confined to the seminar offer', () => {
   const phonePattern = /(?:\+7|8)[\s(-]*\d{3}[\s)-]*\d{3}[\s-]*\d{2}[\s-]*\d{2}/g;
+  const normalize = phone => phone.replace(/\D/g, '').replace(/^8/, '7');
   for (const relativePath of pages.keys()) {
-    const matches = read(relativePath).match(phonePattern) || [];
+    let html = read(relativePath);
+    if (relativePath === 'offer.html') {
+      const seminar = html.match(/<section id="seminar-nizhny">[\s\S]*?<\/section>/);
+      assert.ok(seminar, 'event-specific offer section is present');
+      assert.deepEqual([...new Set((seminar[0].match(phonePattern) || []).map(normalize))].sort(), ['79087305573', '79202997772']);
+      html = html.replace(seminar[0], '');
+    }
+    const matches = html.match(phonePattern) || [];
     for (const phone of matches) {
-      assert.equal(phone.replace(/\D/g, '').replace(/^8/, '7'), '79165127377', `${relativePath}: ${phone}`);
+      assert.equal(normalize(phone), '79165127377', `${relativePath}: ${phone}`);
     }
   }
 });
