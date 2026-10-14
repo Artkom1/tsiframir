@@ -5,8 +5,11 @@ const at = time => ({ ...quote(Date.parse(time)), paymentAvailable: true });
 
 for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboard at ${width}px`, async ({ page }) => {
   await page.setViewportSize({ width, height: 1000 });
-  const failures = [], externalRequests = [];
-  page.on('request', request => { if (!request.url().startsWith('http://127.0.0.1:4174')) externalRequests.push(request.url()); });
+  const failures = [], externalRequests = [], assetRequests = [];
+  page.on('request', request => {
+    if (!request.url().startsWith('http://127.0.0.1:4174')) externalRequests.push(request.url());
+    if (/\/assets\/(css\/(site|seminar)\.css|js\/seminar\.js)/.test(request.url())) assetRequests.push(new URL(request.url()).pathname + new URL(request.url()).search);
+  });
   page.on('pageerror', error => failures.push(error.message));
   page.on('response', response => { if (response.url().startsWith('http://127.0.0.1:4174') && response.status() >= 400) failures.push(`${response.status()} ${response.url()}`); });
   await page.goto(url); await expect(page.locator('h1')).toHaveText('Код богатства');
@@ -23,11 +26,13 @@ for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboa
   await page.screenshot({ path: `/home/mikhail/tsiframir-seminar-redesign-evidence-20261014/seminar-local-${width}.png`, fullPage: true });
   expect(failures).toEqual([]);
   expect(externalRequests).toEqual([]);
+  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261014-masterclass', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261014-masterclass']);
 });
 
 for (const width of [375, 768, 1440]) test(`catalogue shows both complete event graphics at ${width}px`, async ({ page }) => {
   await page.setViewportSize({ width, height: 1000 });
   await page.goto('/forums/');
+  await expect(page.locator('link[rel=stylesheet]')).toHaveAttribute('href', '/assets/css/site.css?v=20261014-masterclass');
   const cards = page.locator('.forum-card-image');
   await expect(cards).toHaveCount(2);
   for (const card of await cards.all()) {

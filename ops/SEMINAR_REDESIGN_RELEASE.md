@@ -12,6 +12,8 @@ The page presents an author's numerological approach, without scientific validat
 
 The owner's subsequent catalogue correction applies to both upcoming and archived event cards on `/forums/`: their existing graphics use centered `contain` without repetition, preserving the complete images on desktop and mobile. This does not change the June archive's content, image source or payment policy, and is separate from the explicitly approved seminar portrait crop.
 
+The seminar's changed CSS/JS and catalogue stylesheet use the release query `v=20261014-masterclass`. This prevents previously cached five-minute assets from mixing the new HTML with the old portrait layout or six-hour receipt text. The existing adapter preserves query handling and the global cache policy stays unchanged.
+
 ## Gates
 
 1. Early fresh Astra xhigh review of the first coherent commit, concurrent with scoped unit and browser checks. Resolve findings.
