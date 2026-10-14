@@ -107,6 +107,19 @@ test('paid status verifies durable provider invoice, id/amount/expiry and actual
   }
 });
 
+test('historical six-hour invoice keeps its signed expiry and paid status after title and sales-close revision', async () => {
+  const historicalClaims = { ...claims, expiresAt: '2026-11-01T15:00:00.000Z' };
+  const historicalInvoice = { ...invoice, expiry_datetime: '2026-11-01 18:00:00',
+    paid_datetime: '2026-11-01 14:50:00', service_name: 'Семинар Сергея Кузнецова, 12:00–18:00',
+    cart: '[{"name":"Участие в семинаре ЦифраМир","sum":1600}]' };
+  const token = statusToken(historicalClaims, config.secret);
+  const result = await invoiceStatus(token, config, { fetchImpl: async () => json(historicalInvoice) });
+  assert.equal(result.state, 'paid');
+  assert.equal(result.orderId, claims.orderId);
+  assert.equal(result.expiresAt, historicalClaims.expiresAt);
+  assert.equal(result.confirmation.endDate, '2026-11-01T15:00:00+03:00');
+});
+
 test('status endpoint is POST/no-store, rejects URL-paid and foreign origins, hides provider failures', async () => {
   const { createHandler } = require('../api/seminar-status')._test;
   const res = () => ({ headers: {}, code: 200, setHeader(k,v) { this.headers[k]=v; }, status(v) { this.code=v; return this; }, json(v) { this.body=v; return this; } });

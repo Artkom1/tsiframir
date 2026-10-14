@@ -10,6 +10,8 @@ Source: the public post https://t.me/cifra_miir/14 and the owner's written corre
 
 The page presents an author's numerological approach, without scientific validation or guaranteed income claims. Program timing inside the confirmed three-hour meeting is explicitly preliminary. Individual analysis for every participant is not promised.
 
+The owner's subsequent catalogue correction applies to both upcoming and archived event cards on `/forums/`: their existing graphics use centered `contain` without repetition, preserving the complete images on desktop and mobile. This does not change the June archive's content, image source or payment policy, and is separate from the explicitly approved seminar portrait crop.
+
 ## Gates
 
 1. Early fresh Astra xhigh review of the first coherent commit, concurrent with scoped unit and browser checks. Resolve findings.

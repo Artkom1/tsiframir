@@ -5,7 +5,8 @@ const at = time => ({ ...quote(Date.parse(time)), paymentAvailable: true });
 
 for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboard at ${width}px`, async ({ page }) => {
   await page.setViewportSize({ width, height: 1000 });
-  const failures = [];
+  const failures = [], externalRequests = [];
+  page.on('request', request => { if (!request.url().startsWith('http://127.0.0.1:4174')) externalRequests.push(request.url()); });
   page.on('pageerror', error => failures.push(error.message));
   page.on('response', response => { if (response.url().startsWith('http://127.0.0.1:4174') && response.status() >= 400) failures.push(`${response.status()} ${response.url()}`); });
   await page.goto(url); await expect(page.locator('h1')).toHaveText('Код богатства');
@@ -13,6 +14,7 @@ for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboa
   await expect(page.locator('[data-payment-notice]')).toContainText('Онлайн-оплата временно недоступна');
   await expect(page.locator('.schedule li')).toHaveCount(5);
   await expect(page.locator('.hero-portrait img')).toHaveJSProperty('naturalWidth', 800);
+  await expect(page.locator('.hero-portrait img')).toHaveCSS('object-position', '0% 50%');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.keyboard.press('Tab'); await expect(page.locator('.skip-link')).toBeFocused();
   expect(await page.locator('.skip-link').evaluate(node => getComputedStyle(node).outlineStyle)).not.toBe('none');
@@ -20,6 +22,26 @@ for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboa
   await page.locator('.skip-link').evaluate(node => node.blur());
   await page.screenshot({ path: `/home/mikhail/tsiframir-seminar-redesign-evidence-20261014/seminar-local-${width}.png`, fullPage: true });
   expect(failures).toEqual([]);
+  expect(externalRequests).toEqual([]);
+});
+
+for (const width of [375, 768, 1440]) test(`catalogue shows both complete event graphics at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 1000 });
+  await page.goto('/forums/');
+  const cards = page.locator('.forum-card-image');
+  await expect(cards).toHaveCount(2);
+  for (const card of await cards.all()) {
+    await expect(card).toHaveCSS('background-size', 'contain');
+    await expect(card).toHaveCSS('background-repeat', 'no-repeat');
+    const loaded = await card.evaluate(async node => {
+      const source = getComputedStyle(node).backgroundImage.match(/url\(["']?(.*?)["']?\)/)[1];
+      const image = new Image(); image.src = source; await image.decode();
+      return image.naturalWidth > 0;
+    });
+    expect(loaded).toBe(true);
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: `/home/mikhail/tsiframir-seminar-redesign-evidence-20261014/catalogue-local-${width}.png`, fullPage: true });
 });
 
 test('server price survives arbitrary browser clock and timezone', async ({ browser }) => {
