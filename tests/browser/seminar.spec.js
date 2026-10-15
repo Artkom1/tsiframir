@@ -16,17 +16,24 @@ for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboa
   await expect(page.locator('[data-checkout]')).toBeDisabled();
   await expect(page.locator('[data-payment-notice]')).toContainText('Онлайн-оплата временно недоступна');
   await expect(page.locator('.schedule li')).toHaveCount(5);
-  await expect(page.locator('.hero-portrait img')).toHaveJSProperty('naturalWidth', 800);
-  await expect(page.locator('.hero-portrait img')).toHaveCSS('object-position', '0% 50%');
+  await expect(page.locator('.hero-portrait img')).toHaveJSProperty('naturalWidth', 1024);
+  await expect(page.locator('.hero-portrait img')).toHaveCSS('object-fit', 'contain');
+  await expect(page.locator('.hero-portrait img')).toHaveAttribute('height', '1024');
+  await page.locator('.theme-art').scrollIntoViewIfNeeded();
+  await expect(page.locator('.theme-art img')).toHaveJSProperty('naturalWidth', 1024);
+  await expect(page.locator('.theme-art img')).toHaveCSS('object-fit', 'contain');
+  await expect(page.locator('.author-photo')).toHaveAttribute('src', '/img/kuznetsov-masterclass-2026.webp');
+  await expect(page.locator('.author-photo')).toHaveCSS('object-position', '0% 50%');
+  await page.evaluate(() => window.scrollTo(0, 0));
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.keyboard.press('Tab'); await expect(page.locator('.skip-link')).toBeFocused();
   expect(await page.locator('.skip-link').evaluate(node => getComputedStyle(node).outlineStyle)).not.toBe('none');
   await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)');
   await page.locator('.skip-link').evaluate(node => node.blur());
-  await page.screenshot({ path: `/home/mikhail/tsiframir-seminar-redesign-evidence-20261014/seminar-local-${width}.png`, fullPage: true });
+  await page.screenshot({ path: test.info().outputPath(`seminar-local-${width}.png`), fullPage: true });
   expect(failures).toEqual([]);
   expect(externalRequests).toEqual([]);
-  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261014-masterclass', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261014-masterclass']);
+  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261015-photos', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261014-masterclass']);
 });
 
 for (const width of [375, 768, 1440]) test(`catalogue shows both complete event graphics at ${width}px`, async ({ page }) => {
@@ -46,7 +53,8 @@ for (const width of [375, 768, 1440]) test(`catalogue shows both complete event 
     expect(loaded).toBe(true);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({ path: `/home/mikhail/tsiframir-seminar-redesign-evidence-20261014/catalogue-local-${width}.png`, fullPage: true });
+  await expect(cards.first()).toHaveCSS('background-image', /seminar-kuznetsov-cover-20261015\.webp/);
+  await page.screenshot({ path: test.info().outputPath(`catalogue-local-${width}.png`), fullPage: true });
 });
 
 test('server price survives arbitrary browser clock and timezone', async ({ browser }) => {

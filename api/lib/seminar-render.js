@@ -14,7 +14,7 @@ function render(now = Date.now()) {
     '@context': 'https://schema.org', '@type': 'Event', name: EVENT.title, description: EVENT.description,
     startDate: EVENT.startDate, endDate: EVENT.endDate, eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    url: 'https://tsiframir.ru/forums/2026-nizhny-novgorod/', image: 'https://tsiframir.ru/img/masterclass-pi-2026.webp',
+    url: 'https://tsiframir.ru/forums/2026-nizhny-novgorod/', image: 'https://tsiframir.ru' + EVENT.heroImage,
     performer: { '@type': 'Person', name: 'Сергей Николаевич Кузнецов' },
     organizer: { '@type': 'Organization', name: 'ЦифраМир', url: 'https://tsiframir.ru/', telephone: ['+79202997772', '+79087305573'] },
     location: { '@type': 'Place', name: 'Маринс Парк Отель / Marins Нижний Новгород', address: {
@@ -27,7 +27,7 @@ function render(now = Date.now()) {
     PRICE_UNIT: q.amount ? ' / один участник' : '', CTA: q.salesOpen ? 'Зарегистрироваться и оплатить' : 'Информация об участии',
     LIFECYCLE_HIDDEN: q.status === 'upcoming' ? 'hidden' : '',
     LIFECYCLE: q.status === 'past' ? 'Мастер-класс завершён. Страница сохранена в архиве; онлайн-продажи закрыты.' : q.status === 'live' ? 'Мастер-класс проходит сегодня, 12:00–15:00 по Москве.' : '',
-    SPEAKER_IMAGE: escape(EVENT.speakerImage), FORM_DISABLED: canPay ? '' : 'disabled',
+    HERO_IMAGE: escape(EVENT.heroImage), SPEAKER_IMAGE: escape(EVENT.speakerImage), FORM_DISABLED: canPay ? '' : 'disabled',
     PAY_BUTTON: canPay ? 'Оплатить ' + q.amount + ' ₽' : q.salesOpen ? 'Онлайн-оплата временно недоступна' : 'Онлайн-продажи закрыты',
     PAYMENT_NOTICE: canPay ? 'Один билет на одного участника. Перед переходом к оплате стоимость будет проверена ещё раз.' : q.salesOpen ? 'Онлайн-оплата временно недоступна. По вопросам участия свяжитесь с организатором.' : 'Новые заказы не принимаются. По вопросам участия свяжитесь с организатором.',
     SCHEDULE: EVENT.schedule.flatMap(day => day.items).map(item => `<li${/перерыв|кофе-брейк/i.test(item.title) ? ' class="schedule-break"' : ''}><time>${escape(item.time)}</time><p>${escape(item.title)}</p></li>`).join(''),
