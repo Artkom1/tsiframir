@@ -19,7 +19,7 @@ async function invoke(body) {
 }
 
 test('native notification ACK is repeatable for all tariffs without issuing local confirmation', async () => {
-  for (const [code, amount] of [['EARLY', '1600.00'], ['STANDARD', '1800.00'], ['EVENT_DAY', '2000.00']]) {
+  for (const [code, amount] of [['EARLY', '1600.00'], ['STANDARD', '1800.00'], ['EVENT_DAY', '3000.00'], ['EVENT_DAY', '2000.00']]) {
     const body = signed({ sum: amount, orderid: `TSMNN-20261101-${code}-${uuid}` });
     for (let retry = 0; retry < 2; retry++) {
       const res = await invoke(body);

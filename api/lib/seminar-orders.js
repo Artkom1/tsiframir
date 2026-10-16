@@ -27,7 +27,7 @@ function createOrderService({ repository, provider, secret, now = Date.now }) {
       const accessToken = crypto.randomBytes(32).toString('base64url');
       const order = {
         id, eventId: q.eventId, tariffCode: q.tariffCode, amount: q.amount, currency: q.currency, quantity: 1,
-        contact: decision.contact, status: 'creating', createdAt: q.serverTime, expiresAt: q.expiresAt,
+        contact: decision.contact, codeWord: decision.codeWord, status: 'creating', createdAt: q.serverTime, expiresAt: q.expiresAt,
         accessTokenHash: digest(accessToken), consentAt: q.serverTime,
         serviceName: 'Участие в мастер-классе «Код богатства», 1 ноября 2026, 12:00–15:00 МСК, 1 человек'
       };

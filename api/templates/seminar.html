@@ -12,7 +12,7 @@
   <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://tsiframir.ru/img/seminar-kuznetsov-cover-20261015.jpg">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='32' fill='%23244979'/><text x='32' y='44' text-anchor='middle' font-family='serif' font-size='37' fill='%23f6dda0'>Ц</text></svg>">
   <link rel="preload" as="image" href="{{HERO_IMAGE}}" type="image/webp">
-  <link rel="stylesheet" href="/assets/css/site.css?v=20261014-masterclass"><link rel="stylesheet" href="/assets/css/seminar.css?v=20261015-photos">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20261014-masterclass"><link rel="stylesheet" href="/assets/css/seminar.css?v=20261016-registration">
   <script type="application/ld+json">{{EVENT_SCHEMA}}</script>
 </head>
 <body data-page="seminar">
@@ -27,9 +27,9 @@
   <section class="seminar-hero"><div class="container">
     <div class="hero-edition"><span>Закрытый мастер-класс</span><span>Нижний Новгород · 01.11.2026</span></div>
     <div class="seminar-hero-grid">
-      <div class="hero-copy"><p class="eyebrow">ЦифраМир · встреча с автором</p><h1>Код богатства</h1>
-        <p class="hero-subtitle">Матрица личности:<br>деньги, отношения, реализация.</p>
-        <p class="seminar-intro">Три часа с Сергеем Кузнецовым: исследуем привычные сценарии, сильные стороны и личные вопросы через его авторскую систему цифрового анализа.</p>
+      <div class="hero-copy"><p class="eyebrow">ЦифраМир · встреча с автором</p><h1>Новый взгляд на ваши денежные вопросы — через число π и систему „ЦифраМир“</h1>
+        <p class="hero-subtitle">Авторский семинар Сергея Николаевича Кузнецова — математика с 35-летним стажем. Погружение в число π, цифровые закономерности и авторский подход к личному росту за одну встречу</p>
+        <p class="seminar-intro">1 ноября 2026 · 12:00–15:00 МСК<br>Нижний Новгород · Маринс Парк Отель</p>
         <p class="hero-price"><strong data-current-price>{{PRICE}}</strong><span data-price-unit>{{PRICE_UNIT}}</span></p>
         <div class="button-row"><a class="button" href="#registration" data-registration-link>{{CTA}}</a><a class="hero-program-link" href="#program">Программа встречи <span aria-hidden="true">↓</span></a></div>
       </div>
@@ -61,17 +61,18 @@
   <section class="seminar-section registration-section" id="registration"><div class="container pricing-grid">
     <div><p class="eyebrow">Присоединиться к встрече</p><h2>Один билет.<br>Три часа участия.</h2><p class="lede">Мастер-класс и кофе-брейк включены в стоимость за одного человека.</p>
       <div class="tariff-list">{{TARIFFS}}</div>
-      <p class="seminar-note">1600 ₽ до 25 октября включительно; 1800 ₽ с 26 по 31 октября; 2000 ₽ в день встречи.</p>
+      <p class="seminar-note">1600 ₽ до 25 октября включительно; 1800 ₽ с 26 по 31 октября; 3000 ₽ в день встречи.</p>
       <p class="seminar-note">Все даты и время — по Москве. Онлайн-оплата закрывается 1 ноября в 15:00.</p>
-      <div class="registration-steps"><h3>Как это работает</h3><ol><li>Укажите имя и email участника.</li><li>Проверьте стоимость и перейдите на защищённую страницу PayKeeper.</li><li>После оплаты вернитесь на эту страницу и сохраните подтверждённый номер заказа.</li></ol></div>
+      <div class="registration-steps"><h3>Как это работает</h3><ol><li>Укажите имя, телефон и email участника. Кодовое слово — по желанию.</li><li>Проверьте стоимость и перейдите на защищённую страницу PayKeeper.</li><li>После оплаты вернитесь на эту страницу и сохраните подтверждённый номер заказа.</li></ol></div>
     </div>
     <form class="registration-form" data-seminar-form method="post" action="/api/seminar-checkout" novalidate>
       <h3>Ваше участие</h3><p class="form-price"><span data-form-price>{{PRICE}}</span><span data-price-unit>{{PRICE_UNIT}}</span></p>
       <fieldset data-registration-fields {{FORM_DISABLED}}><legend class="sr-only">Данные участника</legend>
-        <div class="field"><label for="participant-name">Имя</label><input id="participant-name" name="name" autocomplete="name" minlength="2" maxlength="100" required aria-describedby="checkout-status"></div>
-        <div class="field"><label for="participant-email">Email</label><input id="participant-email" name="email" type="email" autocomplete="email" maxlength="160" required aria-describedby="checkout-status"></div>
-        <div class="field"><label for="participant-phone">Телефон (необязательно)</label><input id="participant-phone" name="phone" type="tel" autocomplete="tel" maxlength="20" aria-describedby="checkout-status"></div>
-        <label class="consent"><input type="checkbox" name="consent" required><span>Согласен(а) на обработку данных по <a href="/privacy.html">политике конфиденциальности</a> и принимаю <a href="/offer.html#seminar-nizhny">условия участия</a>.</span></label>
+        <div class="field"><label for="participant-name">Имя</label><input id="participant-name" name="name" autocomplete="name" minlength="2" maxlength="100" required aria-describedby="name-error"><p class="field-error" id="name-error" hidden></p></div>
+        <div class="field"><label for="participant-phone">Телефон</label><input id="participant-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" required aria-describedby="phone-error"><p class="field-error" id="phone-error" hidden></p></div>
+        <div class="field"><label for="participant-code-word">Кодовое слово (необязательно)</label><input id="participant-code-word" name="codeWord" type="text" maxlength="100" aria-describedby="code-word-help codeWord-error"><p class="field-help" id="code-word-help">Если у вас есть кодовое слово, укажите его</p><p class="field-error" id="codeWord-error" hidden></p></div>
+        <div class="field"><label for="participant-email">Email</label><input id="participant-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" required aria-describedby="email-error"><p class="field-error" id="email-error" hidden></p></div>
+        <label class="consent"><input type="checkbox" name="consent" required aria-describedby="consent-error"><span>Согласен(а) на обработку данных по <a href="/privacy.html">политике конфиденциальности</a> и принимаю <a href="/offer.html#seminar-nizhny">условия участия</a>.</span></label><p class="field-error" id="consent-error" hidden></p>
       </fieldset>
       <button class="button" type="submit" data-checkout {{FORM_DISABLED}}>{{PAY_BUTTON}}</button>
       <p class="form-status" id="checkout-status" role="status" aria-live="polite" tabindex="-1" data-checkout-status></p>
@@ -101,5 +102,5 @@
   <div><h2>Документы</h2><ul class="footer-links"><li><a href="/privacy.html">Политика конфиденциальности</a></li><li><a href="/requisites.html">Реквизиты</a></li><li><a href="/offer.html#seminar-nizhny">Публичная оферта</a></li></ul></div>
 </div><div class="footer-bottom"><span>© 2026 «ЦифраМир»</span><span>Авторский подход. Не является медицинской или финансовой рекомендацией.</span></div></div></footer>
 <script type="application/json" id="seminar-quote">{{QUOTE}}</script>
-<script type="module" src="/assets/js/site.js"></script><script type="module" src="/assets/js/seminar.js?v=20261014-masterclass"></script>
+<script type="module" src="/assets/js/site.js"></script><script type="module" src="/assets/js/seminar.js?v=20261016-registration"></script>
 </body></html>

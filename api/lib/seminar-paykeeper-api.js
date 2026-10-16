@@ -21,7 +21,8 @@ function readToken(token, secret) {
   try {
     const claims = JSON.parse(Buffer.from(body, 'base64url').toString('utf8'));
     if (claims.v !== 1 || claims.eventId !== EVENT_ID || !/^\d{10,32}$/.test(claims.invoiceId) ||
-        !ORDER.test(claims.orderId) || ![1600, 1800, 2000].includes(claims.amount) ||
+        // 2000 is accepted only for previously signed receipts, never new sales.
+        !ORDER.test(claims.orderId) || ![1600, 1800, 2000, 3000].includes(claims.amount) ||
         !Number.isFinite(Date.parse(claims.expiresAt))) return null;
     return claims;
   } catch (_) { return null; }
@@ -65,7 +66,7 @@ async function prepareInvoice(body, config, now = Date.now(), { fetchImpl = fetc
     cart: JSON.stringify([{ name: 'Участие в мастер-классе «Код богатства», 01.11.2026, 12:00–15:00 МСК, 1 человек',
       price: q.amount, quantity: 1, sum: q.amount, tax: 'none' }]),
     user_result_callback: returnOrigin + RETURN_PATH,
-    custom_data: JSON.stringify({ eventId: EVENT_ID, tariff: q.tariffCode, quantity: 1 })
+    custom_data: JSON.stringify({ eventId: EVENT_ID, tariff: q.tariffCode, quantity: 1, codeWord: decision.codeWord })
   };
   // preview creates a durable invoice without sending an unsolicited invoice email.
   // All amounts, expiry, cart and return parameters go server-to-server only.

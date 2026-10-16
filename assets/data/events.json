@@ -29,7 +29,7 @@
       "tariffs": [
         {"code": "EARLY", "name": "До 25 октября включительно", "amount": 1600, "enabled": true, "validUntil": "2026-10-26T00:00:00+03:00"},
         {"code": "STANDARD", "name": "26–31 октября", "amount": 1800, "enabled": true, "validFrom": "2026-10-26T00:00:00+03:00", "validUntil": "2026-11-01T00:00:00+03:00"},
-        {"code": "EVENT_DAY", "name": "1 ноября, до 15:00", "amount": 2000, "enabled": true, "validFrom": "2026-11-01T00:00:00+03:00", "validUntil": "2026-11-01T15:00:00+03:00"}
+        {"code": "EVENT_DAY", "name": "1 ноября, до 15:00", "amount": 3000, "enabled": true, "validFrom": "2026-11-01T00:00:00+03:00", "validUntil": "2026-11-01T15:00:00+03:00"}
       ],
       "salesOpen": true,
       "registrationUrl": "/forums/2026-nizhny-novgorod/#registration",

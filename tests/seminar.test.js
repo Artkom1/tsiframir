@@ -10,7 +10,7 @@ const checkout = require('../api/seminar-checkout');
 const quoteEndpoint = require('../api/seminar-quote');
 const { authorizeSale, parseOrderId } = require('../api/lib/event-policy');
 const ms = value => Date.parse(value);
-const form = amount => ({ eventId: EVENT_ID, name: 'Тестовый Участник', email: 'test@example.invalid', consent: true, expectedAmount: amount });
+const form = amount => ({ eventId: EVENT_ID, name: 'Тестовый Участник', email: 'test@example.invalid', phone: '+7 (000) 000-00-00', consent: true, expectedAmount: amount });
 const response = () => ({ headers: {}, statusCode: 200, setHeader(k, v) { this.headers[k] = v; }, status(n) { this.statusCode = n; return this; }, json(value) { this.body = value; return this; }, send(value) { this.body = value; return this; } });
 
 test('masterclass schedule is contiguous for exactly 180 minutes including the break', () => {
@@ -41,8 +41,8 @@ test('rendered event metadata, contacts and receipt description agree with the r
 
 for (const [time, amount, status] of [
   ['2026-10-25T23:59:59+03:00', 1600, 'upcoming'], ['2026-10-26T00:00:00+03:00', 1800, 'upcoming'],
-  ['2026-10-31T23:59:59+03:00', 1800, 'upcoming'], ['2026-11-01T00:00:00+03:00', 2000, 'upcoming'],
-  ['2026-11-01T12:00:00+03:00', 2000, 'live'], ['2026-11-01T14:59:59+03:00', 2000, 'live'],
+  ['2026-10-31T23:59:59+03:00', 1800, 'upcoming'], ['2026-11-01T00:00:00+03:00', 3000, 'upcoming'],
+  ['2026-11-01T12:00:00+03:00', 3000, 'live'], ['2026-11-01T14:59:59+03:00', 3000, 'live'],
   ['2026-11-01T15:00:00+03:00', null, 'past']
 ]) test(`server tariff ${time} → ${amount}, ${status}`, () => {
   const result = quote(ms(time));
@@ -78,7 +78,7 @@ test('stale consent, arbitrary amount/tariff/order and invalid forms are rejecte
     assert.equal(validateRegistration({ ...form(1800), ...extra }, now).status, 400);
   }
   for (const extra of [{ name: '' }, { email: 'bad' }, { consent: false }, { name: '<script>' }]) assert.equal(validateRegistration({ ...form(1800), ...extra }, now).status, 400);
-  assert.equal(validateRegistration(form(2000), ms(EVENT.salesClose)).status, 410);
+  assert.equal(validateRegistration(form(3000), ms(EVENT.salesClose)).status, 410);
   assert.equal(authorizeSale(EVENT_ID, 'EARLY', 1600).code, 'use_event_checkout');
   assert.equal(parseOrderId('TSMNN-forged-order'), null);
 });

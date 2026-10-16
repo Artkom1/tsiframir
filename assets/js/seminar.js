@@ -23,6 +23,48 @@ function message(text, focus = false) {
   if (focus) status.focus();
 }
 
+const fieldNames = ['name', 'phone', 'codeWord', 'email', 'consent'];
+
+function fieldErrors(errors = {}, focus = false) {
+  let first;
+  for (const name of fieldNames) {
+    const input = form.elements[name];
+    const error = document.getElementById(`${name}-error`);
+    const text = typeof errors[name] === 'string' ? errors[name] : '';
+    error.textContent = text;
+    error.hidden = !text;
+    input.setAttribute('aria-invalid', String(Boolean(text)));
+    if (text && !first) first = input;
+  }
+  if (focus && first) first.focus();
+  return !first;
+}
+
+function validateFields() {
+  // Keep these user-facing checks aligned with seminar-policy.js. The server
+  // independently validates every request before an invoice can be created.
+  const value = name => form.elements[name].value.trim();
+  const errors = {};
+  const name = value('name');
+  const phone = value('phone');
+  const digits = phone.replace(/\D/g, '');
+  const codeWord = value('codeWord');
+  const email = value('email');
+  if (name.length < 2 || name.length > 100 || /[\x00-\x1f\x7f<>]/.test(name)) errors.name = 'Укажите имя: от 2 до 100 символов, без знаков < и >.';
+  if (phone.length > 20 || !/^\+?[\d ()-]+$/.test(phone) || digits.length < 10 || digits.length > 15) errors.phone = 'Укажите телефон: от 10 до 15 цифр, можно с +, пробелами, скобками и дефисами.';
+  if (codeWord.length > 100 || /[\x00-\x1f\x7f<>]/.test(codeWord)) errors.codeWord = 'Кодовое слово — до 100 символов, без знаков < и >.';
+  if (email.length > 160 || /[\x00-\x1f\x7f]/.test(email) || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) errors.email = 'Укажите email в формате name@example.ru.';
+  if (!form.elements.consent.checked) errors.consent = 'Подтвердите согласие с условиями и обработкой данных.';
+  return fieldErrors(errors, true);
+}
+
+for (const name of fieldNames) form.elements[name].addEventListener('input', () => {
+  const error = document.getElementById(`${name}-error`);
+  error.hidden = true;
+  error.textContent = '';
+  form.elements[name].setAttribute('aria-invalid', 'false');
+});
+
 function display(next) {
   const changed = current.amount !== null && next.amount !== null && current.amount !== next.amount;
   if (changed) needsConfirmation = true;
@@ -106,7 +148,7 @@ async function refresh() {
     const next = await response.json();
     if (next.eventId !== current.eventId || !['upcoming', 'live', 'past'].includes(next.status) ||
         typeof next.salesOpen !== 'boolean' || typeof next.paymentAvailable !== 'boolean' ||
-        (next.salesOpen && ![1600, 1800, 2000].includes(next.amount))) throw new Error('invalid_quote');
+        (next.salesOpen && ![1600, 1800, 3000].includes(next.amount))) throw new Error('invalid_quote');
     display(next);
     return next;
   })();
@@ -116,7 +158,8 @@ async function refresh() {
 form.addEventListener('submit', async event => {
   event.preventDefault();
   if (busy || savedReceipt() || !current.salesOpen || !current.paymentAvailable) return;
-  if (!form.reportValidity()) return;
+  if (!validateFields()) return;
+  message('');
   const displayedAmount = current.amount;
   busy = true;
   button.disabled = true;
@@ -130,7 +173,7 @@ form.addEventListener('submit', async event => {
     const response = await fetch('/api/seminar-checkout', {
       method: 'POST', cache: 'no-store', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ eventId: latest.eventId, name: form.elements.name.value,
-        email: form.elements.email.value, phone: form.elements.phone.value,
+        email: form.elements.email.value, phone: form.elements.phone.value, codeWord: form.elements.codeWord.value,
         consent: form.elements.consent.checked, expectedAmount: displayedAmount })
     });
     const result = await response.json();
@@ -139,6 +182,11 @@ form.addEventListener('submit', async event => {
       return;
     }
     if (!response.ok || !result.ok) {
+      if (response.status === 400 && result.error === 'invalid_form' && result.errors) {
+        message('Проверьте отмеченные поля. Введённые данные сохранены.');
+        fieldErrors(result.errors, true);
+        return;
+      }
       message(response.status === 410 ? 'Онлайн-продажи закрыты.' : response.status === 400 ?
         'Проверьте данные участника и согласие с условиями.' : 'Оплата сейчас недоступна. Заказ не подтверждён. Свяжитесь с организатором.', true);
       return;

@@ -3,7 +3,7 @@ const { quote } = require('../../api/lib/seminar-policy');
 const url = '/forums/2026-nizhny-novgorod/';
 const at = time => ({ ...quote(Date.parse(time)), paymentAvailable: true });
 
-for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboard at ${width}px`, async ({ page }) => {
+for (const width of [320, 375, 768, 1440]) test(`seminar layout, resources and keyboard at ${width}px`, async ({ page }) => {
   await page.setViewportSize({ width, height: 1000 });
   const failures = [], externalRequests = [], assetRequests = [];
   page.on('request', request => {
@@ -12,7 +12,7 @@ for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboa
   });
   page.on('pageerror', error => failures.push(error.message));
   page.on('response', response => { if (response.url().startsWith('http://127.0.0.1:4174') && response.status() >= 400) failures.push(`${response.status()} ${response.url()}`); });
-  await page.goto(url); await expect(page.locator('h1')).toHaveText('Код богатства');
+  await page.goto(url); await expect(page.locator('h1')).toHaveText('Новый взгляд на ваши денежные вопросы — через число π и систему „ЦифраМир“');
   await expect(page.locator('[data-checkout]')).toBeDisabled();
   await expect(page.locator('[data-payment-notice]')).toContainText('Онлайн-оплата временно недоступна');
   await expect(page.locator('.schedule li')).toHaveCount(5);
@@ -31,9 +31,10 @@ for (const width of [375, 768, 1440]) test(`seminar layout, resources and keyboa
   await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)');
   await page.locator('.skip-link').evaluate(node => node.blur());
   await page.screenshot({ path: test.info().outputPath(`seminar-local-${width}.png`), fullPage: true });
+  await page.locator('.seminar-hero').screenshot({ path: test.info().outputPath(`hero-local-${width}.png`) });
   expect(failures).toEqual([]);
   expect(externalRequests).toEqual([]);
-  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261015-photos', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261014-masterclass']);
+  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261016-registration', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261016-registration']);
 });
 
 for (const width of [375, 768, 1440]) test(`catalogue shows both complete event graphics at ${width}px`, async ({ page }) => {
@@ -69,7 +70,7 @@ test('old tab requires explicit updated amount confirmation and never sends cont
   await page.route('**/api/seminar-quote', route => route.fulfill({ json: current }));
   await page.route('**/api/seminar-checkout', route => { calls.push({ body: route.request().postDataJSON(), url: route.request().url() }); return route.fulfill({ status: 503, json: { ok: false, error: 'payment_temporarily_unavailable' } }); });
   await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
-  await page.getByLabel('Имя', { exact: true }).fill('Тестовый Участник'); await page.getByLabel('Email', { exact: true }).fill('test@example.invalid'); await page.locator('[name=consent]').check();
+  await fillRegistration(page);
   current = at('2026-10-26T00:00:00+03:00');
   await page.locator('[data-checkout]').click(); await expect(page.locator('[data-checkout-status]')).toContainText('Стоимость изменилась');
   expect(calls).toHaveLength(0); await expect(page.locator('[data-checkout]')).toHaveText('Подтвердить 1800 ₽ и оплатить');
@@ -83,7 +84,7 @@ test('form validation and checkout-side price race require another explicit clic
   await page.route('**/api/seminar-checkout', route => { calls++; current = at('2026-10-26T00:00:00+03:00'); return route.fulfill({ status: 409, json: { ok: false, error: 'price_changed', quote: current } }); });
   await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
   await page.locator('[data-checkout]').click(); await expect(page.locator('#participant-name')).toBeFocused(); expect(calls).toBe(0);
-  await page.getByLabel('Имя', { exact: true }).fill('Тестовый Участник'); await page.getByLabel('Email', { exact: true }).fill('test@example.invalid'); await page.locator('[name=consent]').check();
+  await fillRegistration(page);
   await page.locator('[data-checkout]').click(); await expect(page.locator('[data-checkout]')).toHaveText('Подтвердить 1800 ₽ и оплатить'); expect(calls).toBe(1);
 });
 
@@ -109,7 +110,7 @@ test('a visible tab refreshes upcoming to live at noon from server timestamps', 
   await page.clock.install({ time: new Date('2030-01-01T00:00:00Z') });
   let current = at('2026-11-01T11:59:59+03:00');
   await page.route('**/api/seminar-quote', route => route.fulfill({ json: current }));
-  await page.goto(url); await expect(page.locator('[data-current-price]')).toHaveText('2000 ₽');
+  await page.goto(url); await expect(page.locator('[data-current-price]')).toHaveText('3000 ₽');
   await expect(page.locator('[data-lifecycle]')).toBeHidden();
   current = at('2026-11-01T12:00:00+03:00');
   await page.clock.fastForward(1200);
@@ -120,9 +121,10 @@ test('a visible tab refreshes upcoming to live at noon from server timestamps', 
 const receiptToken = 'eyJ0ZXN0Ijp0cnVlfQ.' + 'A'.repeat(43);
 const invoiceUrl = 'https://tsiframir.server.paykeeper.ru/bill/20261013205736625';
 const invoicePayload = { ok: true, invoiceUrl, statusToken: receiptToken, amount: 1600, quantity: 1 };
-const registration = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', phone: '', consent: true, expectedAmount: 1600 };
+const registration = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тестовый Участник', email: 'test@example.invalid', phone: '+7 (000) 000-00-00', codeWord: '', consent: true, expectedAmount: 1600 };
 
 async function fillRegistration(page) {
+  await page.getByLabel('Телефон', { exact: true }).fill(registration.phone);
   await page.getByLabel('Имя', { exact: true }).fill(registration.name);
   await page.getByLabel('Email', { exact: true }).fill(registration.email);
   await page.locator('[name=consent]').check();
@@ -205,4 +207,65 @@ test('expired invoice retains its receipt and prevents a duplicate order before 
   await expect(page.locator('[data-receipt-text]')).toContainText('Оплата подтверждена. Заказ TSMNN-original');
   await expect(page.locator('[data-checkout]')).toBeDisabled();
   expect(checkouts).toBe(0);
+});
+
+for (const width of [320, 375, 1440]) test(`required fields, optional code word and error retention at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 900 });
+  let calls = [];
+  await page.route('**/api/seminar-quote', route => route.fulfill({ json: at('2026-10-16T12:00:00+03:00') }));
+  await page.route('**/api/seminar-checkout', route => {
+    calls.push(route.request().postDataJSON());
+    return route.fulfill({ status: 400, json: { ok: false, error: 'invalid_form', errors: { phone: 'Проверьте номер телефона.' } } });
+  });
+  await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
+  expect(await page.locator('.field input').evaluateAll(nodes => nodes.map(node => node.name))).toEqual(['name', 'phone', 'codeWord', 'email']);
+  await expect(page.locator('#code-word-help')).toHaveText('Если у вас есть кодовое слово, укажите его');
+  for (const [name, type] of [['phone', 'tel'], ['email', 'email']]) {
+    await expect(page.locator(`[name=${name}]`)).toHaveAttribute('type', type);
+    await expect(page.locator(`[name=${name}]`)).toHaveAttribute('inputmode', type);
+    await expect(page.locator(`[name=${name}]`)).toHaveAttribute('required', '');
+  }
+  await expect(page.locator('[name=codeWord]')).not.toHaveAttribute('required');
+  await page.locator('[data-checkout]').click();
+  for (const name of ['name', 'phone', 'email', 'consent']) await expect(page.locator(`#${name}-error`)).toBeVisible();
+  await expect(page.locator('[name=name]')).toBeFocused(); expect(calls).toHaveLength(0);
+  await fillRegistration(page);
+  for (const [name, invalid] of [['name', 'А'], ['phone', '123'], ['email', 'bad'], ['codeWord', '<tag>']]) {
+    const input = page.locator(`[name=${name}]`);
+    await input.fill(invalid); await page.locator('[data-checkout]').click();
+    await expect(input).toBeFocused(); await expect(page.locator(`#${name}-error`)).toBeVisible();
+    await expect(input).toHaveValue(invalid); expect(calls).toHaveLength(0);
+    await input.fill(registration[name]);
+  }
+  // Missing optional value reaches the server. A returned field error keeps all values.
+  await page.locator('[data-checkout]').click();
+  await expect(page.locator('#phone-error')).toHaveText('Проверьте номер телефона.');
+  await expect(page.locator('[name=phone]')).toBeFocused();
+  expect(calls[0]).toEqual(registration);
+  for (const name of ['name', 'phone', 'email', 'codeWord']) await expect(page.locator(`[name=${name}]`)).toHaveValue(registration[name]);
+  await page.locator('[name=codeWord]').fill('ЦифраМир');
+  await page.locator('[data-checkout]').click(); await expect.poll(() => calls.length).toBe(2);
+  expect(calls[1]).toEqual({ ...registration, codeWord: 'ЦифраМир' });
+  await expect(page.locator('[name=codeWord]')).toHaveValue('ЦифраМир');
+  await page.locator('[name=name]').focus();
+  for (const name of ['phone', 'codeWord', 'email']) { await page.keyboard.press('Tab'); await expect(page.locator(`[name=${name}]`)).toBeFocused(); }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.locator('[data-seminar-form]').screenshot({ path: test.info().outputPath(`registration-errors-${width}.png`) });
+});
+
+test('October 31 tab automatically switches to 3000 and requires separate confirmation', async ({ page }) => {
+  let current = at('2026-10-31T23:59:59.500+03:00'), calls = [];
+  await page.clock.install();
+  await page.route('**/api/seminar-quote', route => route.fulfill({ json: current }));
+  await page.route('**/api/seminar-checkout', route => { calls.push(route.request().postDataJSON()); return route.fulfill({ status: 503, json: { ok: false } }); });
+  await page.goto(url); await expect(page.locator('[data-current-price]')).toHaveText('1800 ₽');
+  await fillRegistration(page);
+  current = at('2026-11-01T00:00:00.000+03:00');
+  await page.clock.fastForward(1100);
+  await expect(page.locator('[data-current-price]')).toHaveText('3000 ₽');
+  await expect(page.locator('[data-form-price]')).toHaveText('3000 ₽');
+  await expect(page.locator('[data-checkout]')).toHaveText('Подтвердить 3000 ₽ и оплатить');
+  expect(calls).toHaveLength(0);
+  await page.locator('[data-checkout]').click(); await expect.poll(() => calls.length).toBe(1);
+  expect(calls[0].expectedAmount).toBe(3000);
 });

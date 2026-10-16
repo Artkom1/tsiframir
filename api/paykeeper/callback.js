@@ -42,7 +42,10 @@ module.exports = async function handler(req, res) {
   // expiry, unique order provenance or settlement time. Those merchant guarantees
   // must be verified before enabling seminar sales. Never reject solely because
   // delivery occurred after closing: a timely payment can be notified later.
-  const decision = validateKnownPayment(parsed.eventId, parsed.tariffCode, sum);
+  // Authentic historical notifications still receive an ACK. This path never
+  // creates invoices or marks them paid; new invoices use the current tariff.
+  const historicalEventDay = seminar && parsed.tariffCode === 'EVENT_DAY' && Number(sum) === 2000;
+  const decision = historicalEventDay ? { ok: true } : validateKnownPayment(parsed.eventId, parsed.tariffCode, sum);
   if (!decision.ok) return res.status(decision.status).send('Payment rejected: ' + decision.code);
 
   return res.status(200).send('OK ' + md5(String(id) + secret));

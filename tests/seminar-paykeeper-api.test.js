@@ -5,7 +5,7 @@ const { prepareInvoice, invoiceStatus, statusToken, readToken } = require('../ap
 const { EVENT_ID } = require('../api/lib/seminar-policy');
 const config = { serverUrl: 'tsiframir.server.paykeeper.ru', secret: 'unit-test-secret-key',
   apiLogin: 'test-login', apiPassword: 'test-password', providerTimeZone: 'Europe/Moscow' };
-const body = { eventId: EVENT_ID, name: 'Тестовый Участник', email: 'test@example.invalid', phone: '', consent: true, expectedAmount: 1600 };
+const body = { eventId: EVENT_ID, name: 'Тестовый Участник', email: 'test@example.invalid', phone: '+7 (000) 000-00-00', consent: true, expectedAmount: 1600 };
 const now = Date.parse('2026-10-25T23:55:00+03:00');
 const claims = { v: 1, eventId: EVENT_ID, invoiceId: '20261013205736625',
   orderId: 'TSMNN-20261101-EARLY-11111111-1111-4111-a111-111111111111', amount: 1600, expiresAt: '2026-10-25T21:00:00.000Z' };
@@ -52,7 +52,7 @@ test('invoice API refuses amount/order/tariff injection and stale consent before
     assert.equal((await prepareInvoice({ ...body, ...extra }, config, now, options)).status, 400);
   }
   assert.equal((await prepareInvoice({ ...body, expectedAmount: 1800 }, config, now, options)).status, 409);
-  assert.equal((await prepareInvoice({ ...body, expectedAmount: 2000 }, config, Date.parse('2026-11-01T15:00:00+03:00'), options)).status, 410);
+  assert.equal((await prepareInvoice({ ...body, expectedAmount: 3000 }, config, Date.parse('2026-11-01T15:00:00+03:00'), options)).status, 410);
 });
 
 test('return preserves an approved checkout origin and cannot redirect elsewhere', async () => {
