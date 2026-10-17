@@ -72,6 +72,25 @@ test('provider invoice lifecycle preserves exact attribution before/after paymen
   assert.equal(p.invoices.length, 2);
 });
 
+test('registration without email stays distinct and appears in protected organizer HTML and CSV', async () => {
+  const p = provider();
+  const first = await prepareInvoice({ ...valid, email: '', codeWord: '  Без email  ' }, config, now, { fetchImpl: p.fetchImpl, clock: () => now });
+  const second = await prepareInvoice({ ...valid, email: undefined }, config, now, { fetchImpl: p.fetchImpl, clock: () => now });
+  assert.equal(first.ok, true); assert.equal(second.ok, true); assert.notEqual(first.orderId, second.orderId);
+  const rows = await readOrders(config, p);
+  assert.equal(rows.length, 2); assert.ok(rows.every(row => row.email === '' && row.phone === valid.phone));
+  assert.equal(rows.find(row => row.orderId === first.orderId).codeWord, '  Без email  ');
+  const handler = createHandler({ config: () => config, read: () => readOrders(config, p) });
+  const headers = { authorization: auth, 'content-type': 'application/x-www-form-urlencoded', origin: 'https://tsiframir.ru' };
+  const view = response(); await handler({ method: 'GET', headers }, view);
+  assert.equal(view.code, 200); assert.ok(view.body.includes(first.orderId)); assert.ok(view.body.includes(second.orderId));
+  assert.doesNotMatch(view.body, /undefined|null/);
+  const exported = response(); await handler({ method: 'POST', headers, body: { action: 'csv' } }, exported);
+  assert.equal(exported.code, 200); assert.ok(exported.body.includes(first.orderId)); assert.ok(exported.body.includes(second.orderId));
+  assert.ok(exported.body.includes(';"";"  Без email  ";'));
+  assert.equal((await invoiceStatus(first.statusToken, config, p)).state, 'pending');
+});
+
 test('metadata reader accepts actual PKDC and legacy JSON while preserving punctuation; fails closed on damage', () => {
   const data = { eventId: EVENT_ID, codeWord: ' X;PKDC|Y | ' };
   assert.deepEqual(metadata('service;PKC|[];PKDC|' + JSON.stringify(data) + '|'), data);

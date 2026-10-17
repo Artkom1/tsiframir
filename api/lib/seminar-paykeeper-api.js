@@ -72,7 +72,8 @@ async function prepareInvoice(body, config, now = Date.now(), { fetchImpl = fetc
   // All amounts, expiry, cart and return parameters go server-to-server only.
   const invoice = await api.request('/change/invoice/preview/', {
     token: token.token, pay_amount: q.amount.toFixed(2), orderid: orderId,
-    clientid: decision.contact.name, client_email: decision.contact.email, client_phone: decision.contact.phone,
+    clientid: decision.contact.name, client_phone: decision.contact.phone,
+    ...(decision.contact.email ? { client_email: decision.contact.email } : {}),
     expiry, service_name: JSON.stringify(service)
   });
   const invoiceId = String(invoice.invoice_id || '');

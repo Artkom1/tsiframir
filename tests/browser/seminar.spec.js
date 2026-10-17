@@ -12,7 +12,11 @@ for (const width of [320, 375, 768, 1440]) test(`seminar layout, resources and k
   });
   page.on('pageerror', error => failures.push(error.message));
   page.on('response', response => { if (response.url().startsWith('http://127.0.0.1:4174') && response.status() >= 400) failures.push(`${response.status()} ${response.url()}`); });
-  await page.goto(url); await expect(page.locator('h1')).toHaveText('Новый взгляд на ваши денежные вопросы — через число π и систему „ЦифраМир“');
+  await page.goto(url); await expect(page.locator('h1')).toHaveText('Реши свои вопросы с деньгами навсегда.');
+  await expect(page.locator('.hero-subtitle')).toHaveText('— от математика с 35-летним стажем, используя число Пи за одно посещение в «ЦифроМир».');
+  await expect(page.locator('#program .author-points li')).toHaveText('Персональный разбор и диагностика с использованием цифровых карт');
+  await expect(page.locator('#about')).not.toContainText('Его интерпретации не являются доказанными');
+  await expect(page.locator('body')).not.toContainText('не входит в обязательную программу');
   await expect(page.locator('[data-checkout]')).toBeDisabled();
   await expect(page.locator('[data-payment-notice]')).toContainText('Онлайн-оплата временно недоступна');
   await expect(page.locator('.schedule li')).toHaveCount(5);
@@ -34,7 +38,7 @@ for (const width of [320, 375, 768, 1440]) test(`seminar layout, resources and k
   await page.locator('.seminar-hero').screenshot({ path: test.info().outputPath(`hero-local-${width}.png`) });
   expect(failures).toEqual([]);
   expect(externalRequests).toEqual([]);
-  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261016-registration', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261016-registration']);
+  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261016-registration', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261017-optional-email']);
 });
 
 for (const width of [375, 768, 1440]) test(`catalogue shows both complete event graphics at ${width}px`, async ({ page }) => {
@@ -126,14 +130,14 @@ const registration = { eventId: 'seminar-2026-nizhny-novgorod', name: 'Тест�
 async function fillRegistration(page) {
   await page.getByLabel('Телефон', { exact: true }).fill(registration.phone);
   await page.getByLabel('Имя', { exact: true }).fill(registration.name);
-  await page.getByLabel('Email', { exact: true }).fill(registration.email);
+  await page.getByLabel('Email (необязательно)', { exact: true }).fill(registration.email);
   await page.locator('[name=consent]').check();
 }
 
-test('API checkout navigates only to existing merchant invoice without editable fields or contacts', async ({ page }) => {
+for (const email of ['', registration.email]) test(`API checkout with ${email ? 'valid' : 'empty'} email navigates only to existing merchant invoice without editable fields or contacts`, async ({ page }) => {
   await page.route('**/api/seminar-quote', route => route.fulfill({ json: at('2026-10-25T23:55:00+03:00') }));
   await page.route('**/api/seminar-checkout', route => {
-    expect(route.request().postDataJSON()).toEqual(registration);
+    expect(route.request().postDataJSON()).toEqual({ ...registration, email });
     return route.fulfill({ json: invoicePayload });
   });
   let request;
@@ -143,6 +147,7 @@ test('API checkout navigates only to existing merchant invoice without editable 
   });
   await page.goto(url); await expect(page.locator('[data-checkout]')).toBeEnabled();
   await fillRegistration(page);
+  await page.locator('[name=email]').fill(email);
   await page.locator('[data-checkout]').click(); await page.waitForURL(invoiceUrl);
   expect(request).toEqual({ method: 'GET', url: invoiceUrl, body: null });
   expect(request.url).not.toMatch(/name=|email=|test@|phone=|amount=|cart=/);
@@ -209,7 +214,7 @@ test('expired invoice retains its receipt and prevents a duplicate order before 
   expect(checkouts).toBe(0);
 });
 
-for (const width of [320, 375, 1440]) test(`required fields, optional code word and error retention at ${width}px`, async ({ page }) => {
+for (const width of [320, 375, 1440]) test(`required fields, optional email and code word, error retention at ${width}px`, async ({ page }) => {
   await page.setViewportSize({ width, height: 900 });
   let calls = [];
   await page.route('**/api/seminar-quote', route => route.fulfill({ json: at('2026-10-16T12:00:00+03:00') }));
@@ -223,11 +228,13 @@ for (const width of [320, 375, 1440]) test(`required fields, optional code word 
   for (const [name, type] of [['phone', 'tel'], ['email', 'email']]) {
     await expect(page.locator(`[name=${name}]`)).toHaveAttribute('type', type);
     await expect(page.locator(`[name=${name}]`)).toHaveAttribute('inputmode', type);
-    await expect(page.locator(`[name=${name}]`)).toHaveAttribute('required', '');
   }
+  await expect(page.locator('[name=phone]')).toHaveAttribute('required', '');
+  await expect(page.locator('[name=email]')).not.toHaveAttribute('required');
   await expect(page.locator('[name=codeWord]')).not.toHaveAttribute('required');
   await page.locator('[data-checkout]').click();
-  for (const name of ['name', 'phone', 'email', 'consent']) await expect(page.locator(`#${name}-error`)).toBeVisible();
+  for (const name of ['name', 'phone', 'consent']) await expect(page.locator(`#${name}-error`)).toBeVisible();
+  await expect(page.locator('#email-error')).toBeHidden();
   await expect(page.locator('[name=name]')).toBeFocused(); expect(calls).toHaveLength(0);
   await fillRegistration(page);
   for (const [name, invalid] of [['name', 'А'], ['phone', '123'], ['email', 'bad'], ['codeWord', '<tag>']]) {
@@ -246,6 +253,12 @@ for (const width of [320, 375, 1440]) test(`required fields, optional code word 
   await page.locator('[name=codeWord]').fill('ЦифраМир');
   await page.locator('[data-checkout]').click(); await expect.poll(() => calls.length).toBe(2);
   expect(calls[1]).toEqual({ ...registration, codeWord: 'ЦифраМир' });
+  await expect(page.locator('[name=codeWord]')).toHaveValue('ЦифраМир');
+  await page.locator('[name=email]').fill('');
+  await page.locator('[data-checkout]').click(); await expect.poll(() => calls.length).toBe(3);
+  expect(calls[2]).toEqual({ ...registration, codeWord: 'ЦифраМир', email: '' });
+  await expect(page.locator('[name=email]')).toHaveValue('');
+  await expect(page.locator('#email-error')).toBeHidden();
   await expect(page.locator('[name=codeWord]')).toHaveValue('ЦифраМир');
   await page.locator('[name=name]').focus();
   for (const name of ['phone', 'codeWord', 'email']) { await page.keyboard.press('Tab'); await expect(page.locator(`[name=${name}]`)).toBeFocused(); }

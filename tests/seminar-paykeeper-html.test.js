@@ -37,6 +37,13 @@ test('native payload uses server tariff, unique event order, fixed merchant and 
   }
 });
 
+test('native payload omits an empty email and signs the absent field consistently', () => {
+  const result = prepareHtmlPayment({ ...form(1600), email: '' }, config, Date.parse('2026-10-25T12:00:00+03:00'));
+  assert.equal(result.ok, true);
+  assert.equal(Object.hasOwn(result.fields, 'client_email'), false);
+  assert.equal(result.fields.sign, signFields({ ...result.fields, client_email: '' }, config.secret));
+});
+
 test('native builder refuses stale consent, client order/amount changes, closed sales and another merchant', () => {
   const now = Date.parse('2026-10-26T00:00:00+03:00');
   assert.equal(prepareHtmlPayment(form(1600), config, now).status, 409);

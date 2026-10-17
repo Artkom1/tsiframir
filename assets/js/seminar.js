@@ -53,7 +53,7 @@ function validateFields() {
   if (name.length < 2 || name.length > 100 || /[\x00-\x1f\x7f<>]/.test(name)) errors.name = 'Укажите имя: от 2 до 100 символов, без знаков < и >.';
   if (phone.length > 20 || !/^\+?[\d ()-]+$/.test(phone) || digits.length < 10 || digits.length > 15) errors.phone = 'Укажите телефон: от 10 до 15 цифр, можно с +, пробелами, скобками и дефисами.';
   if (codeWord.length > 100 || /[\x00-\x1f\x7f<>]/.test(codeWord)) errors.codeWord = 'Кодовое слово — до 100 символов, без знаков < и >.';
-  if (email.length > 160 || /[\x00-\x1f\x7f]/.test(email) || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) errors.email = 'Укажите email в формате name@example.ru.';
+  if (email && (email.length > 160 || /[\x00-\x1f\x7f]/.test(email) || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email))) errors.email = 'Укажите email в формате name@example.ru.';
   if (!form.elements.consent.checked) errors.consent = 'Подтвердите согласие с условиями и обработкой данных.';
   return fieldErrors(errors, true);
 }

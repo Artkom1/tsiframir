@@ -36,7 +36,7 @@ function validateRegistration(body, now = Date.now()) {
   const current = quote(now);
   if (!current.salesOpen) return { ok: false, status: 410, error: 'event_sales_closed', quote: current };
   const name = typeof body.name === 'string' ? body.name.trim() : '';
-  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  const email = body.email === undefined ? '' : typeof body.email === 'string' ? body.email.trim() : null;
   const phone = typeof body.phone === 'string' ? body.phone.trim() : '';
   // Attribution belongs to this invoice. Keep the entered value verbatim;
   // normalization is only for organizer search, never for storage or pricing.
@@ -46,7 +46,7 @@ function validateRegistration(body, now = Date.now()) {
   const digits = phone.replace(/\D/g, '');
   if (phone.length > 20 || !/^\+?[\d ()-]+$/.test(phone) || digits.length < 10 || digits.length > 15) errors.phone = 'Укажите телефон: от 10 до 15 цифр, можно с +, пробелами, скобками и дефисами.';
   if (codeWord === null || codeWord.length > 100 || /[\x00-\x1f\x7f<>]/.test(codeWord)) errors.codeWord = 'Кодовое слово — до 100 символов, без знаков < и >.';
-  if (email.length > 160 || /[\x00-\x1f\x7f]/.test(email) || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) errors.email = 'Укажите email в формате name@example.ru.';
+  if (email === null || (email && (email.length > 160 || /[\x00-\x1f\x7f]/.test(email) || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)))) errors.email = 'Укажите email в формате name@example.ru.';
   if (body.consent !== true) errors.consent = 'Подтвердите согласие с условиями и обработкой данных.';
   if (Object.keys(errors).length) return { ok: false, status: 400, error: 'invalid_form', errors };
   // This is only a consent precondition. The client value never sets the price.

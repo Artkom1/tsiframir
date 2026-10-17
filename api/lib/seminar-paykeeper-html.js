@@ -44,7 +44,8 @@ function prepareHtmlPayment(body, config, now = Date.now()) {
   const orderId = `TSMNN-20261101-${q.tariffCode.toUpperCase()}-${crypto.randomUUID()}`;
   const fields = {
     sum: q.amount.toFixed(2), clientid: decision.contact.name, orderid: orderId,
-    service_name: SERVICE, client_email: decision.contact.email, client_phone: decision.contact.phone,
+    service_name: SERVICE, client_phone: decision.contact.phone,
+    ...(decision.contact.email ? { client_email: decision.contact.email } : {}),
     expiry: expiryInMerchantZone(q.expiresAt, config.providerTimeZone)
   };
   fields.sign = signFields(fields, config.secret);

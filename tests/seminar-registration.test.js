@@ -24,7 +24,7 @@ test('server returns precise errors for every invalid field, including omitted r
   for (const [field, values] of Object.entries({
     name: [undefined, '', ' ', 'А', '<script>', 'a'.repeat(101), 10],
     phone: [undefined, '', ' ', '123', '+7 123', '1234567890123456', 'abcdefghij', '+7 (000) 000\n00-00', 70000000000],
-    email: [undefined, '', 'bad', 'a@b', 'a b@c.ru', '<x>@example.ru', 'a'.repeat(160)+'@b.ru'],
+    email: [null, 10, false, {}, [], 'bad', 'a@b', 'a b@c.ru', '<x>@example.ru', 'a'.repeat(160)+'@b.ru'],
     codeWord: [null, 1, '<tag>', 'a'.repeat(101), 'one\ntwo'], consent: [undefined, false, 'true']
   })) for (const value of values) {
     const result = validateRegistration({ ...valid, [field]: value }, now);
@@ -39,7 +39,31 @@ test('invalid direct checkout never contacts provider and retains field error co
   const response = { setHeader() {}, status(n) { this.code = n; return this; }, json(body) { this.body = body; } };
   await handler({ method: 'POST', headers: { 'content-type': 'application/json' }, body: { ...valid, name: '', phone: '', email: '' } }, response);
   assert.equal(response.code, 400); assert.equal(calls, 0);
-  assert.deepEqual(Object.keys(response.body.errors), ['name', 'phone', 'email']);
+  assert.deepEqual(Object.keys(response.body.errors), ['name', 'phone']);
+});
+
+test('checkout accepts omitted or blank email and omits the provider field without substituting a contact', async () => {
+  for (const email of [undefined, '', '   ']) {
+    const body = { ...valid, email };
+    if (email === undefined) delete body.email;
+    assert.equal(validateRegistration(body, now).contact.email, '');
+    let payload;
+    const handler = createHandler({ available: () => true, config: () => config, now: () => now,
+      prepare: (input, settings, time) => prepareInvoice(input, settings, time, { clock: () => now,
+        fetchImpl: async (url, options) => {
+          if (!options.body) return json({ token: 'unit-test-token' });
+          payload = Object.fromEntries(new URLSearchParams(options.body));
+          return json({ invoice_id: '20261017000000001' });
+        }
+      })
+    });
+    const response = { setHeader() {}, status(n) { this.code = n; return this; }, json(value) { this.body = value; } };
+    await handler({ method: 'POST', headers: { 'content-type': 'application/json' }, body }, response);
+    assert.equal(response.code, 200); assert.equal(response.body.ok, true);
+    assert.equal(Object.hasOwn(payload, 'client_email'), false);
+    assert.equal(payload.clientid, 'Анна Тестовая'); assert.equal(payload.client_phone, '+7 (000) 000-00-00');
+    assert.equal(payload.pay_amount, '1600.00');
+  }
 });
 
 for (const [time, amount, tariff] of [
