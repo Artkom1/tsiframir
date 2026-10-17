@@ -28,6 +28,16 @@ for (const width of [320, 375, 768, 1440]) test(`seminar layout, resources and k
   await expect(page.locator('.theme-art img')).toHaveCSS('object-fit', 'contain');
   await expect(page.locator('.author-photo')).toHaveAttribute('src', '/img/kuznetsov-masterclass-2026.webp');
   await expect(page.locator('.author-photo')).toHaveCSS('object-position', '0% 50%');
+  const poster = page.locator('#place .place-poster img');
+  await poster.scrollIntoViewIfNeeded();
+  await expect(poster).toHaveJSProperty('naturalWidth', 1280);
+  await expect(poster).toHaveJSProperty('naturalHeight', 858);
+  await expect(poster).toHaveAttribute('alt', 'Афиша практикума «ЦифроМир»: 1 ноября в 12:00, Маринс Парк Отель, Нижний Новгород.');
+  const posterBox = await poster.boundingBox();
+  expect(posterBox.width / posterBox.height).toBeCloseTo(1280 / 858, 2);
+  expect(posterBox.x).toBeGreaterThanOrEqual(0);
+  expect(posterBox.x + posterBox.width).toBeLessThanOrEqual(width);
+  await page.locator('#place').screenshot({ path: test.info().outputPath(`venue-local-${width}.png`) });
   await page.evaluate(() => window.scrollTo(0, 0));
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.keyboard.press('Tab'); await expect(page.locator('.skip-link')).toBeFocused();
@@ -38,7 +48,7 @@ for (const width of [320, 375, 768, 1440]) test(`seminar layout, resources and k
   await page.locator('.seminar-hero').screenshot({ path: test.info().outputPath(`hero-local-${width}.png`) });
   expect(failures).toEqual([]);
   expect(externalRequests).toEqual([]);
-  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261016-registration', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261017-optional-email']);
+  expect(assetRequests.sort()).toEqual(['/assets/css/seminar.css?v=20261017-venue-poster', '/assets/css/site.css?v=20261014-masterclass', '/assets/js/seminar.js?v=20261017-optional-email']);
 });
 
 for (const width of [375, 768, 1440]) test(`catalogue shows both complete event graphics at ${width}px`, async ({ page }) => {
