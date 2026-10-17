@@ -106,4 +106,4 @@ async function invoiceStatus(token, config, { fetchImpl = fetch } = {}) {
     ...(paid ? { confirmation: { title: EVENT.title, startDate: EVENT.startDate, endDate: EVENT.endDate,
       venue: 'Маринс Парк Отель', address: 'Нижний Новгород, ул. Советская, 12' } } : {}) };
 }
-module.exports = { prepareInvoice, invoiceStatus, statusToken, readToken };
+module.exports = { prepareInvoice, invoiceStatus, statusToken, readToken, createApi };

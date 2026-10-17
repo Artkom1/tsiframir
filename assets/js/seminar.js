@@ -48,7 +48,7 @@ function validateFields() {
   const name = value('name');
   const phone = value('phone');
   const digits = phone.replace(/\D/g, '');
-  const codeWord = value('codeWord');
+  const codeWord = form.elements.codeWord.value;
   const email = value('email');
   if (name.length < 2 || name.length > 100 || /[\x00-\x1f\x7f<>]/.test(name)) errors.name = 'Укажите имя: от 2 до 100 символов, без знаков < и >.';
   if (phone.length > 20 || !/^\+?[\d ()-]+$/.test(phone) || digits.length < 10 || digits.length > 15) errors.phone = 'Укажите телефон: от 10 до 15 цифр, можно с +, пробелами, скобками и дефисами.';

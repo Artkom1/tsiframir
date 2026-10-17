@@ -38,7 +38,9 @@ function validateRegistration(body, now = Date.now()) {
   const name = typeof body.name === 'string' ? body.name.trim() : '';
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   const phone = typeof body.phone === 'string' ? body.phone.trim() : '';
-  const codeWord = body.codeWord === undefined ? '' : typeof body.codeWord === 'string' ? body.codeWord.trim() : null;
+  // Attribution belongs to this invoice. Keep the entered value verbatim;
+  // normalization is only for organizer search, never for storage or pricing.
+  const codeWord = body.codeWord === undefined ? '' : typeof body.codeWord === 'string' ? body.codeWord : null;
   const errors = {};
   if (name.length < 2 || name.length > 100 || /[\x00-\x1f\x7f<>]/.test(name)) errors.name = 'Укажите имя: от 2 до 100 символов, без знаков < и >.';
   const digits = phone.replace(/\D/g, '');

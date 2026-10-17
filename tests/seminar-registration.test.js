@@ -10,11 +10,11 @@ const valid = { eventId: EVENT_ID, name: '  Анна Тестовая  ', phone:
 const config = { serverUrl: 'tsiframir.server.paykeeper.ru', secret: 'test-only-secret', apiLogin: 'test', apiPassword: 'test', providerTimeZone: 'Europe/Moscow' };
 const json = value => ({ ok: true, json: async () => value });
 
-test('registration accepts optional code word, trims metadata and never changes price', () => {
+test('registration accepts optional code word verbatim and never changes price', () => {
   for (const codeWord of [undefined, '', '   ', '  ЦифраМир  ', 'Осень 2026']) {
     const result = validateRegistration({ ...valid, codeWord }, now);
     assert.equal(result.ok, true);
-    assert.equal(result.codeWord, codeWord?.trim() || '');
+    assert.equal(result.codeWord, codeWord ?? '');
     assert.deepEqual(result.contact, { name: 'Анна Тестовая', phone: '+7 (000) 000-00-00', email: 'test@example.invalid' });
     assert.equal(result.quote.amount, 1600);
   }
@@ -90,7 +90,7 @@ for (const [time, amount] of [
     assert.equal(payload.client_phone, '+7 (000) 000-00-00');
     assert.equal(payload.client_email, 'test@example.invalid');
     const service = JSON.parse(payload.service_name), metadata = JSON.parse(service.custom_data);
-    assert.equal(metadata.codeWord, codeWord.trim());
+    assert.equal(metadata.codeWord, codeWord);
     assert.equal(metadata.eventId, EVENT_ID); assert.equal(metadata.quantity, 1);
     assert.equal(JSON.parse(service.cart)[0].sum, amount);
     assert.equal(JSON.parse(service.cart)[0].price, amount);

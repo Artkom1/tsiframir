@@ -18,6 +18,7 @@ const routes = new Map([
   ['/api/seminar-quote', require('../api/seminar-quote')],
   ['/api/seminar-checkout', require('../api/seminar-checkout')],
   ['/api/seminar-status', require('../api/seminar-status')],
+  ['/organizer/seminar-orders', require('../api/seminar-organizer')],
   ['/api/paykeeper/config', require('../api/paykeeper/config')],
   ['/api/paykeeper/checkout', require('../api/paykeeper/checkout')],
   ['/api/paykeeper/callback', require('../api/paykeeper/callback')]
