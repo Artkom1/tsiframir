@@ -86,10 +86,18 @@ class Accounting(unittest.TestCase):
                     data[1].clear()
                 self.assertEqual(report.calculate(*data, CUTOFF)['net_kopecks'], 0)
 
-    def test_bool_test_mode_fails_closed(self):
+    def test_bool_float_or_unknown_test_mode_fails_closed(self):
+        for mode in (True, False, 1.0, 0.0, None, 'true'):
+            with self.subTest(mode=mode):
+                data = fixture()
+                data[2][0]['is_test'] = mode
+                with self.assertRaisesRegex(report.ReportError, 'UNKNOWN_PAYMENT_SYSTEM_MODE'):
+                    report.calculate(*data, CUTOFF)
+
+    def test_conflicting_duplicate_system_ids_fail_closed(self):
         data = fixture()
-        data[2][0]['is_test'] = True
-        with self.assertRaisesRegex(report.ReportError, 'UNKNOWN_PAYMENT_SYSTEM_MODE'):
+        data[2].append({'id': '30', 'is_test': '1'})
+        with self.assertRaisesRegex(report.ReportError, 'DUPLICATE_PAYMENT_SYSTEM_ID'):
             report.calculate(*data, CUTOFF)
 
     def test_missing_or_malformed_data_fails_closed(self):
@@ -112,9 +120,11 @@ class Enumeration(unittest.TestCase):
             if path == 'count':
                 return {'fullcount': [{'count': '3'}]}
             offset = dict(params)['from']
-            return [{'id': str(offset + 1)}] if offset < 3 else []
+            if offset >= 3:
+                raise report.ReportError('PROVIDER_INVALID_JSON')
+            return [{'id': str(offset + 1)}]
         self.assertEqual(len(report.enumerate_rows(api, 'list', 'count', [])), 3)
-        self.assertEqual(len(calls), 6)
+        self.assertEqual(len(calls), 5)
 
     def test_zero_count_rechecked_without_invalid_empty_provider_list(self):
         calls = []
@@ -130,7 +140,7 @@ class Enumeration(unittest.TestCase):
             return {'fullcount': [{'count': '2'}]} if path == 'count' else [{'id': '1'}]
         with self.assertRaisesRegex(report.ReportError, 'OVERLAPPING'):
             report.enumerate_rows(api, 'list', 'count', [])
-        responses = iter([{'fullcount': [{'count': '1'}]}, [{'id': '1'}], [], {'fullcount': [{'count': '2'}]}])
+        responses = iter([{'fullcount': [{'count': '1'}]}, [{'id': '1'}], {'fullcount': [{'count': '2'}]}])
         with self.assertRaisesRegex(report.ReportError, 'COUNT_MISMATCH'):
             report.enumerate_rows(lambda *_: next(responses), 'list', 'count', [])
 

@@ -95,8 +95,9 @@ def enumerate_rows(api, list_path, count_path, params, page_size=100):
     require(before <= 100000, 'REGISTRY_TOO_LARGE')
     rows = []
     seen = set()
-    # Always request a terminal empty page; never assume a requested limit is honored.
-    while before:
+    # Stop at the independently read count: the merchant's empty invoice page is
+    # not valid JSON. Short nonempty pages still advance by their actual length.
+    while len(rows) < before:
         page = api(list_path, params + [('from', len(rows)), ('limit', page_size)])
         require(isinstance(page, list), 'INVALID_REGISTRY_PAGE')
         if not page:
@@ -120,7 +121,8 @@ def calculate(payments, invoices, systems, refunds_by_id, cutoff):
     system_tests = {}
     for system in systems:
         sid = numeric_id(system.get('id'))
-        require(not isinstance(system.get('is_test'), bool) and system.get('is_test') in ('0', '1', 0, 1), 'UNKNOWN_PAYMENT_SYSTEM_MODE')
+        require(sid not in system_tests, 'DUPLICATE_PAYMENT_SYSTEM_ID')
+        require(type(system.get('is_test')) in (str, int) and system.get('is_test') in ('0', '1', 0, 1), 'UNKNOWN_PAYMENT_SYSTEM_MODE')
         system_tests[sid] = str(system['is_test']) == '1'
     known_invoices = {}
     for invoice in invoices:
