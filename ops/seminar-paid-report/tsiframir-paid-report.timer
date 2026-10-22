@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily TsifraMir report at 19:00 Europe/Moscow
+
+[Timer]
+OnCalendar=*-*-* 19:00:00 Europe/Moscow
+Persistent=true
+AccuracySec=1s
+RandomizedDelaySec=0
+Unit=tsiframir-paid-report.service
+
+[Install]
+WantedBy=timers.target
