@@ -32,11 +32,11 @@ test('rendered event metadata, contacts and receipt description agree with the r
   const html = render(ms('2026-10-14T12:00:00+03:00'));
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
   assert.equal(schema.endDate, '2026-11-01T15:00:00+03:00');
-  assert.deepEqual(schema.organizer.telephone, ['+79202997772', '+79087305573']);
+  assert.deepEqual(schema.organizer.telephone, ['+79202997772']);
   assert.match(schema.name, /Код богатства/);
   assert.match(html, /12:00–15:00/); assert.match(html, /в 15:00/);
   assert.doesNotMatch(html, /18:00|79165127377|Шесть часов|fonts\.googleapis|telesco\.pe/);
-  assert.match(html, /tel:\+79202997772/); assert.match(html, /tel:\+79087305573/);
+  assert.match(html, /tel:\+79202997772/); assert.doesNotMatch(html, /tel:\+79087305573/);
 });
 
 for (const [time, amount, status] of [
