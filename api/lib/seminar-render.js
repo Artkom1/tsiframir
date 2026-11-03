@@ -16,7 +16,7 @@ function render(now = Date.now()) {
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     url: 'https://tsiframir.ru/forums/2026-nizhny-novgorod/', image: 'https://tsiframir.ru' + EVENT.heroImage,
     performer: { '@type': 'Person', name: 'Сергей Николаевич Кузнецов' },
-    organizer: { '@type': 'Organization', name: 'ЦифраМир', url: 'https://tsiframir.ru/', telephone: ['+79202997772', '+79087305573'] },
+    organizer: { '@type': 'Organization', name: 'ЦифраМир', url: 'https://tsiframir.ru/', telephone: ['+79202997772'] },
     location: { '@type': 'Place', name: 'Маринс Парк Отель / Marins Нижний Новгород', address: {
       '@type': 'PostalAddress', streetAddress: 'ул. Советская, 12', addressLocality: 'Нижний Новгород', addressCountry: 'RU' } }
   };
