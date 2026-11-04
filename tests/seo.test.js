@@ -74,7 +74,7 @@ test('global contacts stay unchanged and event-specific phones are confined to t
     if (relativePath === 'offer.html') {
       const seminar = html.match(/<section id="seminar-nizhny">[\s\S]*?<\/section>/);
       assert.ok(seminar, 'event-specific offer section is present');
-      assert.deepEqual([...new Set((seminar[0].match(phonePattern) || []).map(normalize))].sort(), ['79087305573', '79202997772']);
+      assert.deepEqual([...new Set((seminar[0].match(phonePattern) || []).map(normalize))].sort(), ['79202997772']);
       html = html.replace(seminar[0], '');
     }
     const matches = html.match(phonePattern) || [];
